@@ -1,0 +1,28 @@
+CC = g++
+Option = -O3 -Wall
+
+Objs = main.o integral.o prog_bar.o xi_stream.o interp1.o input.o
+
+Out_file = xi_stream.exe
+
+main : $(Objs)
+	$(CC) $(Option) $(Objs) -o $(Out_file)
+
+main.o : main.cpp
+	$(CC) $(Option) -c -o main.o main.cpp
+
+integral.o : integral.cpp integral.h
+	$(CC) $(Option) -c -o integral.o integral.cpp
+
+prog_bar.o : prog_bar.cpp prog_bar.h
+	$(CC) $(Option) -c -o prog_bar.o prog_bar.cpp
+
+xi_stream.o : xi_stream.cpp xi_stream.h
+	$(CC) $(Option) -c -o xi_stream.o xi_stream.cpp
+
+interp1.o : interp1.cpp interp1.h
+	$(CC) $(Option) -c -o interp1.o interp1.cpp
+
+input.o : input.cpp input.h
+	$(CC) $(Option) -c -o input.o input.cpp
+

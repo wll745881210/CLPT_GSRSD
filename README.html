@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-05-08T17:26+0800"/>
+<meta name="author" content="Lile Wang"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Compilation and dependencies</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 CLPT</a>
+<ul>
+<li><a href="#sec-2-1">2.1 Input</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1 Parameter file</a></li>
+<li><a href="#sec-2-1-2">2.1.2 Linear power spectrum</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2 Run!</a></li>
+<li><a href="#sec-2-3">2.3 Output</a>
+<ul>
+<li><a href="#sec-2-3-1">2.3.1 Real-space correlation function</a></li>
+<li><a href="#sec-2-3-2">2.3.2 Real-space pairwise infall velocity.</a></li>
+<li><a href="#sec-2-3-3">2.3.3 Real-space pairwise velocity dispersion</a></li>
+</ul></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 GSRSD</a>
+<ul>
+<li><a href="#sec-3-1">3.1 Input</a>
+<ul>
+<li><a href="#sec-3-1-1">3.1.1 Parameter file</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">3.2 Run!</a></li>
+<li><a href="#sec-3-3">3.3 Output</a>
+<ul>
+<li><a href="#sec-3-3-1">3.3.1 &lt;out_file_name&gt;</a></li>
+<li><a href="#sec-3-3-2">3.3.2 &lt;out_file_name&gt;<sub>appendix</sub></a></li>
+<li><a href="#sec-3-3-3">3.3.3 &lt;out_file_name&gt;<sub>wedge</sub></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+
+<p>
+This package contains two separated programs: CLPT and GSRSD. Those
+two programs are coded separately, but GSRSD uses the output of CLPT
+directly.
+</p>
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Compilation and dependencies</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+<p>
+CLPT and GSRSD are both written in standard C++ (with STL)&ndash;and
+nothing else. If you are working under Linux and have g++ and GNUMake
+in your computer, you can just get into each folder and type "make"
+respectively for the comilation.
+</p>
+<p>
+The makefiles are written by a human, so you should find it easy to
+modify them as needed.
+</p>
+<p>
+I named the output binary files as ".exe" files&ndash;the only purpose for
+this is for git to recogize them easily and clearly.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> CLPT</h2>
+<div class="outline-text-2" id="text-2">
+
+
+<p>
+This program gives real-space statistics, including correlation
+functions and pairwise velocity statistics, coming from the CLPT.
+</p>
+<p>
+For CLPT, please refer to:
+</p>
+<p>
+<a href="http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C">http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C</a>
+</p>
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Input</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+
+</div>
+
+<div id="outline-container-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Parameter file</h4>
+<div class="outline-text-4" id="text-2-1-1">
+
+
+<p>
+The CLPT code uses a parameter file to specify the parameters. There
+is an example of parameter file ("par.txt") in the CLPT folder. You
+can modify the parameter file (e.g. adjust the values or the sequence
+of the keys), but please leave the header "CORR<sub>FUNC</sub>" and "Init"
+intact.
+</p>
+<p>
+Some explanations:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">Key</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">r_max</td><td class="left">Maximum value of real-space separation that is calculated</td></tr>
+<tr><td class="left">r_min</td><td class="left">Minimum value of real-space separation</td></tr>
+<tr><td class="left">r_bin_num</td><td class="left">Number of data points between r<sub>min</sub> and r<sub>max</sub></td></tr>
+<tr><td class="left">pow_spec_file</td><td class="left">Path to the input file: Linear power spectrum</td></tr>
+<tr><td class="left">xi_file</td><td class="left">Path to the output file: real-space xi(r)</td></tr>
+<tr><td class="left">v12_file</td><td class="left">Path to the output file: real-space pairwise infall velocity</td></tr>
+<tr><td class="left">s12_file</td><td class="left">Path to the output file: real-space pairwise velocity dispersion</td></tr>
+<tr><td class="left">k_file</td><td class="left">If specified, functions of k are read from file; if "none", they will be calculated</td></tr>
+<tr><td class="left">q_file</td><td class="left">Similar to k<sub>file</sub>. Note: Functions of q depends on functions of k</td></tr>
+</tbody>
+</table>
+
+
+<p>
+The file for the velocity dispersions will be attached a suffix: "_p"
+for the parallel component, and "_v" for the perpandicular component.
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Linear power spectrum</h4>
+<div class="outline-text-4" id="text-2-1-2">
+
+
+<p>
+The CLPT program also needs a liear power spectrum as input, whose
+path should be specified in the parameter file.
+</p>
+<p>
+Definition of the file:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">Wave number (in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">Power (in Mpc<sup>3</sup>/h<sup>3</sup>)</td></tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Run!</h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+<p>
+The name of the parameter file should be used as the parameter of
+command-line input. For example, if you are using Linux and your
+parameter file is named "par.txt", you may want to type the followings
+in the terminal:
+</p>
+<p> 
+$ ./clpt.exe par.txt
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Output</h3>
+<div class="outline-text-3" id="text-2-3">
+
+
+<p>
+In our CLPT model, we use &lt;F'&gt; and &lt;F"&gt; as first- and second-order
+Lagrangian bias parameters. For a specific statistics A, we calculate
+the value of A for biased tracers as:
+</p>
+<p>
+A = A<sub>0</sub> + A<sub>10</sub> &lt;F'&gt; + A<sub>01</sub> &lt;F"&gt; + A<sub>20</sub> &lt;F'&gt;<sup>2</sup> + A<sub>11</sub> &lt;F'&gt;&lt;F"&gt; + A<sub>02</sub> &lt;F"&gt;<sup>2</sup>
+</p>
+<p>
+In this section we will use this notation. 
+</p>
+
+</div>
+
+<div id="outline-container-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> Real-space correlation function</h4>
+<div class="outline-text-4" id="text-2-3-1">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">xi<sub>L</sub> (linear correlation function)</td></tr>
+<tr><td class="right">3</td><td class="left">xi<sub>0</sub></td></tr>
+<tr><td class="right">4</td><td class="left">xi<sub>10</sub></td></tr>
+<tr><td class="right">5</td><td class="left">xi<sub>01</sub></td></tr>
+<tr><td class="right">6</td><td class="left">xi<sub>20</sub></td></tr>
+<tr><td class="right">7</td><td class="left">xi<sub>11</sub></td></tr>
+<tr><td class="right">8</td><td class="left">xi<sub>02</sub></td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3-2" class="outline-4">
+<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> Real-space pairwise infall velocity.</h4>
+<div class="outline-text-4" id="text-2-3-2">
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">v<sub>12</sub><sub>L</sub> (linear correlation function)</td></tr>
+<tr><td class="right">3</td><td class="left">v<sub>12</sub><sub>0</sub></td></tr>
+<tr><td class="right">4</td><td class="left">v<sub>12</sub><sub>10</sub></td></tr>
+<tr><td class="right">5</td><td class="left">v<sub>12</sub><sub>01</sub></td></tr>
+<tr><td class="right">6</td><td class="left">v<sub>12</sub><sub>20</sub></td></tr>
+<tr><td class="right">7</td><td class="left">v<sub>12</sub><sub>11</sub></td></tr>
+<tr><td class="right">8</td><td class="left">v<sub>12</sub><sub>02</sub></td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3-3" class="outline-4">
+<h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> Real-space pairwise velocity dispersion</h4>
+<div class="outline-text-4" id="text-2-3-3">
+
+
+<p>
+Suffix "_p" for the parallel component, and "_v" for the perpandicular
+component.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">r</td></tr>
+<tr><td class="right">2</td><td class="left">s<sub>12</sub><sub>0</sub></td></tr>
+<tr><td class="right">3</td><td class="left">s<sub>12</sub><sub>10</sub></td></tr>
+<tr><td class="right">4</td><td class="left">s<sub>12</sub><sub>01</sub></td></tr>
+<tr><td class="right">5</td><td class="left">s<sub>12</sub><sub>20</sub></td></tr>
+</tbody>
+</table>
+
+
+<p>
+Other components vanish at the desired (one-loop) order.
+</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> GSRSD</h2>
+<div class="outline-text-2" id="text-3">
+
+
+<p>
+This program gives redshift-space statistics, including Legendre
+expansion of correlation function and wedge statistics, coming from
+the Gaussian streaming model.
+</p>
+<p>
+For Gaussian streaming model, please refer to Beth &amp; White (2011):
+</p>
+<p>
+<a href="http://adsabs.harvard.edu/abs/2011MNRAS.417.1913R">http://adsabs.harvard.edu/abs/2011MNRAS.417.1913R</a>
+</p>
+<p>
+For the "wedge" statistcis, you may find it in, such as,
+</p>
+<p>
+<a href="http://adsabs.harvard.edu/abs/2011MNRAS.414..596W">http://adsabs.harvard.edu/abs/2011MNRAS.414..596W</a>
+</p>
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Input</h3>
+<div class="outline-text-3" id="text-3-1">
+
+
+
+</div>
+
+<div id="outline-container-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Parameter file</h4>
+<div class="outline-text-4" id="text-3-1-1">
+
+
+<p>
+The GSRSD code uses a parameter file to specify the parameters. There
+is an example of parameter file ("par.txt") in the GSRSD folder. You
+can modify the parameter file (e.g. adjust the values or the sequence
+of the keys), but please leave the header "CORR<sub>FUNC</sub>" and "Init"
+intact.
+</p>
+<p>
+Some explanations:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">Key</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">fb11b20</td><td class="left">&lt;F'&gt;</td></tr>
+<tr><td class="left">fb10b21</td><td class="left">&lt;F"&gt;</td></tr>
+<tr><td class="left">fb11b21</td><td class="left">&lt;F'&gt;&lt;F"&gt;</td></tr>
+<tr><td class="left">fb12b20</td><td class="left">&lt;F'&gt;<sup>2</sup></td></tr>
+<tr><td class="left">fb10b22</td><td class="left">&lt;F"&gt;<sup>2</sup></td></tr>
+<tr><td class="left">s_max</td><td class="left">Maximum separation in the redshift-space</td></tr>
+<tr><td class="left">s_min</td><td class="left">Minimum separation</td></tr>
+<tr><td class="left">s_bin</td><td class="left">Number of data points between s<sub>min</sub> and s<sub>max</sub></td></tr>
+<tr><td class="left">mu_bin</td><td class="left">Number of data points for the "wedge" statistics</td></tr>
+<tr><td class="left">y_spanning</td><td class="left">The integration range of y (see Beth and White 2011)</td></tr>
+<tr><td class="left">dy</td><td class="left">The integration step of y</td></tr>
+<tr><td class="left">f_v</td><td class="left">Structure growth rate [d log(D) / d log(a)]</td></tr>
+<tr><td class="left">xi_file_name</td><td class="left">Path to the input file: real-space xi</td></tr>
+<tr><td class="left">v_file_name</td><td class="left">Path to the input file: real-space v<sub>12</sub></td></tr>
+<tr><td class="left">sp_file_name</td><td class="left">Path to the input file: real-space velocity dispersion (parallel)</td></tr>
+<tr><td class="left">sv_file_name</td><td class="left">Path to the input file: real-space velocity dispersion (perpandicular)</td></tr>
+<tr><td class="left">out_file_name</td><td class="left">Path to the output file</td></tr>
+</tbody>
+</table>
+
+
+<p>
+The wedge statistics will be given by "&lt;out_file_name&gt;<sub>wedge</sub>", and
+some appendices will be given in "&lt;out_file_name&gt;<sub>appendix</sub>".
+</p>
+<p>
+"fb1*b2*" are separately specified for the convenience of cross-correlation.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Run!</h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+<p>
+Similar to the CLPT code&hellip;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Output</h3>
+<div class="outline-text-3" id="text-3-3">
+
+
+
+</div>
+
+<div id="outline-container-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> &lt;out_file_name&gt;</h4>
+<div class="outline-text-4" id="text-3-3-1">
+
+
+<p>
+All for biased tracers&hellip;
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">s (redshift-space separation, in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">xi<sup>s</sup><sub>0</sub> (monopole)</td></tr>
+<tr><td class="right">3</td><td class="left">xi<sup>s</sup><sub>2</sub> (quadrupole)</td></tr>
+<tr><td class="right">4</td><td class="left">xi<sup>s</sup><sub>4</sub> (hexadecapole)</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-3-2" class="outline-4">
+<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> &lt;out_file_name&gt;<sub>appendix</sub></h4>
+<div class="outline-text-4" id="text-3-3-2">
+
+
+<p>
+All for biased tracers&hellip;
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">r (real-space separation, in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">xi<sub>L</sub>(r) (linear real-space correlation)</td></tr>
+<tr><td class="right">3</td><td class="left">xi(r) (real-space correlation)</td></tr>
+<tr><td class="right">4</td><td class="left">v<sub>L</sub>(r) (linear real-space pairwise infall velocity, in a.H(a).f<sub>v</sub> )</td></tr>
+<tr><td class="right">5</td><td class="left">v(r) (real-space pairwise infall velocity )</td></tr>
+<tr><td class="right">6</td><td class="left">sigma<sub>p</sub>(s) (real-space velocity dispersion: parallel component, in (a.H(a).f<sub>v</sub>)<sup>2</sup> )</td></tr>
+<tr><td class="right">7</td><td class="left">sigma<sub>v</sub>(s) (real-space velocity dispersion: perpandicular component)</td></tr>
+</tbody>
+</table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-3-3" class="outline-4">
+<h4 id="sec-3-3-3"><span class="section-number-4">3.3.3</span> &lt;out_file_name&gt;<sub>wedge</sub></h4>
+<div class="outline-text-4" id="text-3-3-3">
+
+
+<p>
+All for biased tracers&hellip;
+</p>
+<p>
+First row: the edge of each mu bins in the "wedge" statistics.
+</p>
+<p>
+Following rows:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">1</td><td class="left">s (redshift-space separation in Mpc/h)</td></tr>
+<tr><td class="left">Following</td><td class="left">"Wedges"</td></tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2013-05-08T17:26+0800</p>
+<p class="author">Author: Lile Wang</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

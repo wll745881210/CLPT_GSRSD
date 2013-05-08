@@ -1,0 +1,12 @@
+CORR_FUNC
+
+Init
+r_max 		130
+r_min 		1
+r_bin_num 	80
+xi_file 	../data/xi.txt
+v12_file 	../data/v12.txt
+s12_file 	../data/s12.txt
+pow_spec_file 	../data/PL_z0.55.dat
+k_file 		none
+q_file 		none
