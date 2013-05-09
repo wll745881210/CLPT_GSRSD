@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-05-08T17:26+0800"/>
+<meta name="generated" content="2013-05-09T17:03+0800"/>
 <meta name="author" content="Lile Wang"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -155,8 +155,8 @@ for the JavaScript code in this tag.
 <li><a href="#sec-3-3">3.3 Output</a>
 <ul>
 <li><a href="#sec-3-3-1">3.3.1 &lt;out_file_name&gt;</a></li>
-<li><a href="#sec-3-3-2">3.3.2 &lt;out_file_name&gt;<sub>appendix</sub></a></li>
-<li><a href="#sec-3-3-3">3.3.3 &lt;out_file_name&gt;<sub>wedge</sub></a></li>
+<li><a href="#sec-3-3-2">3.3.2 &lt;out_file_name&gt;_appendix</a></li>
+<li><a href="#sec-3-3-3">3.3.3 &lt;out_file_name&gt;_wedge</a></li>
 </ul>
 </li>
 </ul>
@@ -258,7 +258,7 @@ Some explanations:
 <tr><td class="left">v12_file</td><td class="left">Path to the output file: real-space pairwise infall velocity</td></tr>
 <tr><td class="left">s12_file</td><td class="left">Path to the output file: real-space pairwise velocity dispersion</td></tr>
 <tr><td class="left">k_file</td><td class="left">If specified, functions of k are read from file; if "none", they will be calculated</td></tr>
-<tr><td class="left">q_file</td><td class="left">Similar to k<sub>file</sub>. Note: Functions of q depends on functions of k</td></tr>
+<tr><td class="left">q_file</td><td class="left">Similar to k<sub>file</sub>. Note: Functions of q depend on functions of k</td></tr>
 </tbody>
 </table>
 
@@ -291,8 +291,8 @@ Definition of the file:
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">Wave number (in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">Power (in Mpc<sup>3</sup>/h<sup>3</sup>)</td></tr>
+<tr><td class="right">1</td><td class="left">Wave number (in h/Mpc)</td></tr>
+<tr><td class="right">2</td><td class="left">Power [in (Mpc/h)<sup>3]</sup></td></tr>
 </tbody>
 </table>
 
@@ -523,7 +523,10 @@ some appendices will be given in "&lt;out_file_name&gt;<sub>appendix</sub>".
 
 
 <p>
-Similar to the CLPT code&hellip;
+Similar to the CLPT code&hellip; E.g.:
+</p>
+<p>
+$ ./xi<sub>stream</sub>.exe par.txt
 </p>
 </div>
 
@@ -565,7 +568,7 @@ All for biased tracers&hellip;
 </div>
 
 <div id="outline-container-3-3-2" class="outline-4">
-<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> &lt;out_file_name&gt;<sub>appendix</sub></h4>
+<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> &lt;out_file_name&gt;_appendix</h4>
 <div class="outline-text-4" id="text-3-3-2">
 
 
@@ -595,7 +598,7 @@ All for biased tracers&hellip;
 </div>
 
 <div id="outline-container-3-3-3" class="outline-4">
-<h4 id="sec-3-3-3"><span class="section-number-4">3.3.3</span> &lt;out_file_name&gt;<sub>wedge</sub></h4>
+<h4 id="sec-3-3-3"><span class="section-number-4">3.3.3</span> &lt;out_file_name&gt;_wedge</h4>
 <div class="outline-text-4" id="text-3-3-3">
 
 
@@ -640,7 +643,7 @@ Following rows:
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-05-08T17:26+0800</p>
+<p class="date">Date: 2013-05-09T17:03+0800</p>
 <p class="author">Author: Lile Wang</p>
 <p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
