@@ -11,7 +11,7 @@
 
 corr_func::corr_func(  )
 {
-	
+
 }
 
 corr_func::~corr_func(  )
@@ -193,7 +193,7 @@ void corr_func::M( const double & r, const vec3 & q )
 }
 
 void corr_func::M( const double & r, const double & q,
-					 const double & mu )
+				   const double & mu )
 {
 	vec3 qv;
 	qv.x = q * sqrt( 1 - mu*mu );

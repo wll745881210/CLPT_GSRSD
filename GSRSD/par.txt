@@ -6,10 +6,11 @@ fb10b21		0
 fb11b21		0
 fb12b20		0
 fb10b22		0
+sigma_p_100 27
 s_max		130
 s_min		1
 s_bin 		50
-mu_bin 		2
+wedge_bin 	2
 y_spanning	200
 dy		0.5
 f_v 		0.74429

@@ -31,7 +31,7 @@ void driver( const std::string & par_file_name )
     par.find_key( "s_max", arg.s_max );
     par.find_key( "s_min", arg.s_min );
     par.find_key( "s_bin", arg.s_bin_num );
-    par.find_key( "mu_bin", arg.mu_bin_num );
+    par.find_key( "wedge_bin", arg.wedge_bin_num );
     par.find_key( "y_spanning", arg.y_spanning );
     par.find_key( "dy", arg.dy );
     par.find_key( "f_v", arg.f_v );

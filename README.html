@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-05-09T17:03+0800"/>
+<meta name="generated" content="2013-05-23T15:28+0800"/>
 <meta name="author" content="Lile Wang"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -157,6 +157,7 @@ for the JavaScript code in this tag.
 <li><a href="#sec-3-3-1">3.3.1 &lt;out_file_name&gt;</a></li>
 <li><a href="#sec-3-3-2">3.3.2 &lt;out_file_name&gt;_appendix</a></li>
 <li><a href="#sec-3-3-3">3.3.3 &lt;out_file_name&gt;_wedge</a></li>
+<li><a href="#sec-3-3-4">3.3.4 &lt;out_file_name&gt;_2d</a></li>
 </ul>
 </li>
 </ul>
@@ -237,7 +238,7 @@ For CLPT, please refer to:
 The CLPT code uses a parameter file to specify the parameters. There
 is an example of parameter file ("par.txt") in the CLPT folder. You
 can modify the parameter file (e.g. adjust the values or the sequence
-of the keys), but please leave the header "CORR<sub>FUNC</sub>" and "Init"
+of the keys), but please leave the header "CORR_FUNC" and "Init"
 intact.
 </p>
 <p>
@@ -254,7 +255,7 @@ Some explanations:
 <tr><td class="left">r_min</td><td class="left">Minimum value of real-space separation</td></tr>
 <tr><td class="left">r_bin_num</td><td class="left">Number of data points between r<sub>min</sub> and r<sub>max</sub></td></tr>
 <tr><td class="left">pow_spec_file</td><td class="left">Path to the input file: Linear power spectrum</td></tr>
-<tr><td class="left">xi_file</td><td class="left">Path to the output file: real-space xi(r)</td></tr>
+<tr><td class="left">xi_file</td><td class="left">Path to the output file: real-space &xi;(r)</td></tr>
 <tr><td class="left">v12_file</td><td class="left">Path to the output file: real-space pairwise infall velocity</td></tr>
 <tr><td class="left">s12_file</td><td class="left">Path to the output file: real-space pairwise velocity dispersion</td></tr>
 <tr><td class="left">k_file</td><td class="left">If specified, functions of k are read from file; if "none", they will be calculated</td></tr>
@@ -352,13 +353,13 @@ In this section we will use this notation.
 </thead>
 <tbody>
 <tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">xi<sub>L</sub> (linear correlation function)</td></tr>
-<tr><td class="right">3</td><td class="left">xi<sub>0</sub></td></tr>
-<tr><td class="right">4</td><td class="left">xi<sub>10</sub></td></tr>
-<tr><td class="right">5</td><td class="left">xi<sub>01</sub></td></tr>
-<tr><td class="right">6</td><td class="left">xi<sub>20</sub></td></tr>
-<tr><td class="right">7</td><td class="left">xi<sub>11</sub></td></tr>
-<tr><td class="right">8</td><td class="left">xi<sub>02</sub></td></tr>
+<tr><td class="right">2</td><td class="left">&xi;<sub>L</sub> (linear correlation function)</td></tr>
+<tr><td class="right">3</td><td class="left">&xi;<sub>0</sub></td></tr>
+<tr><td class="right">4</td><td class="left">&xi;<sub>10</sub></td></tr>
+<tr><td class="right">5</td><td class="left">&xi;<sub>01</sub></td></tr>
+<tr><td class="right">6</td><td class="left">&xi;<sub>20</sub></td></tr>
+<tr><td class="right">7</td><td class="left">&xi;<sub>11</sub></td></tr>
+<tr><td class="right">8</td><td class="left">&xi;<sub>02</sub></td></tr>
 </tbody>
 </table>
 
@@ -372,6 +373,11 @@ In this section we will use this notation.
 <div class="outline-text-4" id="text-2-3-2">
 
 
+<p>
+Veolicties are given as [v/(a.H(a).f<sub>v</sub>)] (this gives the results a
+dimension of distance), where a is the scale factor, H(a) is the
+Hubble parameter and f<sub>v</sub> is the growth factor.
+</p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup><col class="right" /><col class="left" />
 </colgroup>
@@ -380,13 +386,13 @@ In this section we will use this notation.
 </thead>
 <tbody>
 <tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">v<sub>12</sub><sub>L</sub> (linear correlation function)</td></tr>
-<tr><td class="right">3</td><td class="left">v<sub>12</sub><sub>0</sub></td></tr>
-<tr><td class="right">4</td><td class="left">v<sub>12</sub><sub>10</sub></td></tr>
-<tr><td class="right">5</td><td class="left">v<sub>12</sub><sub>01</sub></td></tr>
-<tr><td class="right">6</td><td class="left">v<sub>12</sub><sub>20</sub></td></tr>
-<tr><td class="right">7</td><td class="left">v<sub>12</sub><sub>11</sub></td></tr>
-<tr><td class="right">8</td><td class="left">v<sub>12</sub><sub>02</sub></td></tr>
+<tr><td class="right">2</td><td class="left">v<sub>12</sub>,<sub>L</sub> (linear pairwise velocity, in Mpc/h)</td></tr>
+<tr><td class="right">3</td><td class="left">v<sub>12</sub>,<sub>0</sub></td></tr>
+<tr><td class="right">4</td><td class="left">v<sub>12</sub>,<sub>10</sub></td></tr>
+<tr><td class="right">5</td><td class="left">v<sub>12</sub>,<sub>01</sub></td></tr>
+<tr><td class="right">6</td><td class="left">v<sub>12</sub>,<sub>20</sub></td></tr>
+<tr><td class="right">7</td><td class="left">v<sub>12</sub>,<sub>11</sub></td></tr>
+<tr><td class="right">8</td><td class="left">v<sub>12</sub>,<sub>02</sub></td></tr>
 </tbody>
 </table>
 
@@ -402,7 +408,7 @@ In this section we will use this notation.
 
 <p>
 Suffix "_p" for the parallel component, and "_v" for the perpandicular
-component.
+component. Velocity dispersions are given as [sigma/(a.H(a).f<sub>v</sub>)<sup>2]</sup>
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup><col class="right" /><col class="left" />
@@ -411,11 +417,11 @@ component.
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">r</td></tr>
-<tr><td class="right">2</td><td class="left">s<sub>12</sub><sub>0</sub></td></tr>
-<tr><td class="right">3</td><td class="left">s<sub>12</sub><sub>10</sub></td></tr>
-<tr><td class="right">4</td><td class="left">s<sub>12</sub><sub>01</sub></td></tr>
-<tr><td class="right">5</td><td class="left">s<sub>12</sub><sub>20</sub></td></tr>
+<tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">&sigma;<sub>12</sub>,<sub>0</sub> (in Mpc<sup>2</sup>/h<sup>2</sup>)</td></tr>
+<tr><td class="right">3</td><td class="left">&sigma;<sub>12</sub>,<sub>10</sub></td></tr>
+<tr><td class="right">4</td><td class="left">&sigma;<sub>12</sub>,<sub>01</sub></td></tr>
+<tr><td class="right">5</td><td class="left">&sigma;<sub>12</sub>,<sub>20</sub></td></tr>
 </tbody>
 </table>
 
@@ -471,7 +477,7 @@ For the "wedge" statistcis, you may find it in, such as,
 The GSRSD code uses a parameter file to specify the parameters. There
 is an example of parameter file ("par.txt") in the GSRSD folder. You
 can modify the parameter file (e.g. adjust the values or the sequence
-of the keys), but please leave the header "CORR<sub>FUNC</sub>" and "Init"
+of the keys), but please leave the header "CORR_FUNC" and "Init"
 intact.
 </p>
 <p>
@@ -489,14 +495,15 @@ Some explanations:
 <tr><td class="left">fb11b21</td><td class="left">&lt;F'&gt;&lt;F"&gt;</td></tr>
 <tr><td class="left">fb12b20</td><td class="left">&lt;F'&gt;<sup>2</sup></td></tr>
 <tr><td class="left">fb10b22</td><td class="left">&lt;F"&gt;<sup>2</sup></td></tr>
+<tr><td class="left">sigma_p_100</td><td class="left">The value of &sigma;<sub>\parallel</sub> (in ) at 100 Mpc/h</td></tr>
 <tr><td class="left">s_max</td><td class="left">Maximum separation in the redshift-space</td></tr>
 <tr><td class="left">s_min</td><td class="left">Minimum separation</td></tr>
 <tr><td class="left">s_bin</td><td class="left">Number of data points between s<sub>min</sub> and s<sub>max</sub></td></tr>
-<tr><td class="left">mu_bin</td><td class="left">Number of data points for the "wedge" statistics</td></tr>
+<tr><td class="left">wedge_bin</td><td class="left">Number of data points for the "wedge" statistics</td></tr>
 <tr><td class="left">y_spanning</td><td class="left">The integration range of y (see Beth and White 2011)</td></tr>
 <tr><td class="left">dy</td><td class="left">The integration step of y</td></tr>
 <tr><td class="left">f_v</td><td class="left">Structure growth rate [d log(D) / d log(a)]</td></tr>
-<tr><td class="left">xi_file_name</td><td class="left">Path to the input file: real-space xi</td></tr>
+<tr><td class="left">xi_file_name</td><td class="left">Path to the input file: real-space &xi;</td></tr>
 <tr><td class="left">v_file_name</td><td class="left">Path to the input file: real-space v<sub>12</sub></td></tr>
 <tr><td class="left">sp_file_name</td><td class="left">Path to the input file: real-space velocity dispersion (parallel)</td></tr>
 <tr><td class="left">sv_file_name</td><td class="left">Path to the input file: real-space velocity dispersion (perpandicular)</td></tr>
@@ -506,8 +513,9 @@ Some explanations:
 
 
 <p>
-The wedge statistics will be given by "&lt;out_file_name&gt;<sub>wedge</sub>", and
-some appendices will be given in "&lt;out_file_name&gt;<sub>appendix</sub>".
+The wedge statistics will be given by "&lt;out_file_name&gt;_wedge", 2-D
+plot by "&lt;out_file_name&gt;_2d", and some appendices will be given in
+"&lt;out_file_name&gt;_appendix".
 </p>
 <p>
 "fb1*b2*" are separately specified for the convenience of cross-correlation.
@@ -526,7 +534,7 @@ some appendices will be given in "&lt;out_file_name&gt;<sub>appendix</sub>".
 Similar to the CLPT code&hellip; E.g.:
 </p>
 <p>
-$ ./xi<sub>stream</sub>.exe par.txt
+$ ./xi_stream.exe par.txt
 </p>
 </div>
 
@@ -556,9 +564,9 @@ All for biased tracers&hellip;
 </thead>
 <tbody>
 <tr><td class="right">1</td><td class="left">s (redshift-space separation, in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">xi<sup>s</sup><sub>0</sub> (monopole)</td></tr>
-<tr><td class="right">3</td><td class="left">xi<sup>s</sup><sub>2</sub> (quadrupole)</td></tr>
-<tr><td class="right">4</td><td class="left">xi<sup>s</sup><sub>4</sub> (hexadecapole)</td></tr>
+<tr><td class="right">2</td><td class="left">&xi;<sup>s</sup><sub>0</sub> (monopole)</td></tr>
+<tr><td class="right">3</td><td class="left">&xi;<sup>s</sup><sub>2</sub> (quadrupole)</td></tr>
+<tr><td class="right">4</td><td class="left">&xi;<sup>s</sup><sub>4</sub> (hexadecapole)</td></tr>
 </tbody>
 </table>
 
@@ -583,12 +591,12 @@ All for biased tracers&hellip;
 </thead>
 <tbody>
 <tr><td class="right">1</td><td class="left">r (real-space separation, in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">xi<sub>L</sub>(r) (linear real-space correlation)</td></tr>
-<tr><td class="right">3</td><td class="left">xi(r) (real-space correlation)</td></tr>
+<tr><td class="right">2</td><td class="left">&xi;<sub>L</sub>(r) (linear real-space correlation)</td></tr>
+<tr><td class="right">3</td><td class="left">&xi;(r) (real-space correlation)</td></tr>
 <tr><td class="right">4</td><td class="left">v<sub>L</sub>(r) (linear real-space pairwise infall velocity, in a.H(a).f<sub>v</sub> )</td></tr>
 <tr><td class="right">5</td><td class="left">v(r) (real-space pairwise infall velocity )</td></tr>
-<tr><td class="right">6</td><td class="left">sigma<sub>p</sub>(s) (real-space velocity dispersion: parallel component, in (a.H(a).f<sub>v</sub>)<sup>2</sup> )</td></tr>
-<tr><td class="right">7</td><td class="left">sigma<sub>v</sub>(s) (real-space velocity dispersion: perpandicular component)</td></tr>
+<tr><td class="right">6</td><td class="left">&sigma;<sub>p</sub>(s) (real-space velocity dispersion: parallel component, in (a.H(a).f<sub>v</sub>)<sup>2</sup> )</td></tr>
+<tr><td class="right">7</td><td class="left">&sigma;<sub>v</sub>(s) (real-space velocity dispersion: perpandicular component)</td></tr>
 </tbody>
 </table>
 
@@ -605,12 +613,6 @@ All for biased tracers&hellip;
 <p>
 All for biased tracers&hellip;
 </p>
-<p>
-First row: the edge of each mu bins in the "wedge" statistics.
-</p>
-<p>
-Following rows:
-</p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup><col class="left" /><col class="left" />
 </colgroup>
@@ -622,6 +624,36 @@ Following rows:
 <tr><td class="left">Following</td><td class="left">"Wedges"</td></tr>
 </tbody>
 </table>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-3-4" class="outline-4">
+<h4 id="sec-3-3-4"><span class="section-number-4">3.3.4</span> &lt;out_file_name&gt;_2d</h4>
+<div class="outline-text-4" id="text-3-3-4">
+
+
+<p>
+All for biased tracers&hellip;
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="right" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
+</thead>
+<tbody>
+<tr><td class="right">1</td><td class="left">s (redshift-space separation in Mpc/h)</td></tr>
+<tr><td class="right">2</td><td class="left">&mu;</td></tr>
+<tr><td class="right">3</td><td class="left">&xi;<sup>s</sup>(s,&mu;)</td></tr>
+</tbody>
+</table>
+
+
+
 
 
 
@@ -643,7 +675,7 @@ Following rows:
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-05-09T17:03+0800</p>
+<p class="date">Date: 2013-05-23T15:28+0800</p>
 <p class="author">Author: Lile Wang</p>
 <p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
