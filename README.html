@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-05-23T15:28+0800"/>
+<meta name="generated" content="2014-04-09T13:54-0400"/>
 <meta name="author" content="Lile Wang"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -217,6 +217,27 @@ For CLPT, please refer to:
 </p>
 <p>
 <a href="http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C">http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C</a>
+</p>
+<p>
+Note: An error in X<sup>(12)</sup><sub>10</sub> is corrected in this version. It should be
+</p>
+<ol>
+<li>* ( kf.R<sub>val</sub>( 1, k ) - kf.R<sub>val</sub>( 2, k ) ) (correct)
+</li>
+</ol>
+
+
+<p>
+instead of 
+</p>
+<ol>
+<li>* ( kf.R<sub>val</sub>( 1, k ) + kf.R<sub>val</sub>( 2, k ) ) (wrong)
+</li>
+</ol>
+
+
+<p>
+in line 486 of CLPT/q<sub>depend</sub><sub>funcs</sub>.cpp .
 </p>
 
 </div>
@@ -675,7 +696,7 @@ All for biased tracers&hellip;
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-05-23T15:28+0800</p>
+<p class="date">Date: 2014-04-09T13:54-0400</p>
 <p class="author">Author: Lile Wang</p>
 <p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>

@@ -483,7 +483,7 @@ double q_func::X_12_10_intg( const double & q )
 	k = k_intg_buf[ i ];
 	jx = k * q;
 	kernel_val = 1. / 14.
-	    * ( 2. * ( kf.R_val( 1, k ) + kf.R_val( 2, k ) )
+	    * ( 2. * ( kf.R_val( 1, k ) - kf.R_val( 2, k ) )
 		+ 3. * kf.R_val( 1, k )
 		* sph_bessel_j( 0, jx )
 		- 3. * ( 3. * kf.R_val( 1, k )
