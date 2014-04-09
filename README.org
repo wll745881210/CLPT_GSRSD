@@ -1,0 +1,259 @@
+#+STARTUP: indent
+#+TITLE: README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)
+#+AUTHOR: Lile Wang
+#+EMAIL: wll9004@gmail.com
+#+LANGUAGE: en
+
+* Introduction
+
+This package contains two separated programs: CLPT and GSRSD. Those
+two programs are coded separately, but GSRSD uses the output of CLPT
+directly.
+
+** Compilation and dependencies
+
+CLPT and GSRSD are both written in standard C++ (with STL)--and
+nothing else. If you are working under Linux and have g++ and GNUMake
+in your computer, you can just get into each folder and type "make"
+respectively for the comilation.
+
+The makefiles are written by a human, so you should find it easy to
+modify them as needed.
+
+I named the output binary files as ".exe" files--the only purpose for
+this is for git to recogize them easily and clearly.
+
+* CLPT
+
+This program gives real-space statistics, including correlation
+functions and pairwise velocity statistics, coming from the CLPT.
+
+For CLPT, please refer to:
+
+http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C
+
+** Input
+
+*** Parameter file
+
+The CLPT code uses a parameter file to specify the parameters. There
+is an example of parameter file ("par.txt") in the CLPT folder. You
+can modify the parameter file (e.g. adjust the values or the sequence
+of the keys), but please leave the header "CORR\_FUNC" and "Init"
+intact.
+
+Some explanations:
+
+| Key             | Value                                                                               |
+|-----------------+-------------------------------------------------------------------------------------|
+| r\_max          | Maximum value of real-space separation that is calculated                           |
+| r\_min          | Minimum value of real-space separation                                              |
+| r\_bin\_num     | Number of data points between r_min and r_max                                       |
+| pow\_spec\_file | Path to the input file: Linear power spectrum                                       |
+| xi\_file        | Path to the output file: real-space \xi(r)                                          |
+| v12\_file       | Path to the output file: real-space pairwise infall velocity                        |
+| s12\_file       | Path to the output file: real-space pairwise velocity dispersion                    |
+| k\_file         | If specified, functions of k are read from file; if "none", they will be calculated |
+| q\_file         | Similar to k_file. Note: Functions of q depend on functions of k                    |
+
+The file for the velocity dispersions will be attached a suffix: "\_p"
+for the parallel component, and "\_v" for the perpandicular component.
+
+
+*** Linear power spectrum
+
+The CLPT program also needs a liear power spectrum as input, whose
+path should be specified in the parameter file.
+
+Definition of the file:
+
+| Column | Value                  |
+|--------+------------------------|
+|      1 | Wave number (in h/Mpc) |
+|      2 | Power [in (Mpc/h)^3]   |
+
+** Run!
+
+The name of the parameter file should be used as the parameter of
+command-line input. For example, if you are using Linux and your
+parameter file is named "par.txt", you may want to type the followings
+in the terminal:
+ 
+$ ./clpt.exe par.txt
+  
+** Output
+
+In our CLPT model, we use <F'> and <F"> as first- and second-order
+Lagrangian bias parameters. For a specific statistics A, we calculate
+the value of A for biased tracers as:
+
+A = A_0 + A_10 <F'> + A_01 <F"> + A_20 <F'>^2 + A_11 <F'><F"> + A_02 <F">^2
+
+In this section we will use this notation. 
+
+*** Real-space correlation function
+
+| Column | Value                               |
+|--------+-------------------------------------|
+|      1 | r (in Mpc/h)                        |
+|      2 | \xi_L (linear correlation function) |
+|      3 | \xi_0                               |
+|      4 | \xi_10                              |
+|      5 | \xi_01                              |
+|      6 | \xi_20                              |
+|      7 | \xi_11                              |
+|      8 | \xi_02                              |
+
+*** Real-space pairwise infall velocity.
+
+Veolicties are given as [v/(a.H(a).f_v)] (this gives the results a
+dimension of distance), where a is the scale factor, H(a) is the
+Hubble parameter and f_v is the growth factor.
+
+| Column | Value                                        |
+|--------+----------------------------------------------|
+|      1 | r (in Mpc/h)                                 |
+|      2 | v_12,_L (linear pairwise velocity, in Mpc/h) |
+|      3 | v_12,_0                                      |
+|      4 | v_12,_10                                     |
+|      5 | v_12,_01                                     |
+|      6 | v_12,_20                                     |
+|      7 | v_12,_11                                     |
+|      8 | v_12,_02                                     |
+
+*** Real-space pairwise velocity dispersion
+
+Suffix "\_p" for the parallel component, and "\_v" for the perpandicular
+component. Velocity dispersions are given as [sigma/(a.H(a).f_v)^2]
+
+| Column | Value                       |
+|--------+-----------------------------|
+|      1 | r (in Mpc/h)                |
+|      2 | \sigma_12,_0 (in Mpc^2/h^2) |
+|      3 | \sigma_12,_10               |
+|      4 | \sigma_12,_01               |
+|      5 | \sigma_12,_20               |
+
+Other components vanish at the desired (one-loop) order.
+
+* GSRSD
+
+This program gives redshift-space statistics, including Legendre
+expansion of correlation function and wedge statistics, coming from
+the Gaussian streaming model.
+
+For Gaussian streaming model, please refer to Beth & White (2011):
+
+http://adsabs.harvard.edu/abs/2011MNRAS.417.1913R
+
+For the "wedge" statistcis, you may find it in, such as,
+
+http://adsabs.harvard.edu/abs/2011MNRAS.414..596W
+
+** Input
+
+*** Parameter file
+
+The GSRSD code uses a parameter file to specify the parameters. There
+is an example of parameter file ("par.txt") in the GSRSD folder. You
+can modify the parameter file (e.g. adjust the values or the sequence
+of the keys), but please leave the header "CORR\_FUNC" and "Init"
+intact.
+
+Some explanations:
+
+| Key             | Value                                                                  |
+|-----------------+------------------------------------------------------------------------|
+| fb11b20         | <F'>                                                                   |
+| fb10b21         | <F">                                                                   |
+| fb11b21         | <F'><F">                                                               |
+| fb12b20         | <F'>^2                                                                 |
+| fb10b22         | <F">^2                                                                 |
+| sigma\_p\_100   | The value of \sigma_\parallel (in ) at 100 Mpc/h                       |
+| s\_max          | Maximum separation in the redshift-space                               |
+| s\_min          | Minimum separation                                                     |
+| s\_bin          | Number of data points between s_min and s_max                          |
+| wedge\_bin      | Number of data points for the "wedge" statistics                       |
+| y\_spanning     | The integration range of y (see Beth and White 2011)                   |
+| dy              | The integration step of y                                              |
+| f\_v            | Structure growth rate [d log(D) / d log(a)]                            |
+| xi\_file\_name  | Path to the input file: real-space \xi                                 |
+| v\_file\_name   | Path to the input file: real-space v_12                                |
+| sp\_file\_name  | Path to the input file: real-space velocity dispersion (parallel)      |
+| sv\_file\_name  | Path to the input file: real-space velocity dispersion (perpandicular) |
+| out\_file\_name | Path to the output file                                                |
+
+The wedge statistics will be given by "<out\_file\_name>\_wedge", 2-D
+plot by "<out\_file\_name>\_2d", and some appendices will be given in
+"<out\_file\_name>\_appendix".
+
+"fb1*b2*" are separately specified for the convenience of cross-correlation.
+
+** Run!
+
+Similar to the CLPT code... E.g.:
+
+$ ./xi\_stream.exe par.txt
+
+** Output
+
+*** <out\_file\_name>
+
+All for biased tracers...
+
+| Column | Value                                   |
+|--------+-----------------------------------------|
+|      1 | s (redshift-space separation, in Mpc/h) |
+|      2 | \xi^s_0 (monopole)                      |
+|      3 | \xi^s_2 (quadrupole)                    |
+|      4 | \xi^s_4 (hexadecapole)                  |
+
+*** <out\_file\_name>\_appendix
+
+All for biased tracers...
+
+| Column | Value                                                                                |
+|--------+--------------------------------------------------------------------------------------|
+|      1 | r (real-space separation, in Mpc/h)                                                  |
+|      2 | \xi_L(r) (linear real-space correlation)                                             |
+|      3 | \xi(r) (real-space correlation)                                                      |
+|      4 | v_L(r) (linear real-space pairwise infall velocity, in a.H(a).f_v )                  |
+|      5 | v(r) (real-space pairwise infall velocity )                                          |
+|      6 | \sigma_p(s) (real-space velocity dispersion: parallel component, in (a.H(a).f_v)^2 ) |
+|      7 | \sigma_v(s) (real-space velocity dispersion: perpandicular component)                |
+
+*** <out\_file\_name>\_wedge
+
+All for biased tracers...
+
+| Column    | Value                                  |
+|-----------+----------------------------------------|
+| 1         | s (redshift-space separation in Mpc/h) |
+| Following | "Wedges"                               |
+
+*** <out\_file\_name>\_2d
+
+All for biased tracers...
+
+
+| Column | Value                                  |
+|--------+----------------------------------------|
+|      1 | s (redshift-space separation in Mpc/h) |
+|      2 | \mu                                    |
+|      3 | \xi^s(s,\mu)                           |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

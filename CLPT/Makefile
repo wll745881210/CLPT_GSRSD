@@ -38,3 +38,5 @@ input.o : input.cpp input.h
 prog_bar.o : prog_bar.cpp prog_bar.h
 	$(CC) $(Option) -c -o prog_bar.o prog_bar.cpp
 
+clean:
+	rm *.o *~ clpt.exe
