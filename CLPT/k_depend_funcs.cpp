@@ -145,8 +145,8 @@ void k_func::get_Q_func(  )
     return;
 }
 
-double k_func::Q_kernel( int n,
-			 const double & r, const double & x )
+double k_func::Q_kernel
+( int n, const double & r, const double & x )
 {	
     if( fabs( r - 1 ) < nearly_0 )
 	switch( n )
@@ -225,8 +225,8 @@ double k_func::Q_kernel( int n,
     return 0.;
 }
 
-double k_func::Q_inner_integration( int n, const double & r,
-				    const double & k )
+double k_func::Q_inner_integration
+( int n, const double & r, const double & k )
 {
     double x_i( 0. );
     double y( 0. );
@@ -236,13 +236,15 @@ double k_func::Q_inner_integration( int n, const double & r,
     {
 	x_i = intg.gl_xi( i );
 	y = sqrt( 1. + pow( r, 2 ) - 2. * r * x_i ) * k;
-	intg.gl_read( i, Q_kernel( n, r, x_i ) * PL_val( y ) );
+	intg.gl_read( i, Q_kernel( n, r, x_i )
+		      * PL_val( y ) );
     }
 
     return intg.gl_result(  );	
 }
 
-double k_func::Q_outer_integration( int n, const double & k )
+double k_func::Q_outer_integration
+( int n, const double & k )
 {
     double r( 0. );
     double temp_kernel( 0. );
@@ -301,7 +303,8 @@ void k_func::get_R_func(  )
     return;
 }
 
-double k_func::R_inner_integration( int n, const double & r )
+double k_func::R_inner_integration
+( int n, const double & r )
 {
     if( r < nearly_0 )
 	return 0.;

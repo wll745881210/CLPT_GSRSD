@@ -27,8 +27,8 @@ void q_func::set_par( const q_func_init & arg )
 	load_k( arg.pow_spec_name, arg.k_file_name );
     else
 	load_all( arg.pow_spec_name,
-		  arg.k_file_name,
-		  arg.q_file_name );
+	    arg.k_file_name,
+	    arg.q_file_name );
     return;
 }
 
@@ -48,7 +48,7 @@ void q_func::cal_all( std::string pow_spec_name )
 }
 
 void q_func::load_k( std::string pow_spec_name,
-		     std::string k_file_name )
+    std::string k_file_name )
 {
     kf.load_PL( pow_spec_name );
     kf.load_k_func( k_file_name );
@@ -58,8 +58,8 @@ void q_func::load_k( std::string pow_spec_name,
 }
 
 void q_func::load_all( std::string pow_spec_name,
-		       std::string k_file_name,
-		       std::string q_file_name )
+    std::string k_file_name,
+    std::string q_file_name )
 {
     kf.load_PL( pow_spec_name );
     kf.load_k_func( k_file_name );
@@ -364,7 +364,7 @@ double q_func::X_11_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. ), PL( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	   // Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -372,7 +372,8 @@ double q_func::X_11_intg( const double & q )
 	PL = kf.PL_val( k );
 	jx = k * q;
 	kernel_val = PL * ( 2. / 3.
-			    - 2. * sph_bessel_j( 1, jx ) / jx );
+	    - 2. * sph_bessel_j( 1, jx )
+	    / jx );
 	intg.read( k, kernel_val );
     }
 
@@ -427,7 +428,7 @@ double q_func::Y_11_intg( const double & q )
 	PL = kf.PL_val( k );
 	jx = k * q;
 	kernel_val = PL * ( 6. * sph_bessel_j( 1, jx ) / jx
-			    - 2. * sph_bessel_j( 0, jx) );
+	    - 2. * sph_bessel_j( 0, jx) );
 	intg.read( k, kernel_val );
     }
 
@@ -487,8 +488,8 @@ double q_func::X_12_10_intg( const double & q )
 		+ 3. * kf.R_val( 1, k )
 		* sph_bessel_j( 0, jx )
 		- 3. * ( 3. * kf.R_val( 1, k )
-			 + 4. * kf.R_val( 2, k )
-			 + 2. * kf.Q_val( 5, k ) )
+		    + 4. * kf.R_val( 2, k )
+		    + 2. * kf.Q_val( 5, k ) )
 		* sph_bessel_j( 1, jx ) / jx );
 	intg.read( k, kernel_val );
     }
@@ -517,12 +518,12 @@ double q_func::Y_12_10_intg( const double & q )
 }
 
 double q_func::interp_val( const double & q, const int & i,
-			   const std::vector<double> & vec )
+    const std::vector<double> & vec )
 {
     if( i < 0 || i > int( q_buf.size(  ) - 2 ) )
 	return 0.;
     else if( ( q_buf[ i+1 ] - q_buf[ i ] ) / q_buf[ i ]
-	     < nearly_0 )
+	< nearly_0 )
 	return vec[ i ];
     else
 	return vec[ i ] + ( vec[ i+1 ] - vec[ i ] )

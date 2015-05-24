@@ -13,7 +13,7 @@
 
 integral::integral(  )
 {
-	clear(  );
+    clear(  );
 }
 
 integral::~integral(  )
@@ -23,14 +23,9 @@ integral::~integral(  )
 
 void integral::clear(  )
 {
-	x_buf[ 0 ] = -1e-16;
-	x_buf[ 1 ] = -1e-16;
-	y_buf[ 0 ] = -1e-16;
-	y_buf[ 1 ] = -1e-16;
-	intg_res = 0.;
-	counter = 0;
-
-	return;
+    x_buf.clear(  );
+    y_buf.clear(  );
+    return;
 }
 
 ////////////////////////////////////////////////////////////
@@ -38,28 +33,23 @@ void integral::clear(  )
 
 void integral::read( const double & x, const double & y )
 {
-	x_buf[ 0 ] = x_buf[ 1 ];
-	y_buf[ 0 ] = y_buf[ 1 ];
-	x_buf[ 1 ] = x;
-	y_buf[ 1 ] = y;
-
-	const double temp_res
-		= ( y_buf[ 1 ] + y_buf[ 0 ] ) * 0.5
-		* fabs( x_buf[ 1 ] - x_buf[ 0 ] );
-	
-	intg_res += temp_res;
-	
-	++ counter;
-	
-	return;
+    x_buf.push_back( x );
+    y_buf.push_back( y );
+    return;
 }
 
 ////////////////////////////////////////////////////////////
-// Feedback
+// Integrate--just in case that the x are not evenly spaced
 
 double integral::result(  )
 {
-	return intg_res;
+    double res( 0. );
+
+    for( unsigned i = 1; i < x_buf.size(  ); ++ i )
+    	res += 0.5 * ( x_buf.at( i ) - x_buf.at( i - 1 ) )
+    	           * ( y_buf.at( i ) + y_buf.at( i - 1 ) );
+    
+    return res;
 }
 
 ////////////////////////////////////////////////////////////
@@ -67,23 +57,23 @@ double integral::result(  )
 
 void integral::gl_clear(  )
 {
-	this->gl_intg_res = 0.;
-	return;
+    this->gl_intg_res = 0.;
+    return;
 }
 
 double integral::gl_xi( const int & i )
 {
-	return x[ i ];
+    return x[ i ];
 }
 
 void integral::gl_read( const int & i, const double & kernel )
 {
-	gl_intg_res += w[ i ] * kernel;	
-	return;
+    gl_intg_res += w[ i ] * kernel;	
+    return;
 }
 
 double integral::gl_result(  )
 {
-	return gl_intg_res;
+    return gl_intg_res;
 }
 

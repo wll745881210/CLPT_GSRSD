@@ -1,7 +1,9 @@
 CC = g++
 Option = -O3 -Wall
 
-Objs = main.o corr_func.o pair_v.o pair_s.o integral.o lu_decomp.o q_depend_funcs.o k_depend_funcs.o input.o prog_bar.o
+Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
+	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
+	input.o prog_bar.o
 
 Out_file = clpt.exe
 
