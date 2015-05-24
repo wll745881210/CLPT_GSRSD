@@ -7,6 +7,15 @@
 #include <cstdlib>
 
 ////////////////////////////////////////////////////////////
+// Static variables
+
+const double	q_func::nearly_0	     = 1.e-3;
+const double	q_func::nearly_inf	     = 2.e2;
+const double	q_func::pi		     = 3.141592654;
+const double	q_func::one_over_pi2	     = 0.050660592;
+const int	q_func::k_intg_points_multip = 3;
+
+////////////////////////////////////////////////////////////
 // Constructor, desctructor and initializer
 
 q_func::q_func(  )

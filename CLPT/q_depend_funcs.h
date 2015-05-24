@@ -66,7 +66,7 @@ private:
     ////////// Various functions //////////
 public:
     const std::vector<double> & qvec(  );
-private:						// Data
+private:    // Data
     std::map<double, int> q_index_buf;
     std::vector<double> q_buf;
     std::vector<double> k_intg_buf;
@@ -78,7 +78,7 @@ private:						// Data
     std::vector<double> X_11_buf, X_22_buf, X_13_buf;
     std::vector<double> Y_11_buf, Y_22_buf, Y_13_buf;
     std::vector<double> X_12_10_buf, Y_12_10_buf;
-private:						// Function
+private:    // Function
     void get_var_func(  );
     double xi_L_intg( const double & q );
     double V_112_1_intg( const double & q );
@@ -114,11 +114,9 @@ private:
 	
     ////////// Mathematical constants/func //////////
 private:
-    static const double nearly_0 = 1.e-3;
-    static const double nearly_inf = 2.e2;
-    static const double pi = 3.14159265358979323846;
-    static const double one_over_pi2 = 0.05066059182116889;
-    static const int k_intg_points_multip = 3;
+    static const double nearly_0, nearly_inf;
+    static const double pi, one_over_pi2;
+    static const int k_intg_points_multip;
     integral intg;
 };
 

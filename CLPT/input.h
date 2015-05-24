@@ -1,36 +1,50 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef INPUT_H_
+#define INPUT_H_
 
+#include <iostream>
 #include <fstream>
-#include <string>
+#include <sstream>
+#include <string>    
 #include <vector>
-#include "corr_func.h"
-#include "q_depend_funcs.h"
 
 class input
 {
 public:
-	input(  )
-		: fin( "par.txt" ), length( 0 )  {  };
-	input( const std::string & FILE_NAME )
-		: fin( FILE_NAME.c_str(  ) ), length( 0 ) {  };
-	~input(  ){  };
+    input(  );
+    input( const std::string & file_name );
+    ~input(  );
 
-	void read(  );
-	void get_init( q_func_init & q_arg,
-				   corr_func_init & c_arg,
-				   corr_func_init & v_arg,
-				   corr_func_init & s_arg  );
+    void read(  );
+    template <typename T, typename t>
+    void find_key( std::string key_name, T & val, t def_val );
 
 private:
-	std::ifstream fin;
-	std::vector<std::string> item_name;
-	std::vector<std::string> value;
-	int	length;
-	
-	void sort_item(  );
-	void get_general(  );
+    std::ifstream fin;
+    std::vector<std::string> item_name;
+    std::vector<std::string> value;
+    int length;
+    
+    void get_items(  );
 };
+
+template <typename T, typename t>
+void input::find_key( std::string key_name,
+                      T & val, t def_val )
+{
+    std::stringstream ss;
+    for( unsigned i = 0; i < item_name.size(  ); ++ i )
+        if( item_name[ i ].compare( key_name ) == 0 )
+        {
+            ss.str( value[ i ] );
+            ss >> val;
+            return;
+        }
+    std::cout << "Entry \"" << key_name << "\" not found; "
+	      << "Using default value: " << def_val
+	      << std::endl;
+    val = def_val;
+    return;
+}
 
 #endif
 

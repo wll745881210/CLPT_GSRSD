@@ -45,7 +45,6 @@ void pair_s::set_par( const corr_func_init & s_arg,
 void pair_s::M2( const double & r, const vec3 & y )
 {
     // Direction index; for testing currently.
-    const double r_vec[ 3 ]	 = { 0, 0, r };
     static const double rh[ 3 ]  = { 0, 0, 1 };
     static const double lh2[ 3 ] = { 0, 1, 0 };
     static const double lh1[ 3 ] = { 1, 0, 0 };
@@ -304,10 +303,7 @@ int pair_s::delta_k( const int & i, const int & j )
 
 void pair_s::s12( const double & r )
 {
-    double q( 0. );
-    double y( 0. );
-    double mu( 0. ), beta( 0. );
-    double temp_ker( 0. );
+    double y( 0. ), beta( 0. );
 
     integral intg_p[ num_bias_comp ];
     integral intg_v[ num_bias_comp ];
@@ -328,7 +324,6 @@ void pair_s::s12( const double & r )
 	for( int j = 0; j < intg_p[ 0 ].gl_num; ++ j )
 	{
 	    beta = intg_p[ 0 ].gl_xi( j );
-	    mu = ( r + y * beta ) / q;
 	    M2( r, y, beta );
 	    for( int k = 0; k < num_bias_comp; ++ k )
 	    {
@@ -341,9 +336,9 @@ void pair_s::s12( const double & r )
 	for( int k = 0; k < num_bias_comp; ++ k )
 	{
 	    intg_p[ k ].read( y, pow( y, 2 )
-		               * intg_p[ k ].gl_result(  ) );
+		              * intg_p[ k ].gl_result(  ) );
 	    intg_v[ k ].read( y, pow( y, 2 )
- 		               * intg_v[ k ].gl_result(  ) );
+ 		              * intg_v[ k ].gl_result(  ) );
 	}
 	y += dy;
     }

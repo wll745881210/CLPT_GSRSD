@@ -244,9 +244,7 @@ int pair_v::delta_k( const int & i, const int & j )
 
 void pair_v::v12( const double & r )
 {
-    double q( 0. );
-    double y( 0. );
-    double mu( 0. ), beta( 0. );
+    double y( 0. ), beta( 0. );
 
     integral intg[ num_bias_comp ];
     for( int i = 0; i < num_bias_comp; ++ i )
