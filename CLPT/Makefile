@@ -29,10 +29,12 @@ lu_decomp.o : lu_decomp.cpp lu_decomp.h
 	$(CC) $(Option) -c -o lu_decomp.o lu_decomp.cpp
 
 q_depend_funcs.o : q_depend_funcs.cpp q_depend_funcs.h
-	$(CC) $(Option) -c -o q_depend_funcs.o q_depend_funcs.cpp 
+	$(CC) $(Option) -c -o q_depend_funcs.o \
+	q_depend_funcs.cpp 
 
 k_depend_funcs.o : k_depend_funcs.cpp k_depend_funcs.h
-	$(CC) $(Option) -c -o k_depend_funcs.o k_depend_funcs.cpp
+	$(CC) $(Option) -c -o k_depend_funcs.o \
+	k_depend_funcs.cpp
 
 input.o : input.cpp input.h
 	$(CC) $(Option) -c -o input.o input.cpp

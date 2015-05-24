@@ -7,6 +7,14 @@
 #include <fstream>
 
 ////////////////////////////////////////////////////////////
+// Static variables
+
+const double	pair_s::nearly_0 = 1e-5;
+const double	pair_s::pi	 = 3.141592653589793;
+const double	pair_s::max_y    = 100;
+const int	pair_s::num_y    = 200;
+
+////////////////////////////////////////////////////////////
 // Constructor, destructor and initializer
 
 pair_s::pair_s(  )
@@ -35,7 +43,7 @@ void pair_s::set_par( const corr_func_init & s_arg,
 ////////////////////////////////////////////////////////////
 // Integration kernel
 
-void pair_s::M2( const double & r, const vec3 & q )
+void pair_s::M2( const double & r, const vec3 & y )
 {
     // Direction index; for testing currently.
     const double r_vec[ 3 ] = { 0, 0, r };
@@ -43,11 +51,13 @@ void pair_s::M2( const double & r, const vec3 & q )
     static const double lh2[ 3 ] = { 0, 1, 0 };
     static const double lh1[ 3 ] = { 1, 0, 0 };	
 	
-    const double q_vec[ 3 ] = { q.x, q.y, q.z };	
+    vec3 q = y;
+    q.z   += r;
     double q_norm = sqrt( q.x*q.x + q.y*q.y + q.z*q.z );
-    const double qh[ 3 ]
+    const double qh[ 3 ]	// "q hat", unit vector
 	= { q.x / q_norm, q.y / q_norm, q.z / q_norm };
-
+    const double y_vec[ 3 ] = { y.x, y.y, y.z };
+    
     q_func_vals qfv;
     qf->var_func( q_norm, qfv );
 	
@@ -79,9 +89,7 @@ void pair_s::M2( const double & r, const vec3 & q )
 	g[ i ] = 0.;
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
-	    g[ i ] += A_inv[ i ][ j ]
-		* ( q_vec[ j ] - r_vec[ j ] );
-
+	    g[ i ] += A_inv[ i ][ j ] * y_vec[ j ];
 
     double G[ 3 ][ 3 ];
     for( int i = 0; i < 3; ++ i )
@@ -254,7 +262,7 @@ void pair_s::M2( const double & r, const vec3 & q )
     // Gaussian-like factor
     temp_p = 0.;
     for( int i = 0; i < 3; ++ i )
-	temp_p += ( q_vec[ i ] - r_vec[ i ] ) * g[ i ];
+	temp_p += y_vec[ i ] * g[ i ];
 
     static const double two_pi_cube = 248.05021344239853;
     // ( 2 \pi )^3
@@ -270,14 +278,14 @@ void pair_s::M2( const double & r, const vec3 & q )
     return;
 }
 
-void pair_s::M2( const double & r, const double & q,
-    const double & mu )
+void pair_s::M2( const double & r, const double & y,
+                 const double & beta )
 {
-    vec3 qv;
-    qv.y = q * sqrt( 1 - mu*mu );
-    qv.x = 0;
-    qv.z = q * mu;
-    M2( r, qv );
+    vec3 y_vec;
+    y_vec.x = y * sqrt( 1 - beta * beta );
+    y_vec.y = 0;
+    y_vec.z = y * beta;
+    M2( r, y_vec );
     return;
 }
 
@@ -291,8 +299,6 @@ int pair_s::delta_k( const int & i, const int & j )
 
 void pair_s::s12( const double & r )
 {
-    const std::vector<double> & qv = qf->qvec(  );
-
     double q( 0. );
     double y( 0. );
     double mu( 0. ), beta( 0. );
@@ -305,11 +311,10 @@ void pair_s::s12( const double & r )
 	intg_p[ i ].clear(  );
 	intg_v[ i ].clear(  );
     }
-	
-    for( unsigned i = 0; i < qv.size(  ); ++ i )
+
+    static const double dy = max_y / num_y;
+    while( y < max_y )	
     {
-	y = qv[ i ];
-		
 	for( int k = 0; k < num_bias_comp; ++ k )
 	{
 	    intg_p[ k ].gl_clear(  );
@@ -318,31 +323,24 @@ void pair_s::s12( const double & r )
 	for( int j = 0; j < intg_p[ 0 ].gl_num; ++ j )
 	{
 	    beta = intg_p[ 0 ].gl_xi( j );
-	    q = sqrt( y*y + r*r + 2 * r * y * beta );
-	    if( q < min_q_for_integration
-		|| q > max_q_for_integration )
-		continue;
-			
 	    mu = ( r + y * beta ) / q;
-	    M2( r, q, mu );
+	    M2( r, y, beta );
 	    for( int k = 0; k < num_bias_comp; ++ k )
 	    {
-		temp_ker = bias_comp_inner_p[ k ];
-		intg_p[ k ].gl_read( j, temp_ker );
-		temp_ker = bias_comp_inner_v[ k ];
-		intg_v[ k ].gl_read( j, temp_ker );
+		intg_p[ k ].gl_read
+		    ( j, bias_comp_inner_p[ k ] );
+		intg_v[ k ].gl_read
+		    ( j, bias_comp_inner_v[ k ] );
 	    }
 	}
 	for( int k = 0; k < num_bias_comp; ++ k )
 	{
-	    temp_ker = pow( y, 2 )
-		* intg_p[ k ].gl_result(  );
-	    intg_p[ k ].read( y, temp_ker );
-
-	    temp_ker = pow( y, 2 )
-		* intg_v[ k ].gl_result(  );
-	    intg_v[ k ].read( y, temp_ker );
+	    intg_p[ k ].read( y, pow( y, 2 )
+		               * intg_p[ k ].gl_result(  ) );
+	    intg_v[ k ].read( y, pow( y, 2 )
+ 		               * intg_v[ k ].gl_result(  ) );
 	}
+	y += dy;
     }
 
     for( int k = 0; k < num_bias_comp; ++ k )
