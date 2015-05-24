@@ -13,7 +13,7 @@
 
 integral::integral(  )
 {
-	clear(  );
+    clear(  );
 }
 
 integral::~integral(  )
@@ -23,14 +23,14 @@ integral::~integral(  )
 
 void integral::clear(  )
 {
-	x_buf[ 0 ] = -1e-16;
-	x_buf[ 1 ] = -1e-16;
-	y_buf[ 0 ] = -1e-16;
-	y_buf[ 1 ] = -1e-16;
-	intg_res = 0.;
-	counter = 0;
+    x_buf[ 0 ] = -1e-16;
+    x_buf[ 1 ] = -1e-16;
+    y_buf[ 0 ] = -1e-16;
+    y_buf[ 1 ] = -1e-16;
+    intg_res = 0.;
+    counter = 0;
 
-	return;
+    return;
 }
 
 ////////////////////////////////////////////////////////////
@@ -38,20 +38,20 @@ void integral::clear(  )
 
 void integral::read( const double & x, const double & y )
 {
-	x_buf[ 0 ] = x_buf[ 1 ];
-	y_buf[ 0 ] = y_buf[ 1 ];
-	x_buf[ 1 ] = x;
-	y_buf[ 1 ] = y;
+    x_buf[ 0 ] = x_buf[ 1 ];
+    y_buf[ 0 ] = y_buf[ 1 ];
+    x_buf[ 1 ] = x;
+    y_buf[ 1 ] = y;
 
-	const double temp_res
-		= ( y_buf[ 1 ] + y_buf[ 0 ] ) * 0.5
-		* fabs( x_buf[ 1 ] - x_buf[ 0 ] );
+    const double temp_res
+	= ( y_buf[ 1 ] + y_buf[ 0 ] ) * 0.5
+	* fabs( x_buf[ 1 ] - x_buf[ 0 ] );
 	
-	intg_res += temp_res;
+    intg_res += temp_res;
 	
-	++ counter;
+    ++ counter;
 	
-	return;
+    return;
 }
 
 ////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ void integral::read( const double & x, const double & y )
 
 double integral::result(  )
 {
-	return intg_res;
+    return intg_res;
 }
 
 ////////////////////////////////////////////////////////////
@@ -67,27 +67,27 @@ double integral::result(  )
 
 void integral::gl_clear(  )
 {
-	this->gl_intg_res = 0.;
-	return;
+    this->gl_intg_res = 0.;
+    return;
 }
 
 double integral::gl_xi( const int & i )
 {
-	if( i > gl_num )
-		throw "Gauss-Legendre quadrature out of range";
+    if( i > gl_num )
+	throw "Gauss-Legendre quadrature out of range";
 	
-	i_current = i;
-	return x[ i ];
+    i_current = i;
+    return x[ i ];
 }
 
 void integral::gl_read( const double & kernel )
 {
-	gl_intg_res += w[ i_current ] * kernel;	
-	return;
+    gl_intg_res += w[ i_current ] * kernel;	
+    return;
 }
 
 double integral::gl_result(  )
 {
-	return gl_intg_res;
+    return gl_intg_res;
 }
 
