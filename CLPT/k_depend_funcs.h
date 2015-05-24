@@ -72,10 +72,8 @@ private:
 
     ////////// Mathematical constants/func //////////
 private:
-    static const double nearly_0 = 1.e-3;
-    static const double nearly_inf = 1.e2;
-    static const double pi = 3.14159265358979323846;
-    static const double one_over_pi2 = 0.05066059182116889;
+    static const double nearly_0, nearly_inf;
+    static const double pi, one_over_pi2;
     integral intg;
 };
 

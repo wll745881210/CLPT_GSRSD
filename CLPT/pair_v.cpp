@@ -29,11 +29,11 @@ pair_v::~pair_v(  )
 void pair_v::set_par( const corr_func_init & v_arg,
     const q_func & qf )
 {
-    this->r_max = v_arg.r_max;
-    this->r_min = v_arg.r_min;
-    this->r_bin_num = v_arg.r_bin_num;
+    this->r_max		= v_arg.r_max;
+    this->r_min		= v_arg.r_min;
+    this->r_bin_num	= v_arg.r_bin_num;
     this->v12_file_name = v_arg.file_name;
-    this->qf = ( q_func * )( & qf );
+    this->qf		= ( q_func * )( & qf );
 
     std::cout << std::endl;
     return;
@@ -244,8 +244,6 @@ int pair_v::delta_k( const int & i, const int & j )
 
 void pair_v::v12( const double & r )
 {
-    const std::vector<double> & qv = qf->qvec(  );
-
     double q( 0. );
     double y( 0. );
     double mu( 0. ), beta( 0. );
@@ -264,7 +262,7 @@ void pair_v::v12( const double & r )
 	    beta = intg[ 0 ].gl_xi( j );
 	    M1( r, y, beta );
 	    for( int k = 0; k < num_bias_comp; ++ k )
-		intg[ k ].gl_read( j, bias_comp_inner[ k ] );
+		intg[ k ].gl_read( j, bias_comp_inner[k] );
 	}
 	for( int k = 0; k < num_bias_comp; ++ k )
 	    intg[ k ].read( y, pow( y, 2 )

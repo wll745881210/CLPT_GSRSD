@@ -5,6 +5,14 @@
 #include <cmath>
 
 ////////////////////////////////////////////////////////////
+// Static variables
+
+const double	k_func::nearly_0     = 1.e-3;
+const double	k_func::nearly_inf   = 1.e2;
+const double	k_func::pi	     = 3.14159265359;
+const double	k_func::one_over_pi2 = 0.050660592;
+
+////////////////////////////////////////////////////////////
 // Constructor and desctructor
 
 k_func::k_func(  )
@@ -331,17 +339,24 @@ double k_func::R_inner_integration
     else
 	switch( n )
 	{
+	// This section looks messy:
+	// I was using Mathematica "CForm" to get the
+	// expressions...
 	case 1:
 	    return (4*r*(-3 + 11*pow(r,2) + 11*pow(r,4) 
 			 - 3*pow(r,6))
-		    - 3*pow(-1 + pow(r,2),4)*log(pow(-1 + r,2))
-		    + 3*pow(-1 + pow(r,2),4)*log(pow(1 + r,2)))
+		    - 3*pow(-1 + pow(r,2),4)
+		*log(pow(-1 + r,2))
+		    + 3*pow(-1 + pow(r,2),4)
+		*log(pow(1 + r,2)))
 		/(96.*pow(r,3));
 	case 2:
 	    return ((-1 + pow(r,2))
 		    *(-4*r*(3 - 2*pow(r,2) + 3*pow(r,4))
-		      - 3*pow(-1 + pow(r,2),2)*(1 + pow(r,2))*
-		      log(pow(-1 + r,2)) + 3*pow(-1 + pow(r,2),2)
+		      - 3*pow(-1 + pow(r,2),2)
+			*(1 + pow(r,2))*
+		      log(pow(-1 + r,2))
+			+ 3*pow(-1 + pow(r,2),2)
 		      *(1 + pow(r,2))*log(pow(1 + r,2))))
 		/(96.*pow(r,3));
 	default:

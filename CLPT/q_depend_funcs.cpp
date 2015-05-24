@@ -197,14 +197,15 @@ double q_func::xi_L_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. ), PL( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
 	k = k_intg_buf[ i ];
 	PL = kf.PL_val( k );
 	jx = k * q;
-	kernel_val = pow( k, 2 ) * PL * sph_bessel_j( 0, jx );
+	kernel_val = pow( k, 2 ) * PL
+	    * sph_bessel_j( 0, jx );
 	intg.read( k, kernel_val );
     }
 
@@ -215,7 +216,7 @@ double q_func::V_112_1_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -233,7 +234,7 @@ double q_func::V_112_3_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -251,14 +252,15 @@ double q_func::S_112_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
 	k = k_intg_buf[ i ];
 	jx = k * q;
 	kernel_val = 3. / 7. / k
-	    * ( 2. * kf.R_val( 1, k ) + 4. * kf.R_val( 2, k )
+	    * ( 2. * kf.R_val( 1, k )
+		+ 4. * kf.R_val( 2, k )
 		+ kf.Q_val( 1 ,k ) + 2. * kf.Q_val( 2, k ) )
 	    * sph_bessel_j( 2, jx ) / jx;
 	intg.read( k, kernel_val );
@@ -271,14 +273,15 @@ double q_func::T_112_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
 	k = k_intg_buf[ i ];
 	jx = k * q;
 	kernel_val = -3. / 7. / k
-	    * ( 2. * kf.R_val( 1, k ) + 4. * kf.R_val( 2, k )
+	    * ( 2. * kf.R_val( 1, k )
+		+ 4. * kf.R_val( 2, k )
 		+ kf.Q_val( 1, k ) + 2. * kf.Q_val( 2, k) )
 	    * sph_bessel_j( 3, jx );
 	intg.read( k, kernel_val );
@@ -291,14 +294,15 @@ double q_func::U_1_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. ), PL( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
 	k = k_intg_buf[ i ];
 	PL = kf.PL_val( k );
 	jx = k * q;
-	kernel_val = k * ( -1. ) * PL * sph_bessel_j( 1, jx );
+	kernel_val = k * ( -1. ) * PL
+	    * sph_bessel_j( 1, jx );
 	intg.read( k, kernel_val );
     }
 
@@ -309,7 +313,7 @@ double q_func::U_3_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -327,7 +331,7 @@ double q_func::U_2_20_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -345,7 +349,7 @@ double q_func::U_2_11_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -384,7 +388,7 @@ double q_func::X_22_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -402,7 +406,7 @@ double q_func::X_13_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -420,7 +424,7 @@ double q_func::Y_11_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. ), PL( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -439,7 +443,7 @@ double q_func::Y_22_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -458,7 +462,7 @@ double q_func::Y_13_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -477,7 +481,7 @@ double q_func::X_12_10_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
@@ -501,14 +505,15 @@ double q_func::Y_12_10_intg( const double & q )
 {
     intg.clear(  );
     double k( 0. );
-    double jx( 0. );			// Argument of sperical bessel
+    double jx( 0. );	// Argument of sperical bessel
     double kernel_val( 0. );
     for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
     {
 	k = k_intg_buf[ i ];
 	jx = k * q;
 	kernel_val = 3. / 14.
-	    * ( 3. * kf.R_val( 1, k ) + 4. * kf.R_val( 2, k )
+	    * ( 3. * kf.R_val( 1, k ) + 4.
+		* kf.R_val( 2, k )
 		+ 2. * kf.Q_val( 5, k ) )
 	    * sph_bessel_j( 2, jx );
 	intg.read( k, kernel_val );

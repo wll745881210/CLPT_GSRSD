@@ -29,11 +29,11 @@ pair_s::~pair_s(  )
 void pair_s::set_par( const corr_func_init & s_arg,
                       const q_func & qf )
 {
-    this->r_max = s_arg.r_max;
-    this->r_min = s_arg.r_min;
-    this->r_bin_num = s_arg.r_bin_num;
+    this->r_max		= s_arg.r_max;
+    this->r_min		= s_arg.r_min;
+    this->r_bin_num	= s_arg.r_bin_num;
     this->s12_file_name = s_arg.file_name;
-    this->qf = ( q_func * )( & qf );
+    this->qf		= ( q_func * )( & qf );
 
     std::cout << std::endl;
     return;
@@ -45,10 +45,10 @@ void pair_s::set_par( const corr_func_init & s_arg,
 void pair_s::M2( const double & r, const vec3 & y )
 {
     // Direction index; for testing currently.
-    const double r_vec[ 3 ] = { 0, 0, r };
+    const double r_vec[ 3 ]	 = { 0, 0, r };
     static const double rh[ 3 ]  = { 0, 0, 1 };
     static const double lh2[ 3 ] = { 0, 1, 0 };
-    static const double lh1[ 3 ] = { 1, 0, 0 };	
+    static const double lh1[ 3 ] = { 1, 0, 0 };
 	
     vec3 q = y;
     q.z   += r;
