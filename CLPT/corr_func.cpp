@@ -9,7 +9,6 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-const double	corr_func::nearly_0 = 1e-5;
 const double	corr_func::pi	    = 3.141592653589793;
 const double	corr_func::max_y    = 100;
 const int	corr_func::num_y    = 200;
@@ -231,8 +230,7 @@ void corr_func::xi( const double & r )
     for( int i = 0; i < num_bias_comp; ++ i )
 	intg[ i ].clear(  );
 
-
-    static const double dy = max_y / num_y;
+    const double dy = max_y / num_y;
     while( y < max_y )
     {
 	for( int k = 0; k < num_bias_comp; ++ k )

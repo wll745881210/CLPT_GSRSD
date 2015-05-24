@@ -36,7 +36,7 @@ private:    // Data
     q_func * qf;
     lu_decomp lu;
 private:    // Functions
-    void M( const double & r, const vec3 & y );
+    void M( const double & r, const vec3   & y );
     void M( const double & r, const double & y,
             const double & beta );
     int delta_k( const int & i, const int & j );
@@ -72,7 +72,6 @@ private:
     ////////// Mathematical const //////////
 private:
     static const double pi;
-    static const double nearly_0;
     static const double max_y;
     static const int    num_y;
 };

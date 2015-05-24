@@ -9,7 +9,6 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-const double	pair_s::nearly_0 = 1e-5;
 const double	pair_s::pi	 = 3.141592653589793;
 const double	pair_s::max_y    = 100;
 const int	pair_s::num_y    = 200;
@@ -28,7 +27,7 @@ pair_s::~pair_s(  )
 }
 
 void pair_s::set_par( const corr_func_init & s_arg,
-    const q_func & qf )
+                      const q_func & qf )
 {
     this->r_max = s_arg.r_max;
     this->r_min = s_arg.r_min;
@@ -126,17 +125,21 @@ void pair_s::M2( const double & r, const vec3 & y )
 
     double U_dot[ 3 ];
     for( int i = 0; i < 3; ++ i )
-	U_dot[ i ] = qh[ i ] * ( qfv.U_1 + 3. * qfv.U_3 );	
-
+	U_dot[ i ] = qh[ i ] * ( qfv.U_1 + 3. * qfv.U_3 );
+    
     double W_temp[ 3 ][ 3 ][ 3 ];
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
 	    for( int k = 0; k < 3; ++ k )
 		W_temp[ i ][ j ][ k ]
-		    = qfv.V_112_1 * qh[ i ] * delta_k( j, k )
-		    + qfv.V_112_1 * qh[ j ] * delta_k( k, i )
-		    + qfv.V_112_3 * qh[ k ] * delta_k( i, j )
-		    + qfv.T_112 * qh[ i ] * qh[ j ] * qh[ k ];
+		    = qfv.V_112_1 * qh[ i ]
+		      * delta_k( j, k )
+		    + qfv.V_112_1 * qh[ j ]
+		      * delta_k( k, i )
+		    + qfv.V_112_3 * qh[ k ]
+		      * delta_k( i, j )
+		    + qfv.T_112
+		      * qh[ i ] * qh[ j ] * qh[ k ];
 
     double W_ddot[ 3 ][ 3 ][ 3 ];
     for( int i = 0; i < 3; ++ i )
@@ -178,7 +181,7 @@ void pair_s::M2( const double & r, const vec3 & y )
 		for( int j = 0; j < 3; ++ j )
 		    temp[ n ][ m ]
 			-= A_dot[ i ][ n ] 
-			* A_dot[ j ][ m ] * G[ i ][ j ];
+			 * A_dot[ j ][ m ] * G[ i ][ j ];
     temp_p = 0.;
     temp_v = 0.;
     for( int n = 0; n < 3; ++ n )
@@ -202,8 +205,10 @@ void pair_s::M2( const double & r, const vec3 & y )
 	    for( int i = 0; i < 3; ++ i )
 	    {
 		temp[ n ][ m ] -= 2. *
-		    ( A_dot[ i ][ n ] * g[ i ] * U_dot[ m ]
-			+ A_dot[ i ][ m ] * g[ i ] * U_dot[ n ] );
+		    ( A_dot[ i ][ n ]
+			* g[ i ] * U_dot[ m ]
+		    + A_dot[ i ][ m ]
+			* g[ i ] * U_dot[ n ] );
 		temp[ n ][ m ] -= 2. *
 		    U[ i ] * g[ i ] * A_ddot[ n ][ m ];
 	    }
@@ -312,7 +317,7 @@ void pair_s::s12( const double & r )
 	intg_v[ i ].clear(  );
     }
 
-    static const double dy = max_y / num_y;
+    const double dy = max_y / num_y;
     while( y < max_y )	
     {
 	for( int k = 0; k < num_bias_comp; ++ k )
