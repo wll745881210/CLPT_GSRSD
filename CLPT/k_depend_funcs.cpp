@@ -72,12 +72,13 @@ void k_func::load_PL( std::string file_name )
     std::pair<double, int> k_idx;
     k_idx.first  = 1e-5;
     k_idx.second = 0;
-    
+
     while( !fin.eof(  ) )
     {
 	k_buf.push_back( k );
 	PL_buf.push_back( PL );
 	idx_map.insert( k_idx );
+	
 	fin >> k >> PL;
 	k_idx.first  = k;
 	k_idx.second = k_buf.size(  );
@@ -85,7 +86,7 @@ void k_func::load_PL( std::string file_name )
 	
     k_min = k_buf[ 0 ];
     k_max = k_buf[ k_buf.size(  ) - 1 ];
-
+    
     std::cout << "Linear power spectrum loaded from: "
 	      << file_name << std::endl;
     return;
@@ -139,15 +140,16 @@ void k_func::get_Q_func(  )
     std::cout << "Generating Q_n ( 1 to 8 )... "
 	      << std::flush;
     // pg.init( k_buf.size(  ) );
-#pragma omp parallel for private( i )
-    for( unsigned i = 0; i < k_buf.size(  ); ++ i )
+#pragma omp parallel for
+    for( int n = 1; n < 9; ++ n )
     {
 	// pg.show( i );
-	const double & k = k_buf[ i ];
-	for( int n = 1; n < 9; ++ n )
+	std::vector<double> & pn = *( p[ n ] );
+	for( unsigned i = 0; i < k_buf.size(  ); ++ i )
 	{
-	    const double Qn = Q_outer_integration( n, k );
-	    p[ n ]->push_back( Qn );
+	    const double & k = k_buf[ i ];
+	    const double  Qn = Q_outer_integration( n, k );
+	    pn.push_back( Qn );
 	}		
     }
 
@@ -297,14 +299,14 @@ void k_func::get_R_func(  )
 	      << std::flush;
     // pg.init( k_buf.size(  ) );
 
-#pragma omp parallel for private( i )
-    for( unsigned i = 0; i < k_buf.size(  ); ++ i )
+#pragma omp parallel for
+    for( int n = 1; n <= 2; ++ n )
     {
 	// pg.show( i );
-	const double & k = k_buf[ i ];
-	for( int n = 1; n <= 2; ++ n )
+	for( unsigned i = 0; i < k_buf.size(  ); ++ i )
 	{
-	    const double & Rn = R_outer_integration( n, k );
+	    const double & k = k_buf[ i ];
+	    const double Rn = R_outer_integration( n, k );
 	    p[ n ]->push_back( Rn );
 	}		
     }

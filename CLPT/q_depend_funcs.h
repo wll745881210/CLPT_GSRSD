@@ -105,6 +105,7 @@ public:
 
     ////////// Save and load //////////
 private:
+    void smooth( std::vector<double> * pv );
     void save_q_func( std::string file_name );
     void load_q_func( std::string file_name );
 

@@ -58,7 +58,7 @@ void q_func::cal_all( std::string pow_spec_name )
 }
 
 void q_func::load_k( std::string pow_spec_name,
-    std::string k_file_name )
+                     std::string k_file_name )
 {
     kf.load_PL( pow_spec_name );
     kf.load_k_func( k_file_name );
@@ -559,20 +559,17 @@ void q_func::var_func( const double & q, q_func_vals & res )
 
     res.V_112_1 = interp_val( q, i, V_112_1_buf );
     res.V_112_3 = interp_val( q, i, V_112_3_buf );
-    res.T_112 = interp_val( q, i, T_112_buf );
-
-    res.U_1 = interp_val( q, i, U_1_buf );
-    res.U_3 = interp_val( q, i, U_3_buf );
-    res.U_2_20 = interp_val( q, i, U_2_20_buf );
-    res.U_2_11 = interp_val( q, i, U_2_11_buf );
-
-    res.X_11 = interp_val( q, i, X_11_buf );
-    res.X_22 = interp_val( q, i, X_22_buf );
-    res.X_13 = interp_val( q, i, X_13_buf );
-    res.Y_11 = interp_val( q, i, Y_11_buf );
-    res.Y_22 = interp_val( q, i, Y_22_buf );
-    res.Y_13 = interp_val( q, i, Y_13_buf );
-
+    res.T_112	= interp_val( q, i, T_112_buf   );
+    res.U_1	= interp_val( q, i, U_1_buf     );
+    res.U_3	= interp_val( q, i, U_3_buf     );
+    res.U_2_20	= interp_val( q, i, U_2_20_buf  );
+    res.U_2_11	= interp_val( q, i, U_2_11_buf  );
+    res.X_11	= interp_val( q, i, X_11_buf    );
+    res.X_22	= interp_val( q, i, X_22_buf    );
+    res.X_13	= interp_val( q, i, X_13_buf    );
+    res.Y_11	= interp_val( q, i, Y_11_buf    );
+    res.Y_22	= interp_val( q, i, Y_22_buf    );
+    res.Y_13	= interp_val( q, i, Y_13_buf    );
     res.X_12_10 = interp_val( q, i, X_12_10_buf );
     res.Y_12_10 = interp_val( q, i, Y_12_10_buf );
 
@@ -580,7 +577,29 @@ void q_func::var_func( const double & q, q_func_vals & res )
 }
 
 ////////////////////////////////////////////////////////////
-// Test output
+// Save/load
+
+void q_func::smooth( dvec * pv )
+{
+    static const int width = 3;
+    const int l = pv->size(  );
+    dvec tmp( l, 0. );
+    pv->swap( tmp );
+
+    const double dh = ( double ) ( 1. / ( 2. * width+1. ) );
+
+    for( int i = width; i < l - width; ++ i )
+	for( int j = -width; j <= width; ++ j )
+	    pv->at( i ) += tmp[ i + j ] * dh;
+    
+    for( unsigned i = 0; i < width; ++ i )
+    {
+	pv->at( i         ) = tmp.at( i         );
+	pv->at( l - i - 1 ) = tmp.at( l - i - 1 );
+    }
+
+    return;
+}
 
 void q_func::save_q_func( std::string file_name )
 {
