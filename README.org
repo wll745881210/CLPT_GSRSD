@@ -53,11 +53,15 @@ http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C
 
 Note: An error in X^(12)_10 is corrected in this version. It should be
 
-2. * ( kf.R_val( 1, k ) - kf.R_val( 2, k ) ) (correct)
+2. * ( kf.R_val( 1, k ) - kf.R_val( 2, k ) ) 
+
+(correct)
 
 instead of 
 
-2. * ( kf.R_val( 1, k ) + kf.R_val( 2, k ) ) (wrong)
+2. * ( kf.R_val( 1, k ) + kf.R_val( 2, k ) )
+
+ (wrong)
 
 in line 486 of CLPT/q_depend_funcs.cpp .
 

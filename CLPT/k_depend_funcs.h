@@ -24,7 +24,7 @@ private:    // Data
     std::map<double, int> idx_map;
 private:    // Function
     double interp( const double & k,
-	const std::vector<double> & vec );
+	           const std::vector<double> & vec );
 
     ////////// Linear power spectrum //////////
 public:
@@ -73,8 +73,7 @@ private:
     ////////// Mathematical constants/func //////////
 private:
     static const double nearly_0, nearly_inf;
-    static const double pi, one_over_pi2;
-    integral intg;
+    static const double pi,       one_over_pi2;
 };
 
 

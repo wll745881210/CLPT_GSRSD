@@ -47,4 +47,3 @@ void input::find_key( std::string key_name,
 }
 
 #endif
-

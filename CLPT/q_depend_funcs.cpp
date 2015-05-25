@@ -15,6 +15,7 @@ const double	q_func::pi		     = 3.141592654;
 const double	q_func::one_over_pi2	     = 0.050660592;
 const int	q_func::k_intg_points_multip = 3;
 
+
 ////////////////////////////////////////////////////////////
 // Constructor, desctructor and initializer
 
@@ -50,8 +51,8 @@ void q_func::cal_all( std::string pow_spec_name )
     kf.load_PL( pow_spec_name );
     kf.get_Q_func(  );
     kf.get_R_func(  );
-    get_var_func(  );
     kf.save_k_func( "../data/k_func.txt" );
+    get_var_func(  );
     save_q_func( "../data/q_func.txt" );
     return;
 }

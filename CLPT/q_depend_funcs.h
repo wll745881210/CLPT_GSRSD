@@ -45,12 +45,12 @@ public:
 
     ////////// Do all preparations //////////
 private:
-    void cal_all( std::string pow_spec_name );
-    void load_k( std::string pow_spec_name,
-	std::string k_file_name );
+    void cal_all ( std::string pow_spec_name );
+    void load_k  ( std::string pow_spec_name,
+	           std::string k_file_name );
     void load_all( std::string pow_spec_name,
-	std::string k_file_name,
-	std::string q_file_name );
+	           std::string k_file_name,
+	           std::string q_file_name );
 
     ////////// Functions of k //////////
 public:
@@ -72,34 +72,34 @@ private:    // Data
     std::vector<double> k_intg_buf;
     std::vector<double> xi_L_buf;
     std::vector<double> V_112_1_buf, V_112_3_buf;
-    std::vector<double> S_112_buf, T_112_buf;
-    std::vector<double> U_1_buf, U_3_buf;
-    std::vector<double> U_2_20_buf, U_2_11_buf;
-    std::vector<double> X_11_buf, X_22_buf, X_13_buf;
-    std::vector<double> Y_11_buf, Y_22_buf, Y_13_buf;
+    std::vector<double> S_112_buf,   T_112_buf;
+    std::vector<double> U_1_buf,     U_3_buf;
+    std::vector<double> U_2_20_buf,  U_2_11_buf;
+    std::vector<double> X_11_buf,    X_22_buf,    X_13_buf;
+    std::vector<double> Y_11_buf,    Y_22_buf,    Y_13_buf;
     std::vector<double> X_12_10_buf, Y_12_10_buf;
 private:    // Function
     void get_var_func(  );
-    double xi_L_intg( const double & q );
+    double xi_L_intg   ( const double & q );
     double V_112_1_intg( const double & q );
     double V_112_3_intg( const double & q );
-    double S_112_intg( const double & q );
-    double T_112_intg( const double & q );
-    double U_1_intg( const double & q );
-    double U_3_intg( const double & q );
-    double U_2_20_intg( const double & q );
-    double U_2_11_intg( const double & q );
-    double X_11_intg( const double & q );
-    double X_22_intg( const double & q );
-    double X_13_intg( const double & q );
-    double Y_11_intg( const double & q );
-    double Y_22_intg( const double & q );
-    double Y_13_intg( const double & q );
+    double S_112_intg  ( const double & q );
+    double T_112_intg  ( const double & q );
+    double U_1_intg    ( const double & q );
+    double U_3_intg    ( const double & q );
+    double U_2_20_intg ( const double & q );
+    double U_2_11_intg ( const double & q );
+    double X_11_intg   ( const double & q );
+    double X_22_intg   ( const double & q );
+    double X_13_intg   ( const double & q );
+    double Y_11_intg   ( const double & q );
+    double Y_22_intg   ( const double & q );
+    double Y_13_intg   ( const double & q );
     double X_12_10_intg( const double & q );
     double Y_12_10_intg( const double & q );
     // Linear interpolation 
     double interp_val( const double & q, const int & i,
-	const std::vector<double> & vec );
+                       const std::vector<double> & vec );
 public:
     void var_func( const double & q, q_func_vals & res );
 
@@ -115,10 +115,9 @@ private:
     ////////// Mathematical constants/func //////////
 private:
     static const double nearly_0, nearly_inf;
-    static const double pi, one_over_pi2;
-    static const int k_intg_points_multip;
+    static const double pi,       one_over_pi2;
+    static const int    k_intg_points_multip;
     integral intg;
 };
 
 #endif
-

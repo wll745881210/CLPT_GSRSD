@@ -45,7 +45,7 @@ void pair_s::set_par( const corr_func_init & s_arg,
 void pair_s::M2( const double & r, const vec3 & y )
 {
     // Direction index; for testing currently.
-    static const double rh[ 3 ]  = { 0, 0, 1 };
+    static const double rh [ 3 ] = { 0, 0, 1 };
     static const double lh2[ 3 ] = { 0, 1, 0 };
     static const double lh1[ 3 ] = { 1, 0, 0 };
 	

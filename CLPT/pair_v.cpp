@@ -27,7 +27,7 @@ pair_v::~pair_v(  )
 }
 
 void pair_v::set_par( const corr_func_init & v_arg,
-    const q_func & qf )
+                      const q_func & qf )
 {
     this->r_max		= v_arg.r_max;
     this->r_min		= v_arg.r_min;

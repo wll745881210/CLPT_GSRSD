@@ -72,13 +72,14 @@ void k_func::load_PL( std::string file_name )
     std::pair<double, int> k_idx;
     k_idx.first  = 1e-5;
     k_idx.second = 0;
+    
     while( !fin.eof(  ) )
     {
 	k_buf.push_back( k );
 	PL_buf.push_back( PL );
 	idx_map.insert( k_idx );
 	fin >> k >> PL;
-	k_idx.first = k;
+	k_idx.first  = k;
 	k_idx.second = k_buf.size(  );
     }
 	
@@ -135,21 +136,22 @@ void k_func::get_Q_func(  )
     for( int i = 0; i < 9; ++ i )
 	p[ i ]->clear(  );
 
-    std::cout << "Generate Q_n ( 1 to 8 ): ";
-    std::cout.flush(  );
-    pg.init( k_buf.size(  ) );
-    double k( 0. );
-    double Qn_temp( 0. );
+    std::cout << "Generating Q_n ( 1 to 8 )... "
+	      << std::flush;
+    // pg.init( k_buf.size(  ) );
+#pragma omp parallel for private( i )
     for( unsigned i = 0; i < k_buf.size(  ); ++ i )
     {
-	pg.show( i );
-	k = k_buf[ i ];
+	// pg.show( i );
+	const double & k = k_buf[ i ];
 	for( int n = 1; n < 9; ++ n )
 	{
-	    Qn_temp = Q_outer_integration( n, k );
-	    p[ n ]->push_back( Qn_temp );
+	    const double Qn = Q_outer_integration( n, k );
+	    p[ n ]->push_back( Qn );
 	}		
     }
+
+    std::cout << "Done." << std::endl;
     return;
 }
 
@@ -236,16 +238,15 @@ double k_func::Q_kernel
 double k_func::Q_inner_integration
 ( int n, const double & r, const double & k )
 {
-    double x_i( 0. );
-    double y( 0. );
-
+    integral intg;
     intg.gl_clear(  );
     for( int i = 0; i < intg.gl_num; ++ i )
     {
-	x_i = intg.gl_xi( i );
-	y = sqrt( 1. + pow( r, 2 ) - 2. * r * x_i ) * k;
+	const double x_i = intg.gl_xi( i );
+	const double y   = sqrt( 1. + pow( r, 2 )
+	                         - 2. * r * x_i ) * k;
 	intg.gl_read( i, Q_kernel( n, r, x_i )
-		      * PL_val( y ) );
+	                 * PL_val( y ) );
     }
 
     return intg.gl_result(  );	
@@ -254,16 +255,14 @@ double k_func::Q_inner_integration
 double k_func::Q_outer_integration
 ( int n, const double & k )
 {
-    double r( 0. );
-    double temp_kernel( 0. );
-
+    integral intg;
     intg.clear(  );
     for( unsigned i = 0; i < k_buf.size(  ); ++ i )
     {
-	r = k_buf[ i ] / k;
-	temp_kernel = PL_buf[ i ]
+	const double r      = k_buf[ i ] / k;
+	const double kernel = PL_buf[ i ]
 	    * Q_inner_integration( n, r, k );
-	intg.read( r, temp_kernel );
+	intg.read( r, kernel );
     }
 	
     static const double temp_coef = 0.025330295910584444;
@@ -294,20 +293,24 @@ void k_func::get_R_func(  )
     for( int i = 0; i < 3; ++ i )
 	p[ i ]->clear(  );
 
-    std::cout << "Generate R_n ( 1 to 2 ): ";
-    pg.init( k_buf.size(  ) );
-    double k( 0. );
-    double Rn_temp( 0. );
+    std::cout << "Generating R_n ( 1 to 2 )... "
+	      << std::flush;
+    // pg.init( k_buf.size(  ) );
+
+#pragma omp parallel for private( i )
     for( unsigned i = 0; i < k_buf.size(  ); ++ i )
     {
-	pg.show( i );
-	k = k_buf[ i ];
+	// pg.show( i );
+	const double & k = k_buf[ i ];
 	for( int n = 1; n <= 2; ++ n )
 	{
-	    Rn_temp = R_outer_integration( n, k );
-	    p[ n ]->push_back( Rn_temp );
+	    const double & Rn = R_outer_integration( n, k );
+	    p[ n ]->push_back( Rn );
 	}		
     }
+
+    std::cout << "Done." << std::endl;
+    
     return;
 }
 
@@ -365,18 +368,17 @@ double k_func::R_inner_integration
     return 0.;
 }
 
-double k_func::R_outer_integration( int n, const double & k )
+double k_func::R_outer_integration
+( int n, const double & k )
 {
-    double r( 0. );
-    double temp_kernel( 0. );
-
+    integral intg;
     intg.clear(  );
     for( unsigned i = 0; i < k_buf.size(  ); ++ i )
     {
-	r = k_buf[ i ] / k;
-	temp_kernel = R_inner_integration( n, r )
-	    * PL_buf[ i ];
-	intg.read( r, temp_kernel );
+	const double r = k_buf[ i ] / k;
+	const double kernel = PL_buf[ i ]
+	    * R_inner_integration( n, r );
+	intg.read( r, kernel );
     }
 
     static const double temp_coef = 0.025330295910584444;
