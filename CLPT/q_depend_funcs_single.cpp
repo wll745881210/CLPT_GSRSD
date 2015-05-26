@@ -1,5 +1,5 @@
-#include "q_depend_funcs.h"
-#include "prog_bar.h"
+#include "q_depend_funcs_single.h"
+#include "integral.h"
 #include <iostream>
 #include <cmath>
 #include <map>
@@ -10,7 +10,9 @@
 std::vector<double>   q_func_single::qvec;
 std::vector<double>   q_func_single::kvec;
 std::map<double, int> q_func_single::q_idx_buf;
-int q_func_single::idx_current = 0;
+
+int    q_func_single::idx_current( 0. );
+double q_func_single::q_current  ( 0. );
 
 ////////////////////////////////////////////////////////////
 // Constructor/destructor
@@ -27,7 +29,10 @@ q_func_single::~q_func_single(  )
 }
 
 ////////////////////////////////////////////////////////////
-// Integration kernel is virtual
+// Integration kernel is purely virtual:
+// virtual double q_func_single::kernel
+// ( const double & k, const double & jx,
+//   const k_func & kf ) = 0;
 
 ////////////////////////////////////////////////////////////
 // Integrator
@@ -35,6 +40,7 @@ q_func_single::~q_func_single(  )
 double q_func_single::sph_bessel_j
 ( const int & n, const double & x )
 {
+    static const double nearly_0 = 1.e-3;
     if( fabs( x ) < nearly_0 )
 	switch( n )
 	{
@@ -70,9 +76,9 @@ double q_func_single::sph_bessel_j
 double q_func_single::integrate_single( const double & q )
 {
     integral intg;
-    for( unsigned i = 0; i < k_intg_buf.size(  ); ++ i )
+    for( unsigned i = 0; i < kvec.size(  ); ++ i )
     {
-	const double & k = k_intg_buf[ i ];
+	const double & k = kvec[ i ];
 	const double  jx = k * q; // Argument of j_n( x )
 	intg.read( k, kernel( k, jx, * p_kf ) );
     }
@@ -108,7 +114,7 @@ void q_func_single::set_qvec
     for( unsigned i = 0; i < q_src.size(  ); ++ i )
     {
 	const double & q = q_src[ i ];
-	const std::pair<double, int> idx_pair = ( q, i );
+	const std::pair<double, int> idx_pair( q, i );
 	q_idx_buf.insert( idx_pair );
 	qvec.push_back( q );
     }
@@ -120,34 +126,32 @@ const std::vector<double> & q_func_single::get_qvec(  )
     return qvec;
 }
 
-void q_func_single::set_valvec
-( const std::vector<double> & val_src )
+double & q_func_single::qvec_at( const int & i )
 {
-    this->val = val_src;
-    return;
+    return qvec[ i ];
 }
 
 ////////////////////////////////////////////////////////////
 // Interpolation
 
-int get_idx( const double & q )
+void q_func_single::eval_all_idx( const double & q )
 {
     std::map<double, int>::iterator p
 	= q_idx_buf.lower_bound( q );
     if( p != q_idx_buf.begin(  ) )
 	-- p;
-    return p->second;
-}
-
-void q_func_single::eval_all_idx( const double & q )
-{
-    idx_current = get_idx( q );
+    idx_current = p->second;
+    q_current   = q;
     return;
 }
 
-double q_func_single::val(  )
+double q_func_single::get_val(  )
 {
-    const int i = idx_current;
+    static const double nearly_0 = 1.e-3;
+    
+    const int    & i = idx_current;
+    const double & q = q_current;
+    
     if( i < 0 || i > int( qvec.size(  ) - 2 ) )
 	return 0.;
     else if( ( qvec[ i + 1 ] - qvec[ i ] ) / qvec[ i ]

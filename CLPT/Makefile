@@ -1,7 +1,11 @@
-CC = g++-4.9
-Option = -O3 -Wall -fopenmp
+CC = g++
+Option = -O3 -Wall
 
-Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
+# Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
+# 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
+# 	input.o prog_bar.o
+
+Objs = main.o integral.o q_depend_funcs_single.o \
 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
 	input.o prog_bar.o
 
@@ -13,20 +17,25 @@ main : $(Objs)
 main.o : main.cpp
 	$(CC) $(Option) -c -o main.o main.cpp
 
-corr_func.o : corr_func.cpp corr_func.h
-	$(CC) $(Option) -c -o corr_func.o corr_func.cpp
+# corr_func.o : corr_func.cpp corr_func.h
+# 	$(CC) $(Option) -c -o corr_func.o corr_func.cpp
 
-pair_v.o : pair_v.cpp pair_v.h
-	$(CC) $(Option) -c -o pair_v.o pair_v.cpp
+# pair_v.o : pair_v.cpp pair_v.h
+# 	$(CC) $(Option) -c -o pair_v.o pair_v.cpp
 
-pair_s.o : pair_s.cpp pair_s.h
-	$(CC) $(Option) -c -o pair_s.o pair_s.cpp
+# pair_s.o : pair_s.cpp pair_s.h
+# 	$(CC) $(Option) -c -o pair_s.o pair_s.cpp
 
 integral.o : integral.cpp integral.h
 	$(CC) $(Option) -c -o integral.o integral.cpp
 
 lu_decomp.o : lu_decomp.cpp lu_decomp.h
 	$(CC) $(Option) -c -o lu_decomp.o lu_decomp.cpp
+
+q_depend_funcs_single.o : \
+	q_depend_funcs_single.cpp q_depend_funcs_single.h
+	$(CC) $(Option) -c -o q_depend_funcs_single.o \
+	q_depend_funcs_single.cpp 
 
 q_depend_funcs.o : q_depend_funcs.cpp q_depend_funcs.h
 	$(CC) $(Option) -c -o q_depend_funcs.o \

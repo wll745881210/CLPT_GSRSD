@@ -28,12 +28,12 @@ private:    // Data
     std::map<double, int> idx_map;
 private:    // Function
     double interp( const double & k,
-	           const std::vector<double> & vec );
+	           const std::vector<double> & vec ) const;
 
     ////////// Linear power spectrum //////////
 public:
     void load_PL( std::string file_name );
-    double PL_val( const double & k );
+    double PL_val( const double & k ) const;
     const std::vector<double> & kvec(  );
 private:    // Data
     double k_min, k_max;
@@ -42,7 +42,7 @@ private:    // Data
 	
     ////////// Q functions //////////
 public:
-    double Q_val( const int n, const double & k );
+    double Q_val( const int n, const double & k ) const;
     void get_Q_func(  );
 private:    // Data
     std::vector<double> Q_buf_1, Q_buf_2, Q_buf_3;
@@ -57,7 +57,7 @@ private:    // Function
 
     ////////// R functions //////////
 public:
-    double R_val( const int n, const double & k );
+    double R_val( const int n, const double & k ) const;
     void get_R_func(  );
 private:    // Data
     std::vector<double> R_buf_1, R_buf_2;

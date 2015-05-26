@@ -2,9 +2,9 @@
 #include <string>
 
 #include "q_depend_funcs.h"
-#include "corr_func.h"
-#include "pair_v.h"
-#include "pair_s.h"
+// #include "corr_func.h"
+// #include "pair_v.h"
+// #include "pair_s.h"
 #include "input.h"
 
 int main( int argn, char * argv[  ] )
@@ -28,35 +28,35 @@ int main( int argn, char * argv[  ] )
 	in.find_key( "q_file", q_arg.q_file_name, "none" );
 	in.find_key( "pow_spec_file",
                      q_arg.pow_spec_name, "none" );
-	p_qf = q_func::get_instance(  );
+	q_func * p_qf = q_func::get_instance(  );
 	p_qf->set_par( q_arg );
 
-	corr_func_init c_arg, v_arg, s_arg;
-	in.find_key( "r_max",     c_arg.r_max,     130 );
-	in.find_key( "r_min",     c_arg.r_min,     1   );
-	in.find_key( "r_bin_num", c_arg.r_bin_num, 80  );
+	// corr_func_init c_arg, v_arg, s_arg;
+	// in.find_key( "r_max",     c_arg.r_max,     130 );
+	// in.find_key( "r_min",     c_arg.r_min,     1   );
+	// in.find_key( "r_bin_num", c_arg.r_bin_num, 80  );
 
-	v_arg = c_arg;
-	s_arg = c_arg;
+	// v_arg = c_arg;
+	// s_arg = c_arg;
 	
-	in.find_key( "xi_file",  c_arg.file_name, "xi"  );
-	in.find_key( "v12_file", v_arg.file_name, "v12" );
-	in.find_key( "s12_file", s_arg.file_name, "s12" );
+	// in.find_key( "xi_file",  c_arg.file_name, "xi"  );
+	// in.find_key( "v12_file", v_arg.file_name, "v12" );
+	// in.find_key( "s12_file", s_arg.file_name, "s12" );
 		
-	corr_func xi;
-	xi.set_par( c_arg, qf );
-	xi.get_xi(  );
-	xi.output(  );
+	// corr_func xi;
+	// xi.set_par( c_arg, * p_qf );
+	// xi.get_xi(  );
+	// xi.output(  );
 
-	pair_v v12;
-	v12.set_par( v_arg, qf );
-	v12.get_v12(  );
-	v12.output(  );
+	// pair_v v12;
+	// v12.set_par( v_arg, * p_qf );
+	// v12.get_v12(  );
+	// v12.output(  );
 
-	pair_s s12;
-	s12.set_par( s_arg, qf );
-	s12.get_s12(  );
-	s12.output(  );
+	// pair_s s12;
+	// s12.set_par( s_arg, * p_qf );
+	// s12.get_s12(  );
+	// s12.output(  );
 
     }
     catch( const char * err )

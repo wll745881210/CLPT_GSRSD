@@ -44,10 +44,11 @@ void k_func::del_instance(  )
 ////////////////////////////////////////////////////////////
 // Interpolation
 
-double k_func::interp( const double & k,
-		       const std::vector<double> & vec )
+double k_func::interp
+( const double & k, const std::vector<double> & vec ) const
 {
-    itr_idx_map p = idx_map.lower_bound( k );
+    std::map<double, int>::const_iterator p
+	= idx_map.lower_bound( k );
     if( p != idx_map.begin(  ) )
 	-- p;
 	
@@ -108,7 +109,7 @@ void k_func::load_PL( std::string file_name )
     return;
 }
 
-double k_func::PL_val( const double & k )
+double k_func::PL_val( const double & k ) const
 {
     if( k < k_min || k > k_max )
 	return 0.;
@@ -118,7 +119,7 @@ double k_func::PL_val( const double & k )
 ////////////////////////////////////////////////////////////
 // Q functions
 
-double k_func::Q_val( const int n, const double & k )
+double k_func::Q_val( const int n, const double & k ) const
 {
     switch( n )
     {
@@ -291,7 +292,7 @@ double k_func::Q_outer_integration
 ////////////////////////////////////////////////////////////
 // R functions
 
-double k_func::R_val( const int n, const double & k )
+double k_func::R_val( const int n, const double & k ) const
 {
     switch( n )
     {

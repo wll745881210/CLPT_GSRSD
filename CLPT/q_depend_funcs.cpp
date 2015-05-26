@@ -1,3 +1,4 @@
+#include "q_depend_funcs_single.h"
 #include "q_depend_funcs.h"
 #include "prog_bar.h"
 #include <iostream>
@@ -9,9 +10,10 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-const double	q_func::nearly_0	     = 1.e-3;
-const double	q_func::nearly_inf	     = 2.e2;
-const int	q_func::k_intg_points_multip = 3;
+const double q_func::nearly_0             ( 1.e-3 );
+const double q_func::nearly_inf           ( 2.e2  );
+const int    q_func::k_intg_points_multip ( 3     );
+q_func *     q_func::singleton            ( NULL  );
 
 ////////////////////////////////////////////////////////////
 // Constructor, desctructor and initializer
@@ -23,9 +25,23 @@ q_func::q_func(  )
 
 q_func::~q_func(  )
 {
-    for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
-	delete q_func_vec[ i ];
+    // for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
+    // 	delete q_func_vec[ i ];
 
+    return;
+}
+
+q_func * q_func::get_instance(  )
+{
+    if( singleton == NULL )
+	singleton = new q_func;
+    return singleton;
+}
+
+void q_func::del_instance(  )
+{
+    delete singleton;
+    singleton = NULL;
     return;
 }
 
@@ -53,7 +69,7 @@ void q_func::cal_all( std::string pow_spec_name )
     p_kf->get_Q_func(  );
     p_kf->get_R_func(  );
     p_kf->save_k_func( "../data/k_func.txt" );
-    get_var_func(  );
+    get_func_val(  );
     save_q_func( "../data/q_func.txt" );
     return;
 }
@@ -64,7 +80,7 @@ void q_func::load_k( std::string pow_spec_name,
     k_func * p_kf = k_func::get_instance(  );
     p_kf->load_PL    ( pow_spec_name );
     p_kf->load_k_func( k_file_name );
-    get_var_func(  );
+    get_func_val(  );
     save_q_func( "../data/q_func.txt" );
 
     throw "Q_func test run finished.";
@@ -88,18 +104,18 @@ void q_func::load_all( std::string pow_spec_name,
 
 void q_func::set_func(  )
 {
-    class xi_L : q_func_single
+    class xi_L : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
 	{
-	    return pow( k, 2 ) * kf.PL_val( k );
+	    return pow( k, 2 ) * kf.PL_val( k )
 		 * sph_bessel_j( 0, jx );
 	}
     };
     q_func_vec.push_back( new xi_L );
 
-    class X_11 : q_func_single
+    class X_11 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -110,7 +126,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new X_11 );
 
-    class X_22 : q_func_single
+    class X_22 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -122,7 +138,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new X_22 );
 
-    class X_13 : q_func_single
+    class X_13 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -134,7 +150,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new X_13 );
     
-    class Y_11 : q_func_single
+    class Y_11 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -146,7 +162,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new Y_11 );
 
-    class Y_22 : q_func_single
+    class Y_22 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -158,7 +174,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new Y_22 );
 
-    class Y_13 : q_func_single
+    class Y_13 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -170,7 +186,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new Y_13 );
 
-    class U_1 : q_func_single
+    class U_1 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -181,7 +197,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new U_1 );
 
-    class U_3 : q_func_single
+    class U_3 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -192,7 +208,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new U_3 );
 
-    class V_112_1 : q_func_single
+    class V_112_1 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -209,7 +225,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new V_112_1 );
 
-    class V_112_3 : q_func_single
+    class V_112_3 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -226,7 +242,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new V_112_3 );
     
-    class T_112 : q_func_single
+    class T_112 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -241,7 +257,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new T_112 );
     
-    class U_2_20 : q_func_single
+    class U_2_20 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -252,7 +268,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new U_2_20 );
 
-    class U_2_11 : q_func_single
+    class U_2_11 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -264,7 +280,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new U_2_11 );
 
-    class X_12_10 : q_func_single
+    class X_12_10 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -282,7 +298,7 @@ void q_func::set_func(  )
     };
     q_func_vec.push_back( new X_12_10 );
 
-    class Y_12_10 : q_func_single
+    class Y_12_10 : public q_func_single
     {
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
@@ -344,7 +360,7 @@ void q_func::get_func_val(  )
 void q_func::var_func( const double & q, q_func_vals & res )
 {
     // Ugly, huh? Okay, I delibrately avoid using Boost...
-    ( double * ) p_res[ 16 ]
+    double * p_res[ 16 ]
 	= { & res.xi_L,    & res.X_11,    & res.X_22,
 	    & res.X_13,    & res.Y_11,    & res.Y_22,
 	    & res.Y_13,    & res.U_1,     & res.U_3,
@@ -366,7 +382,7 @@ void q_func::save_q_func( std::string file_name )
 {
     std::ofstream fout( file_name.c_str(  ) );
 
-    std::vector<double> & q_buf
+    const std::vector<double> & q_buf
 	= q_func_single::get_qvec(  );
     
     for( unsigned i = 0; i < q_buf.size(  ); ++ i )

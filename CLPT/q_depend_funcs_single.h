@@ -2,8 +2,6 @@
 #define Q_DEPEND_FUNCS_SINGLE_H
 
 #include "k_depend_funcs.h"
-#include "integral.h"
-#include "prog_bar.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -27,12 +25,12 @@ public:				// Function
 private:    			// Function
     virtual double kernel
     ( const double & k, const double & jx,
-      const k_func & kf );
+      const k_func & kf ) = 0;
 
     ////////// Integrator //////////
 private:			// Data
     k_func * p_kf;
-private:			// Function
+protected:			// Function
     static double sph_bessel_j
     ( const int & n, const double & x );
     double integrate_single( const double & q );
@@ -55,8 +53,7 @@ public:				// Function
     ////////// Interpolation //////////
 private:			// Data
     static int idx_current;
-private:			// Function
-    int get_idx( const double & q );
+    static double q_current;
 public:				// Function-like
     static void eval_all_idx( const double & q );
     double get_val(  );
