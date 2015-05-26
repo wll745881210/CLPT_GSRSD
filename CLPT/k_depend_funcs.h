@@ -15,9 +15,13 @@ private:
     typedef std::vector<double> dvec;
 	
     ////////// Con-/destructor //////////
-public:
+private:
     k_func(  );
     ~k_func(  );
+    static k_func * singleton;
+public:
+    static k_func * get_instance(  );
+    static void     del_instance(  );
 	
     ////////// Interpolation //////////
 private:    // Data

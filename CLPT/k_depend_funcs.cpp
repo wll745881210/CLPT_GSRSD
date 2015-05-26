@@ -12,6 +12,8 @@ const double	k_func::nearly_inf   = 1.e2;
 const double	k_func::pi	     = 3.14159265359;
 const double	k_func::one_over_pi2 = 0.050660592;
 
+k_func * k_func::singleton = NULL;
+
 ////////////////////////////////////////////////////////////
 // Constructor and desctructor
 
@@ -23,6 +25,20 @@ k_func::k_func(  )
 k_func::~k_func(  )
 {
 	
+}
+
+k_func * k_func::get_instance(  )
+{
+    if( singleton == NULL )
+	singleton = new k_func;
+
+    return singleton;
+}
+
+void k_func::del_instance(  )
+{
+    delete singleton;
+    return;
 }
 
 ////////////////////////////////////////////////////////////

@@ -28,8 +28,8 @@ int main( int argn, char * argv[  ] )
 	in.find_key( "q_file", q_arg.q_file_name, "none" );
 	in.find_key( "pow_spec_file",
                      q_arg.pow_spec_name, "none" );
-	q_func qf;
-	qf.set_par( q_arg );
+	p_qf = q_func::get_instance(  );
+	p_qf->set_par( q_arg );
 
 	corr_func_init c_arg, v_arg, s_arg;
 	in.find_key( "r_max",     c_arg.r_max,     130 );

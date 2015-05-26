@@ -2,6 +2,7 @@
 #define Q_DEPEND_FUNCS_H
 
 #include "k_depend_funcs.h"
+#include "q_depend_funcs_single.h"
 #include "integral.h"
 #include "prog_bar.h"
 #include <vector>
@@ -9,7 +10,7 @@
 #include <map>
 
 ////////////////////////////////////////////////////////////
-// All q-dependent functions in Jordan Carlson's notes
+// Interface for q-dependent functions 
 
 struct q_func_init
 {
@@ -21,30 +22,13 @@ struct q_func_init
 struct q_func_vals
 {
     double xi_L;
-    double V_112_1, V_112_3;
-    double T_112;
-    double U_1, U_3;
-    double U_2_20, U_2_11;
-    double X_11, X_22, X_13;
-    double Y_11, Y_22, Y_13;
+    double V_112_1, V_112_3, T_112;
+    double U_1,     U_3;
+    double U_2_20,  U_2_11;
+    double X_11,    X_22,    X_13;
+    double Y_11,    Y_22,    Y_13;
     double X_12_10, Y_12_10;
 };
-
-////////////////////////////////////////////////////////////
-// Virtual base class for individual function.
-// I am avoiding lambdas so that it can be compiled on
-// those gcc without C++-11 support.
-
-class q_func_single
-{
-    virtual double kernel
-    ( const double & k, const double & jx,
-      const k_func & kf ) const;
-    std::vector<double> q, val;
-};
-
-////////////////////////////////////////////////////////////
-// Interface for q-dependent functions 
 
 class q_func
 {
@@ -54,9 +38,13 @@ private:
     typedef std::map<double, double>::iterator itr_PL;
 	
     ////////// Con-/destructor & initializer //////////
-public:
+private:
     q_func(  );
     ~q_func(  );
+    static q_func * singleton;
+public:
+    static q_func * get_instance(  );
+    static void     del_instance(  );
     void set_par( const q_func_init & arg );
 
     ////////// Do all preparations //////////
@@ -68,56 +56,31 @@ private:
 	           std::string k_file_name,
 	           std::string q_file_name );
 
-    ////////// Functions of k //////////
-public:
-    const k_func & kfunc(  );
-private:
-    k_func kf;
-	
     ////////// Spherical Bessel functions //////////
 private:
     double sph_bessel_j( int n, const double & x );
     // n for order.
 
     ////////// Various functions //////////
-public:
-    const std::vector<double> & qvec(  );
 private:    // Data
-    std::map<double, int> q_index_buf;
-    std::vector<double> q_buf;
-    std::vector<double> k_intg_buf;
-    std::vector<double> xi_L_buf;
-    std::vector<double> V_112_1_buf, V_112_3_buf;
-    std::vector<double> S_112_buf,   T_112_buf;
-    std::vector<double> U_1_buf,     U_3_buf;
-    std::vector<double> U_2_20_buf,  U_2_11_buf;
-    std::vector<double> X_11_buf,    X_22_buf,    X_13_buf;
-    std::vector<double> Y_11_buf,    Y_22_buf,    Y_13_buf;
-    std::vector<double> X_12_10_buf, Y_12_10_buf;
+    std::vector<q_func_single *> q_func_vec;
 private:    // Function
+    void set_func(  );
     void get_func_val(  );
 
     ////////// Function value output //////////
-private:
-    double interp_val( const double & q, const int & i,
-                       const dvec & vec );
 public:
     void var_func( const double & q, q_func_vals & res );
 
     ////////// Save and load //////////
-private:
+private:			// Function
     void save_q_func( std::string file_name );
     void load_q_func( std::string file_name );
 
-    ////////// Progress bar //////////
-private:
-    prog_bar pg;
-	
     ////////// Mathematical constants/func //////////
-private:
+private:			// Data
     static const double nearly_0, nearly_inf;
     static const int    k_intg_points_multip;
-    integral intg;
 };
 
 #endif
