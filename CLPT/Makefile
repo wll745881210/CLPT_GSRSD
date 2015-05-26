@@ -1,4 +1,4 @@
-CC = g++-4.8
+CC = g++-4.9
 Option = -O3 -Wall -fopenmp
 
 Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \

@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 
+////////////////////////////////////////////////////////////
 // All q-dependent functions in Jordan Carlson's notes
 
 struct q_func_init
@@ -29,6 +30,21 @@ struct q_func_vals
     double X_12_10, Y_12_10;
 };
 
+////////////////////////////////////////////////////////////
+// Virtual base class for individual function.
+// I am avoiding lambdas so that it can be compiled on
+// those gcc without C++-11 support.
+
+class q_func_single
+{
+    virtual double kernel
+    ( const double & k, const double & jx,
+      const k_func & kf ) const;
+    std::vector<double> q, val;
+};
+
+////////////////////////////////////////////////////////////
+// Interface for q-dependent functions 
 
 class q_func
 {
@@ -79,33 +95,17 @@ private:    // Data
     std::vector<double> Y_11_buf,    Y_22_buf,    Y_13_buf;
     std::vector<double> X_12_10_buf, Y_12_10_buf;
 private:    // Function
-    void get_var_func(  );
-    double xi_L_intg   ( const double & q );
-    double V_112_1_intg( const double & q );
-    double V_112_3_intg( const double & q );
-    double S_112_intg  ( const double & q );
-    double T_112_intg  ( const double & q );
-    double U_1_intg    ( const double & q );
-    double U_3_intg    ( const double & q );
-    double U_2_20_intg ( const double & q );
-    double U_2_11_intg ( const double & q );
-    double X_11_intg   ( const double & q );
-    double X_22_intg   ( const double & q );
-    double X_13_intg   ( const double & q );
-    double Y_11_intg   ( const double & q );
-    double Y_22_intg   ( const double & q );
-    double Y_13_intg   ( const double & q );
-    double X_12_10_intg( const double & q );
-    double Y_12_10_intg( const double & q );
-    // Linear interpolation 
+    void get_func_val(  );
+
+    ////////// Function value output //////////
+private:
     double interp_val( const double & q, const int & i,
-                       const std::vector<double> & vec );
+                       const dvec & vec );
 public:
     void var_func( const double & q, q_func_vals & res );
 
     ////////// Save and load //////////
 private:
-    void smooth( std::vector<double> * pv );
     void save_q_func( std::string file_name );
     void load_q_func( std::string file_name );
 
@@ -116,7 +116,6 @@ private:
     ////////// Mathematical constants/func //////////
 private:
     static const double nearly_0, nearly_inf;
-    static const double pi,       one_over_pi2;
     static const int    k_intg_points_multip;
     integral intg;
 };
