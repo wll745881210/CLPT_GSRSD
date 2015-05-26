@@ -317,18 +317,20 @@ void q_func::set_func(  )
 
 void q_func::get_func_val(  )
 {
-    double q( 0. ), k( 0. );
     k_func * p_kf = k_func::get_instance(  );
     const std::vector<double> & kv = p_kf->kvec(  );
-    std::vector<double_t> q_buf, k_buf;
 
-    const double k_max = kv[ kv.size(  ) - 1 ]/2.;
+    //////////////////////////////////////////////////
+    // Assigning q_buf and k_buf. Quite empirical.
+    std::vector<double_t> q_buf, k_buf;
+    const double k_max = kv[ kv.size(  ) - 1 ] / 2.;
     const double k_min = kv[ 0 ];
     const double q_max = 1. / kv[ 0 ];
     const double q_min = 1. / kv[ kv.size(  ) - 1 ];
     for( unsigned i = 0; i < kv.size(  ); ++ i )
     {
-	q = log( q_min )+ ( log( q_max ) - log( q_min ) )
+	const double q = log( q_min )
+	    + ( log( q_max ) - log( q_min ) )
 	    * i / double( kv.size(  ) - 1 );
 	q_buf.push_back( exp( q ) );
     }
@@ -338,17 +340,22 @@ void q_func::get_func_val(  )
 	                / double( n_k_intg - 1 );
     for( unsigned i = 0; i < n_k_intg; ++ i )
     {
-	k = exp( log( k_min ) + i * d_logk );
+	const double k = exp( log( k_min ) + i * d_logk );
 	k_buf.push_back( k );
     }
+    //////////////////////////////////////////////////
 
-    std::cout << "Generating q-dependent functions: ";
-    q_func_single::set_qvec( q_buf );
-    q_func_single::set_kvec( q_buf );
     
+    std::cout << "Generating q-dependent functions: "
+	      << std::flush;
+    q_func_single::set_qvec( q_buf );
+    q_func_single::set_kvec( k_buf );
+
+    this->set_func(  );
 #pragma omp parallel for
     for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
 	q_func_vec[ i ]->integrate(  );
+    
     std::cout << "Done." << std::endl;
     
     return;
@@ -389,7 +396,7 @@ void q_func::save_q_func( std::string file_name )
     {
 	fout << q_buf[ i ] << ' ';
 	for( int j = 0; j < q_func_vec.size(  ); ++ j )
-	    fout << q_func_vec[ j ]->qvec_at( i );
+	    fout << q_func_vec[ j ]->valvec_at( i ) << ' ';
 	fout << '\n';
     }
     fout << std::endl;

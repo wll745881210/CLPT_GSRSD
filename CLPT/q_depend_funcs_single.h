@@ -41,14 +41,14 @@ public:				// Function
 private:			// Data
     static std::vector<double>   qvec, kvec;
     static std::map<double, int> q_idx_buf;
-    std::vector<double> val;
+    std::vector<double> valvec;
 public:				// Function
     static void set_kvec
     ( const std::vector<double> & k_src );
     static void set_qvec
     ( const std::vector<double> & q_src );
     static const std::vector<double> & get_qvec(  );
-    double & qvec_at( const int & i );
+    double & valvec_at( const int & i );
 
     ////////// Interpolation //////////
 private:			// Data

@@ -40,7 +40,7 @@ q_func_single::~q_func_single(  )
 double q_func_single::sph_bessel_j
 ( const int & n, const double & x )
 {
-    static const double nearly_0 = 1.e-3;
+    static const double nearly_0 = 1.e-5;
     if( fabs( x ) < nearly_0 )
 	switch( n )
 	{
@@ -89,9 +89,9 @@ double q_func_single::integrate_single( const double & q )
 
 void q_func_single::integrate(  )
 {
-    val.clear(  );
+    valvec.clear(  );
     for( unsigned i = 0; i < qvec.size(  ); ++ i )
-	val.push_back( integrate_single( qvec[ i ] ) );
+	valvec.push_back( integrate_single( qvec[ i ] ) );
 
     return;
 }
@@ -126,9 +126,9 @@ const std::vector<double> & q_func_single::get_qvec(  )
     return qvec;
 }
 
-double & q_func_single::qvec_at( const int & i )
+double & q_func_single::valvec_at( const int & i )
 {
-    return qvec[ i ];
+    return valvec.at( i );
 }
 
 ////////////////////////////////////////////////////////////
@@ -156,10 +156,11 @@ double q_func_single::get_val(  )
 	return 0.;
     else if( ( qvec[ i + 1 ] - qvec[ i ] ) / qvec[ i ]
 	       < nearly_0 )
-	return val[ i ];
+	return valvec.at( i );
     else
-	return val[ i ] + ( val[ i + 1 ] - val[ i ] )
-	    / ( qvec[ i + 1 ] - qvec[ i ] )
+	return valvec[ i ]
+	    + ( valvec[ i + 1 ] - valvec[ i ] )
+	    / ( qvec  [ i + 1 ] - qvec  [ i ] )
 	    * ( q - qvec[ i ] );
 }
 

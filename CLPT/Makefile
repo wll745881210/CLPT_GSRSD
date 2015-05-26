@@ -1,5 +1,5 @@
-CC = g++
-Option = -O3 -Wall
+CC = g++-4.8
+Option = -O3 -Wall -fopenmp
 
 # Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
 # 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
