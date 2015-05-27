@@ -168,9 +168,9 @@ void q_func::set_func(  )
 	double kernel( const double & k, const double & jx,
 	               const k_func & kf )
 	{
-	    return 9. / 98. * kf.Q_val( 1, k )
-		* ( 2. / 3. - 2. * sph_bessel_j( 1, jx )
-		    / jx );
+	    return  9. / 98. * kf.Q_val( 1, k )
+	    * ( 6. * sph_bessel_j( 1, jx ) / jx
+		- 2. * sph_bessel_j( 0, jx ) );
 	}
     };
     q_func_vec.push_back( new Y_22 );
@@ -391,7 +391,7 @@ void q_func::save_q_func( const std::string & file_name )
     save_load s( file_name );
     s.add_vec( q_func_single::get_qvec(  ) );
     for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
-	s.add_vec( q_func_vec[ i ]->get_valvec(  ) );
+    	s.add_vec( q_func_vec[ i ]->get_valvec(  ) );
 
     s.write(  );
     return;
