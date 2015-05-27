@@ -121,6 +121,13 @@ void q_func_single::set_qvec
     return;
 }
 
+void q_func_single::set_valvec
+( const std::vector<double> & val_src )
+{
+    this->valvec = val_src;
+    return;
+}
+
 const std::vector<double> & q_func_single::get_qvec(  )
 {
     return qvec;

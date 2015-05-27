@@ -1,11 +1,11 @@
 #include "k_depend_funcs.h"
-
+#include "save_load.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
 
 ////////////////////////////////////////////////////////////
-// Static variables
+// Static variables and other initializers
 
 const double	k_func::nearly_0     = 1.e-3;
 const double	k_func::nearly_inf   = 1.e2;
@@ -19,12 +19,17 @@ k_func * k_func::singleton = NULL;
 
 k_func::k_func(  )
 {
-
+    std::vector<std::vector<double> * > rl
+          { & R_buf_1, & R_buf_2, & Q_buf_1, & Q_buf_2,
+	    & Q_buf_3, & Q_buf_4, & Q_buf_5, & Q_buf_6,
+	    & Q_buf_7, & Q_buf_8 };
+    this->res_list = rl;
+    return;
 }
 
 k_func::~k_func(  )
 {
-	
+    return;
 }
 
 k_func * k_func::get_instance(  )
@@ -403,60 +408,29 @@ double k_func::R_outer_integration
     static const double temp_coef = 0.025330295910584444;
     // 0.25 / \pi^2;
     return pow( k, 3 ) * temp_coef
-	* PL_val( k ) * intg.result(  );
+	 * PL_val( k ) * intg.result(  );
 }
 
 ////////////////////////////////////////////////////////////
 // Test output
 
-void k_func::save_k_func( std::string file_name )
+void k_func::save_k_func( const std::string file_name )
 {
-    std::ofstream fout( file_name.c_str(  ) );
-    dvec * p[ 11 ] 
-	= { &k_buf,   &R_buf_1, &R_buf_2,
-	    &Q_buf_1, &Q_buf_2, &Q_buf_3,
-	    &Q_buf_4, &Q_buf_5,	&Q_buf_6,
-	    &Q_buf_7, &Q_buf_8 };
+    save_load s( file_name );
+    s.add_vec( k_buf );
+    for( unsigned i = 0; i < res_list.size(  ); ++ i )
+	s.add_vec( * res_list[ i ] );
 
-    for( unsigned i = 0; i < k_buf.size(  ); ++ i )
-    {
-	for( int j = 0; j < 11; ++ j )
-	    fout << p[ j ]->at( i ) << ' ';
-	fout << '\n';
-    }
-    fout << std::endl;
-
+    s.write(  );
     return;
 }
 
-void k_func::load_k_func( std::string file_name )
+void k_func::load_k_func( const std::string file_name )
 {
-    std::ifstream fin( file_name.c_str(  ) );
-    if( !fin )
-	throw "Unable to open k function file.";
-	
-    dvec * p[ 10 ] 
-	= { &R_buf_1, &R_buf_2,
-	    &Q_buf_1, &Q_buf_2, &Q_buf_3,
-	    &Q_buf_4, &Q_buf_5,	&Q_buf_6,
-	    &Q_buf_7, &Q_buf_8 };
-    for( int i = 0; i < 10; ++ i )
-	p[ i ]->clear(  );
-
-    double temp( 0. );
-    while( !fin.eof(  ) )
-    {
-	fin >> temp;
-	for( int i = 0; i < 10; ++ i )
-	{
-	    fin >> temp;
-	    p[ i ]->push_back( temp );
-	}
-    }
-    for( int i = 1; i < 10; ++ i )
-	p[ i ]->pop_back(  );
-
-    std::cout << "k functions loaded from: "
-	      << file_name << std::endl;
+    save_load l( file_name );
+    l.read_file(  );
+    k_buf = l[ 0 ];
+    for( unsigned i = 0; i < res_list.size(  ); ++ i )
+    	( * res_list[ i ] ) = l[ i + 1 ];
     return;
 }

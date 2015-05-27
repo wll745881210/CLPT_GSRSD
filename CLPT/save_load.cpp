@@ -88,8 +88,6 @@ void save_load::parse_data( const std::string & src )
     {
 	ss >> val;
 	buf_in[ i ]->push_back( val );
-	if( ss.eof(  ) )
-	    throw "Incorrect length of data row.";
     }
     return;
 }
@@ -105,9 +103,14 @@ void save_load::read_file(  )
     std::ifstream fin( file_path.c_str(  ) );
     while( ! fin.eof(  ) )
 	read_one_line( fin );
+    for( unsigned i = 0; i < buf_in.size(  ); ++ i )
+    {
+	buf_in[ i ]->pop_back(  );
+	buf_in[ i ]->pop_back(  );
+    }
+    
     return;
 }
-
 
 const std::vector<double> & save_load::operator[]
 ( const int & i )

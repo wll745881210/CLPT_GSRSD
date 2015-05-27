@@ -1,5 +1,7 @@
 CC = g++-4.9
-Option = -O3 -Wall -fopenmp -std=c++0x
+Option = -O3 -Wall -fopenmp -std=c++0x 
+# c++0x or c++11 is for std::to_string on gcc only
+# If you are using Clang/llvm, you can remove it
 
 # Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
 # 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \

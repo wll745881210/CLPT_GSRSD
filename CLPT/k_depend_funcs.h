@@ -66,9 +66,11 @@ private:    // Function
     double R_outer_integration( int n, const double & k );
 	
     ////////// Save and load //////////
+private:			// Data
+    std::vector<std::vector<double> * > res_list;
 public:
-    void save_k_func( std::string file_name );
-    void load_k_func( std::string file_name );
+    void save_k_func( const std::string file_name );
+    void load_k_func( const std::string file_name );
 		
     ////////// Progress bar //////////
 private:

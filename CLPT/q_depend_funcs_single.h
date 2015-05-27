@@ -47,6 +47,8 @@ public:				// Function
     ( const std::vector<double> & k_src );
     static void set_qvec
     ( const std::vector<double> & q_src );
+    void set_valvec
+    ( const std::vector<double> & val_src );
     static const std::vector<double> & get_qvec(  );
     const std::vector<double> & get_valvec(  );
     double & valvec_at( const int & i );

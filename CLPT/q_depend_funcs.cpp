@@ -21,14 +21,12 @@ q_func *     q_func::singleton            ( NULL  );
 
 q_func::q_func(  )
 {
-
+    this->set_func(  );
+    return;
 }
 
 q_func::~q_func(  )
 {
-    // for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
-    // 	delete q_func_vec[ i ];
-
     return;
 }
 
@@ -324,26 +322,21 @@ void q_func::get_func_val(  )
     //////////////////////////////////////////////////
     // Assigning q_buf and k_buf. Quite empirical.
     std::vector<double_t> q_buf, k_buf;
-    const double k_max = kv[ kv.size(  ) - 1 ] / 2.;
-    const double k_min = kv[ 0 ];
-    const double q_max = 1. / kv[ 0 ];
-    const double q_min = 1. / kv[ kv.size(  ) - 1 ];
+
+    const double q_max  = 1. / kv[ 0 ];
+    const double q_min  = 1. / kv[ kv.size(  ) - 1 ];
+    const double d_logq = ( log( q_max ) - log( q_min ) )
+	                / double( kv.size(  ) - 1 );
     for( unsigned i = 0; i < kv.size(  ); ++ i )
-    {
-	const double q = log( q_min )
-	    + ( log( q_max ) - log( q_min ) )
-	    * i / double( kv.size(  ) - 1 );
-	q_buf.push_back( exp( q ) );
-    }
-    const unsigned n_k_intg = k_intg_points_multip
-	                    * kv.size(  );
+	q_buf.push_back( exp( log( q_min ) + i * d_logq ) );
+
+    const double k_max  = kv[ kv.size(  ) - 1 ] / 2.;
+    const double k_min  = kv[ 0 ];
+    const int    n_k    = k_intg_points_multip * kv.size();
     const double d_logk	= ( log( k_max ) - log( k_min ) )
-	                / double( n_k_intg - 1 );
-    for( unsigned i = 0; i < n_k_intg; ++ i )
-    {
-	const double k = exp( log( k_min ) + i * d_logk );
-	k_buf.push_back( k );
-    }
+	                / double( n_k - 1 );
+    for( int i = 0; i < n_k; ++ i )
+	k_buf.push_back( exp( log( k_min ) + i * d_logk ) );
     //////////////////////////////////////////////////
 
     
@@ -352,7 +345,6 @@ void q_func::get_func_val(  )
     q_func_single::set_qvec( q_buf );
     q_func_single::set_kvec( k_buf );
 
-    this->set_func(  );
 #pragma omp parallel for
     for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
 	q_func_vec[ i ]->integrate(  );
@@ -399,30 +391,14 @@ void q_func::save_q_func( const std::string & file_name )
 
 void q_func::load_q_func( const std::string & file_name )
 {
-    throw "load_q_func not implemented.";
-    // std::ifstream fin( file_name.c_str(  ) );
-    // if( !fin )
-    // 	throw "Unable to open q function file.";
+    save_load l( file_name );
+    l.read_file(  );
 
-    // while( !fin.eof(  ) )
-    // {
-	
-    // 	for( int i = 0; i < 17; ++ i )
-    // 	{
-    // 	    fin >> temp;
-    // 	    p[ i ]->push_back( temp );
-    // 	}
-    // }
-    // for( int i = 0; i < 17; ++ i )
-    // 	p[ i ]->pop_back(  );
-    // for( unsigned i = 0; i < q_buf.size(  ); ++ i )
-    // {
-    // 	q_index_pair.first = q_buf[ i ];
-    // 	q_index_pair.second = i;
-    // 	q_index_buf.insert( q_index_pair );
-    // }
+    q_func_single::set_qvec( l[ 0 ] );
+    for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
+	q_func_vec[ i ]->set_valvec( l[ i + 1 ] );
 
-    // std::cout << "q functions loaded from: "
-    // 	      << file_name << std::endl;
-    // return;
+    std::cout << "q functions loaded from: "
+    	      << file_name << std::endl;
+    return;
 }
