@@ -63,7 +63,8 @@ private:
 
     ////////// Various functions //////////
 private:    // Data
-    std::vector<q_func_single *> q_func_vec;
+    std::vector<q_func_single *>           q_func_vec;
+    std::map<std::string, q_func_single *> q_func_map;
 private:    // Function
     void set_func(  );
     void get_func_val(  );
@@ -74,8 +75,8 @@ public:
 
     ////////// Save and load //////////
 private:			// Function
-    void save_q_func( std::string file_name );
-    void load_q_func( std::string file_name );
+    void save_q_func( const std::string & file_name );
+    void load_q_func( const std::string & file_name );
 
     ////////// Mathematical constants/func //////////
 private:			// Data

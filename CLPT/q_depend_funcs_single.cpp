@@ -126,6 +126,11 @@ const std::vector<double> & q_func_single::get_qvec(  )
     return qvec;
 }
 
+const std::vector<double> & q_func_single::get_valvec(  )
+{
+    return valvec;
+}
+
 double & q_func_single::valvec_at( const int & i )
 {
     return valvec.at( i );

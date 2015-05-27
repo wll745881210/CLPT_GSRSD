@@ -1,5 +1,5 @@
-CC = g++-4.8
-Option = -O3 -Wall -fopenmp
+CC = g++-4.9
+Option = -O3 -Wall -fopenmp -std=c++0x
 
 # Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
 # 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
@@ -7,7 +7,7 @@ Option = -O3 -Wall -fopenmp
 
 Objs = main.o integral.o q_depend_funcs_single.o \
 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
-	input.o prog_bar.o
+	input.o save_load.o prog_bar.o
 
 Out_file = clpt.exe
 
@@ -47,6 +47,9 @@ k_depend_funcs.o : k_depend_funcs.cpp k_depend_funcs.h
 
 input.o : input.cpp input.h
 	$(CC) $(Option) -c -o input.o input.cpp
+
+save_load.o : save_load.cpp save_load.h
+	$(CC) $(Option) -c -o save_load.o save_load.cpp
 
 prog_bar.o : prog_bar.cpp prog_bar.h
 	$(CC) $(Option) -c -o prog_bar.o prog_bar.cpp

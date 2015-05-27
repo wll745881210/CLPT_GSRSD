@@ -17,26 +17,37 @@ public:
     ////////// General data //////////
 private:			// Data
     std::string file_path;
-    std::vector<std::string> header;
-    std::map<std::string, std::vector<double> *> buf_map;
-    std::vector<std::vector<double> *>           buf_vec;
+    std::string header;
 
     ////////// Read from file //////////
 private:			// Data
-    bool is_header_available;
-    bool is_header_finished;
+    bool is_using_header;
+    bool is_vec_assigned;
+    std::map<std::string, std::vector<double> *> map_in;
+    std::vector<std::vector<double> *>           buf_in;
 private:			// Function
     void read_one_line( std::ifstream & fin );
-    void set_
-    void parse_header ( const std::string & src );
-    void parse_data   ( const std::string & src );
+    void parse_head_line( const std::string & src );
+    void parse_data     ( const std::string & src );
 public:				// Function
-    void parse_header(  )
+    void set_using_header( const bool use_header );
     void read_file(  );
+    const std::vector<double> & operator[]
+    ( const int & i );
+    const std::vector<double> & operator[]
+    ( const std::string name );
 
-    ////////// 
+    ////////// Write to file //////////
+private:			// Data
+    std::vector<const std::vector<double> * > buf_out;
+private:			// Function
     
-    
+    void write_one_line( const unsigned & line_num,
+	                 std::ofstream & fout );
+public:				// Function
+    void add_vec( const std::vector<double> & src,
+	          const std::string name = "none" );
+    void write(  );
 };
 
 #endif

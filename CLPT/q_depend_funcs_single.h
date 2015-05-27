@@ -48,6 +48,7 @@ public:				// Function
     static void set_qvec
     ( const std::vector<double> & q_src );
     static const std::vector<double> & get_qvec(  );
+    const std::vector<double> & get_valvec(  );
     double & valvec_at( const int & i );
 
     ////////// Interpolation //////////

@@ -1,6 +1,7 @@
 #include "q_depend_funcs_single.h"
 #include "q_depend_funcs.h"
 #include "prog_bar.h"
+#include "save_load.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -376,7 +377,7 @@ void q_func::var_func( const double & q, q_func_vals & res )
 	    & res.Y_12_10 };
 
     q_func_single::eval_all_idx( q );
-    for( int i = 0; i < q_func_vec.size(  ); ++ i )
+    for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
 	( * p_res[ i ] ) = q_func_vec[ i ]->get_val(  );
 
     return;
@@ -385,26 +386,18 @@ void q_func::var_func( const double & q, q_func_vals & res )
 ////////////////////////////////////////////////////////////
 // Save/load
 
-void q_func::save_q_func( std::string file_name )
+void q_func::save_q_func( const std::string & file_name )
 {
-    std::ofstream fout( file_name.c_str(  ) );
+    save_load s( file_name );
+    s.add_vec( q_func_single::get_qvec(  ) );
+    for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
+	s.add_vec( q_func_vec[ i ]->get_valvec(  ) );
 
-    const std::vector<double> & q_buf
-	= q_func_single::get_qvec(  );
-    
-    for( unsigned i = 0; i < q_buf.size(  ); ++ i )
-    {
-	fout << q_buf[ i ] << ' ';
-	for( int j = 0; j < q_func_vec.size(  ); ++ j )
-	    fout << q_func_vec[ j ]->valvec_at( i ) << ' ';
-	fout << '\n';
-    }
-    fout << std::endl;
-
+    s.write(  );
     return;
 }
 
-void q_func::load_q_func( std::string file_name )
+void q_func::load_q_func( const std::string & file_name )
 {
     throw "load_q_func not implemented.";
     // std::ifstream fin( file_name.c_str(  ) );
