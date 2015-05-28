@@ -1,6 +1,7 @@
 #include "corr_func.h"
 #include "lu_decomp.h"
 #include "save_load.h"
+#include "q_depend_funcs.h"
 
 #include <iostream>
 #include <vector>
@@ -10,12 +11,10 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-const double corr_func::pi = 3.141592653589793;
-double    corr_func::y_max    = 100;
-int       corr_func::y_bin    = 200;
-q_func *  corr_func::qf       = NULL;
-
-const unsigned corr_func::num_bias_comp = 6;
+const double corr_func::pi( 3.141592653589793 );
+double    corr_func::y_max( 25 );
+int       corr_func::y_bin( 50 );
+q_func *  corr_func::qf    = q_func::get_instance(  );
 
 std::vector<double> corr_func::rvec;
 
@@ -24,7 +23,7 @@ std::vector<double> corr_func::rvec;
 
 corr_func::corr_func(  )
 {
-
+    num_bias_comp = 6;
 }
 
 corr_func::~corr_func(  )
@@ -45,17 +44,14 @@ void corr_func::set_par( input & args )
     for( int i = 0; i < r_bin; ++ i  )
 	rvec.push_back( r_min + i * dr );
 
-    qf = q_func::get_instance(  );
-
-    args.find_key( "y_max",      y_max, 100 );
-    args.find_key( "y_bin_num",  y_bin, 200 );
+    args.find_key( "y_max",      y_max, 50 );
+    args.find_key( "y_bin_num",  y_bin, 100 );
  
     return;
 }
 
 void corr_func::initialize(  )
 {
-    bias_comp = new double[ num_bias_comp ];
     for( unsigned i = 0; i < num_bias_comp; ++ i )
     {
 	std::vector<double> * p
@@ -69,14 +65,14 @@ void corr_func::initialize(  )
 // Integration kernel is purely virtual; its wrapper is not
 
 void corr_func::ker_wrap
-( const double & r, const double & y, const double & beta )
+( const double & r, const double & y, const double & beta,
+  double * bias_comp )
 {
     vec3 y_vec;
     y_vec.x = y * sqrt( 1 - pow( beta, 2 ) );
     y_vec.y = 0;
     y_vec.z = y * beta;
-    kernel( r, y_vec );
-    return;
+    return kernel( r, y_vec, bias_comp );
 }
 
 int corr_func::delta_k( const int & i, const int & j )
@@ -92,9 +88,7 @@ void corr_func::calc_corr( const unsigned & i )
     const double & r = rvec[ i ];
     
     integral intg[ num_bias_comp ];
-    for( unsigned j = 0; j < num_bias_comp; ++ j )
-	intg[ j ].clear(  );
-
+    double bias_comp[ num_bias_comp ];
     const double dy = y_max / y_bin;
     for( double y = 0.; y < y_max; y += dy )
     {
@@ -103,7 +97,7 @@ void corr_func::calc_corr( const unsigned & i )
 	for( int l = 0; l < intg[ 0 ].gl_num; ++ l )
 	{
 	    const double beta = intg[ 0 ].gl_xi( l );
-	    ker_wrap( r, y, beta );
+	    ker_wrap( r, y, beta, bias_comp );
 	    for( unsigned j = 0; j < num_bias_comp; ++ j )
 		intg[ j ].gl_read( l, bias_comp[ j ] );
 	}
@@ -127,13 +121,13 @@ void corr_func::post_proc(  )
 
 void corr_func::get_corr(  )
 {
-    std::cout << "Generate xi: " << std::flush;
-
+    std::cout << "Generating correlation... " << std::flush;
+#pragma omp parallel for schedule( dynamic, 10 )
     for( unsigned i = 0; i < rvec.size(  ); ++ i )
 	calc_corr( i );
 
     post_proc(  );
-    std::cout << "Correlation function obtained. "
+    std::cout << " function obtained. "
 	      << std::endl;
     return;
 }

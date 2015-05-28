@@ -4,7 +4,6 @@
 #include "q_depend_funcs.h"
 #include "lu_decomp.h"
 #include "integral.h"
-#include "prog_bar.h"
 #include "input.h"
 
 #include <vector>
@@ -30,17 +29,16 @@ protected:    // Data
     static q_func * qf;
     lu_decomp lu;
 protected:    // Functions
-    virtual void kernel
-    ( const double & r, const vec3 & y ) = 0;
+    virtual void kernel( const double & r,
+	const vec3 & y, double * bias_comp ) = 0;
     void ker_wrap( const double & r, const double & y,
-	           const double & beta );
+	const double & beta, double * bias_comp );
     int delta_k( const int & i, const int & j );
     // Kronecker delta
 	
     ////////// Correlation functions //////////
 protected:    // Data
-    static const unsigned num_bias_comp;
-    double * bias_comp;
+    unsigned num_bias_comp;
     static std::vector<double> rvec;
     std::vector<std::vector<double> * > corr_res;
 private:    // Functions

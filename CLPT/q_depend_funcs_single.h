@@ -40,7 +40,7 @@ public:				// Function
     ////////// Integration results //////////
 private:			// Data
     static std::vector<double>   qvec, kvec;
-    static std::map<double, int> q_idx_buf;
+    static std::map<double, unsigned> q_idx_buf;
     std::vector<double> valvec;
 public:				// Function
     static void set_kvec
@@ -58,8 +58,8 @@ private:			// Data
     static int idx_current;
     static double q_current;
 public:				// Function-like
-    static void eval_all_idx( const double & q );
-    double get_val(  );
+    static unsigned eval_all_idx( const double & q );
+    double get_val( const double & q, const unsigned & i );
 };
 
 #endif

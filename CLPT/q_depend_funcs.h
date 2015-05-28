@@ -4,20 +4,13 @@
 #include "k_depend_funcs.h"
 #include "q_depend_funcs_single.h"
 #include "integral.h"
-#include "prog_bar.h"
+#include "input.h"
 #include <vector>
 #include <string>
 #include <map>
 
 ////////////////////////////////////////////////////////////
 // Interface for q-dependent functions 
-
-struct q_func_init
-{
-    std::string pow_spec_name;
-    std::string k_file_name;
-    std::string q_file_name;
-};
 
 struct q_func_vals
 {
@@ -45,7 +38,7 @@ private:
 public:
     static q_func * get_instance(  );
     static void     del_instance(  );
-    void set_par( const q_func_init & arg );
+    void initialize( input & args );
 
     ////////// Do all preparations //////////
 private:

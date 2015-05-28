@@ -1,10 +1,15 @@
 #include "pair_v.h"
-#include "lu_decomp.h"
 
 #include <iostream>
 #include <cmath>
 
-void pair_v::kernel( const double & r, const vec3 & y )
+pair_v::pair_v(  )
+{
+    num_bias_comp = 5;
+}
+
+void pair_v::kernel( const double & r, const vec3 & y,
+                     double * bias_comp )
 {
     // Direction index; for testing currently.
     const double rh[ 3 ] = { 0, 0, 1 };
@@ -194,6 +199,7 @@ void pair_v::post_proc(  )
 	v12_L_vec->at( i ) = this->v12_L( rvec[ i ] );
 
     corr_res.insert( corr_res.begin(  ), v12_L_vec );
+    std::cout << "Pairwise velocity";
     return;
 }
 

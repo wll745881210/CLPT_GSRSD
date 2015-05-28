@@ -161,11 +161,9 @@ void k_func::get_Q_func(  )
 
     std::cout << "Generating Q_n ( 1 to 8 )... "
 	      << std::flush;
-    // pg.init( k_buf.size(  ) );
 #pragma omp parallel for
     for( int n = 1; n < 9; ++ n )
     {
-	// pg.show( i );
 	std::vector<double> & pn = *( p[ n ] );
 	for( unsigned i = 0; i < k_buf.size(  ); ++ i )
 	{

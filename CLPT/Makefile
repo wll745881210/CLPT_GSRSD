@@ -3,10 +3,12 @@ Option = -O3 -Wall -fopenmp -std=c++0x
 # c++0x or c++11 is for std::to_string on gcc only
 # If you are using Clang/llvm, you can remove it
 
-Objs = main.o integral.o q_depend_funcs_single.o \
-	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
-	input.o save_load.o prog_bar.o \
-	corr_func.o pair_xi.o pair_v.o
+Objs = main.o \
+	integral.o lu_decomp.o \
+	k_depend_funcs.o \
+	q_depend_funcs_single.o q_depend_funcs.o \
+	corr_func.o pair_xi.o pair_v.o pair_s.o \
+	input.o save_load.o
 
 Out_file = clpt.exe
 
@@ -25,8 +27,8 @@ pair_xi.o : pair_xi.cpp pair_xi.h
 pair_v.o : pair_v.cpp pair_v.h
 	$(CC) $(Option) -c -o pair_v.o pair_v.cpp
 
-# pair_s.o : pair_s.cpp pair_s.h
-# 	$(CC) $(Option) -c -o pair_s.o pair_s.cpp
+pair_s.o : pair_s.cpp pair_s.h
+	$(CC) $(Option) -c -o pair_s.o pair_s.cpp
 
 integral.o : integral.cpp integral.h
 	$(CC) $(Option) -c -o integral.o integral.cpp
@@ -52,9 +54,6 @@ input.o : input.cpp input.h
 
 save_load.o : save_load.cpp save_load.h
 	$(CC) $(Option) -c -o save_load.o save_load.cpp
-
-prog_bar.o : prog_bar.cpp prog_bar.h
-	$(CC) $(Option) -c -o prog_bar.o prog_bar.cpp
 
 clean:
 	rm *.o *~ clpt.exe

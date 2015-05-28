@@ -1,6 +1,6 @@
 #include "q_depend_funcs_single.h"
 #include "q_depend_funcs.h"
-#include "prog_bar.h"
+#include "input.h"
 #include "save_load.h"
 #include <iostream>
 #include <fstream>
@@ -44,16 +44,19 @@ void q_func::del_instance(  )
     return;
 }
 
-void q_func::set_par( const q_func_init & arg )
+void q_func::initialize( input & args )
 {
-    if( arg.k_file_name == "none" )
-	cal_all( arg.pow_spec_name );
-    else if( arg.q_file_name == "none" )
-	load_k( arg.pow_spec_name, arg.k_file_name );
+    std::string k_path, q_path, ps_path;
+    args.find_key( "k_file",         k_path, "none" );
+    args.find_key( "q_file",         q_path, "none" );
+    args.find_key( "pow_spec_file", ps_path, "none" );
+    
+    if( k_path == "none" )
+	cal_all( ps_path );
+    else if( q_path == "none" )
+	load_k( ps_path, k_path );
     else
-	load_all( arg.pow_spec_name,
-	    arg.k_file_name,
-	    arg.q_file_name );
+	load_all( ps_path, k_path, q_path );
     return;
 }
 
@@ -342,7 +345,7 @@ void q_func::get_func_val(  )
     q_func_single::set_qvec( q_buf );
     q_func_single::set_kvec( k_buf );
 
-#pragma omp parallel for
+// #pragma omp parallel for
     for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
 	q_func_vec[ i ]->integrate(  );
     
@@ -365,9 +368,10 @@ void q_func::var_func( const double & q, q_func_vals & res )
 	    & res.U_2_20,  & res.U_2_11,  & res.X_12_10,
 	    & res.Y_12_10 };
 
-    q_func_single::eval_all_idx( q );
+    const unsigned idx = q_func_single::eval_all_idx( q );
     for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
-	( * p_res[ i ] ) = q_func_vec[ i ]->get_val(  );
+	( * p_res[ i ] )
+	    = q_func_vec[ i ]->get_val( q, idx );
 
     return;
 }

@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 #include "integral.h"
-#include "prog_bar.h"
 
 class k_func
 {
@@ -72,9 +71,6 @@ public:
     void save_k_func( const std::string file_name );
     void load_k_func( const std::string file_name );
 		
-    ////////// Progress bar //////////
-private:
-    prog_bar pg;
 
     ////////// Mathematical constants/func //////////
 private:

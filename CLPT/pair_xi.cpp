@@ -3,7 +3,8 @@
 #include <iostream>
 #include <cmath>
 
-void pair_xi::kernel( const double & r, const vec3 & y )
+void pair_xi::kernel( const double & r, const vec3 & y,
+                      double * bias_comp )
 {
     vec3 q = y;
     q.z   += r;
@@ -11,14 +12,12 @@ void pair_xi::kernel( const double & r, const vec3 & y )
     const double qh[ 3 ]	// "q hat", unit vector
 	= { q.x / q_norm, q.y / q_norm, q.z / q_norm };
     const double y_vec[ 3 ] = { y.x, y.y, y.z };
-    
+
     q_func_vals qfv;
     qf->var_func( q_norm, qfv );
 	
     const double xi_R = qfv.xi_L;
-
     ////////// Vectors and tensors //////////
-
     double A_temp[ 9 ];
     double A_inv[ 3 ][ 3 ], A_inv_temp[ 9 ];
     double A_det( 0. );
@@ -154,8 +153,7 @@ void pair_xi::kernel( const double & r, const vec3 & y )
 	sum += y_vec[ i ] * g[ i ];
     static const double two_pi_cube = 248.05021344239853;
     // ( 2 \pi )^3
-    const double gauss
-	= exp( -0.5 * sum )
+    const double gauss = exp( -0.5 * sum )
 	/ sqrt( two_pi_cube * fabs( A_det ) );
     for( unsigned i = 0; i < num_bias_comp; ++ i )
 	bias_comp[ i ] *= gauss;
@@ -166,7 +164,6 @@ void pair_xi::kernel( const double & r, const vec3 & y )
 void pair_xi::post_proc(  )
 {
     std::vector<double> * xi_L = new std::vector<double>;
-    q_func * qf = q_func::get_instance(  );
     q_func_vals qval;
     
     for( unsigned i = 0; i < rvec.size(  ); ++ i )
@@ -177,8 +174,7 @@ void pair_xi::post_proc(  )
     }
 
     corr_res.insert( corr_res.begin(  ), xi_L );
-    // I am just inserting one entry, not too slow;
-    // deque makes other manipulations slower.
+    std::cout << "Correlation xi";
     return;
 }
 

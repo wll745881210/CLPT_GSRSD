@@ -7,42 +7,23 @@
 #include <fstream>
 
 ////////////////////////////////////////////////////////////
-// Static variables
-
-const double	pair_s::pi	 = 3.141592653589793;
-const double	pair_s::max_y    = 100;
-const int	pair_s::num_y    = 200;
-
-////////////////////////////////////////////////////////////
 // Constructor, destructor and initializer
 
 pair_s::pair_s(  )
 {
-
-}
-
-pair_s::~pair_s(  )
-{
-
-}
-
-void pair_s::set_par( const corr_func_init & s_arg )
-{
-    this->r_max		= s_arg.r_max;
-    this->r_min		= s_arg.r_min;
-    this->r_bin_num	= s_arg.r_bin_num;
-    this->s12_file_name = s_arg.file_name;
-    this->qf		= q_func::get_instance(  );
-
-    std::cout << std::endl;
-    return;
+    num_bias_comp = 8;
 }
 
 ////////////////////////////////////////////////////////////
 // Integration kernel
 
-void pair_s::M2( const double & r, const vec3 & y )
+void pair_s::kernel( const double & r, const vec3 & y,
+                     double * bias_comp )
 {
+    // The parallel component comes first
+    double * bias_comp_p = bias_comp;
+    double * bias_comp_v = bias_comp + 4;
+    
     // Direction index; for testing currently.
     static const double rh [ 3 ] = { 0, 0, 1 };
     static const double lh2[ 3 ] = { 0, 1, 0 };
@@ -150,269 +131,127 @@ void pair_s::M2( const double & r, const vec3 & y )
 
 
     ////////// Sum them up! //////////
-
-    // for( int i = 0; i < num_bias_comp; ++ i )
-    // {
-    //	bias_comp_inner_p[ i ] = 0.;
-    //	bias_comp_inner_v[ i ] = 0.;
-    // }
-
-    double temp_p( 0. ), temp_v( 0. );
+    double sum_p( 0. ), sum_v( 0. );
     // parallel and perpandicular (vertical)
     // components of the result.
-    double temp[ 3 ][ 3 ];
+    double sum[ 3 ][ 3 ];
     // I would sacrifise a little efficiency
     // so that the code does not look too bad...
 
     // b1^0 b2^0 -> bias_comp[ 0 ] -> b0
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
-	    temp[ n ][ m ] = A_ddot[ n ][ m ];
+	    sum[ n ][ m ] = A_ddot[ n ][ m ];
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	    for( int i = 0; i < 3; ++ i )
-		temp[ n ][ m ]
+		sum[ n ][ m ]
 		    -= g[ i ] * W_ddot[ i ][ n ][ m ];
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	    for( int i = 0; i < 3; ++ i )
 		for( int j = 0; j < 3; ++ j )
-		    temp[ n ][ m ]
+		    sum[ n ][ m ]
 			-= A_dot[ i ][ n ]
 			 * A_dot[ j ][ m ] * G[ i ][ j ];
-    temp_p = 0.;
-    temp_v = 0.;
+    sum_p = 0.;
+    sum_v = 0.;
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	{
-	    temp_p += temp[ n ][ m ]
+	    sum_p += sum[ n ][ m ]
 		* rh[ n ] * rh[ m ];
-	    temp_v += temp[ n ][ m ]
+	    sum_v += sum[ n ][ m ]
 		* ( lh1[ n ] * lh1[ m ]
 		    + lh2[ n ] * lh2[ m ]);
 	}
-    bias_comp_inner_p[ 0 ] = temp_p;
-    bias_comp_inner_v[ 0 ] = temp_v;
+    bias_comp_p[ 0 ] = sum_p;
+    bias_comp_v[ 0 ] = sum_v;
 
     // b1^1 b2^0 -> bias_comp[ 1 ] -> b11
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
-	    temp[ n ][ m ] = 2. * A_ddot_10[ n ][ m ];
+	    sum[ n ][ m ] = 2. * A_ddot_10[ n ][ m ];
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	    for( int i = 0; i < 3; ++ i )
 	    {
-		temp[ n ][ m ] -= 2. *
+		sum[ n ][ m ] -= 2. *
 		    ( A_dot[ i ][ n ]
 			* g[ i ] * U_dot[ m ]
 		    + A_dot[ i ][ m ]
 			* g[ i ] * U_dot[ n ] );
-		temp[ n ][ m ] -= 2. *
+		sum[ n ][ m ] -= 2. *
 		    U[ i ] * g[ i ] * A_ddot[ n ][ m ];
 	    }
-    temp_p = 0.;
-    temp_v = 0.;
+    sum_p = 0.;
+    sum_v = 0.;
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	{
-	    temp_p += temp[ n ][ m ]
+	    sum_p += sum[ n ][ m ]
 		* rh[ n ] * rh[ m ];
-	    temp_v += temp[ n ][ m ]
+	    sum_v += sum[ n ][ m ]
 		* ( lh1[ n ] * lh1[ m ]
 		    + lh2[ n ] * lh2[ m ]);
 	}
-    bias_comp_inner_p[ 1 ] = temp_p;
-    bias_comp_inner_v[ 1 ] = temp_v;
+    bias_comp_p[ 1 ] = sum_p;
+    bias_comp_v[ 1 ] = sum_v;
 
     // b1^0 b2^1 -> bias_comp[ 2 ] -> b21
-    temp_p = 0.;
-    temp_v = 0.;
+    sum_p = 0.;
+    sum_v = 0.;
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
-	    temp[ n ][ m ] = 2. * U_dot[ n ] * U_dot[ m ];
+	    sum[ n ][ m ] = 2. * U_dot[ n ] * U_dot[ m ];
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	{
-	    temp_p += temp[ n ][ m ]
+	    sum_p += sum[ n ][ m ]
 		* rh[ n ] * rh[ m ];
-	    temp_v += temp[ n ][ m ]
+	    sum_v += sum[ n ][ m ]
 		* ( lh1[ n ] * lh1[ m ]
 		    + lh2[ n ] * lh2[ m ]);
 	}
-    bias_comp_inner_p[ 2 ] = temp_p;
-    bias_comp_inner_v[ 2 ] = temp_v;
+    bias_comp_p[ 2 ] = sum_p;
+    bias_comp_v[ 2 ] = sum_v;
 
     // b1^2 b2^0 -> bias_comp[ 3 ] -> b12
-    temp_p = 0.;
-    temp_v = 0.;
+    sum_p = 0.;
+    sum_v = 0.;
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
-	    temp[ n ][ m ]
+	    sum[ n ][ m ]
 		= 2. * U_dot[ n ] * U_dot[ m ]
 		+ xi_R * A_ddot[ n ][ m ];
     for( int n = 0; n < 3; ++ n )
 	for( int m = 0; m < 3; ++ m )
 	{
-	    temp_p += temp[ n ][ m ]
+	    sum_p += sum[ n ][ m ]
 		* rh[ n ] * rh[ m ];
-	    temp_v += temp[ n ][ m ]
+	    sum_v += sum[ n ][ m ]
 		* ( lh1[ n ] * lh1[ m ]
 		    + lh2[ n ] * lh2[ m ]);
 	}
-    bias_comp_inner_p[ 3 ] = temp_p;
-    bias_comp_inner_v[ 3 ] = temp_v;
+    bias_comp_p[ 3 ] = sum_p;
+    bias_comp_v[ 3 ] = sum_v;
 
     // Gaussian-like factor
-    temp_p = 0.;
+    double gauss_exp( 0. );
     for( int i = 0; i < 3; ++ i )
-	temp_p += y_vec[ i ] * g[ i ];
-
+	gauss_exp += y_vec[ i ] * g[ i ];
     static const double two_pi_cube = 248.05021344239853;
     // ( 2 \pi )^3
-    const double gauss
-	= exp( -0.5 * temp_p )
+    const double gauss = exp( -0.5 * gauss_exp )
 	/ sqrt( two_pi_cube * fabs( A_det ) );
-    for( int i = 0; i < num_bias_comp; ++ i )
-    {
-	bias_comp_inner_p[ i ] *= gauss;
-	bias_comp_inner_v[ i ] *= gauss;
-    }
+    for( unsigned i = 0; i < num_bias_comp; ++ i )
+	bias_comp[ i ] *= gauss;
 
     return;
 }
 
-void pair_s::M2( const double & r, const double & y,
-		 const double & beta )
+void pair_s::post_proc(  )
 {
-    vec3 y_vec;
-    y_vec.x = y * sqrt( 1 - beta * beta );
-    y_vec.y = 0;
-    y_vec.z = y * beta;
-    M2( r, y_vec );
-    return;
-}
-
-int pair_s::delta_k( const int & i, const int & j )
-{
-    return ( i == j ? 1 : 0 );
-}
-
-////////////////////////////////////////////////////////////
-// Correlation function v12
-
-void pair_s::s12( const double & r )
-{
-    double y( 0. ), beta( 0. );
-
-    integral intg_p[ num_bias_comp ];
-    integral intg_v[ num_bias_comp ];
-    for( int i = 0; i < num_bias_comp; ++ i )
-    {
-	intg_p[ i ].clear(  );
-	intg_v[ i ].clear(  );
-    }
-
-    const double dy = max_y / num_y;
-    while( y < max_y )
-    {
-	for( int k = 0; k < num_bias_comp; ++ k )
-	{
-	    intg_p[ k ].gl_clear(  );
-	    intg_v[ k ].gl_clear(  );
-	}
-	for( int j = 0; j < intg_p[ 0 ].gl_num; ++ j )
-	{
-	    beta = intg_p[ 0 ].gl_xi( j );
-	    M2( r, y, beta );
-	    for( int k = 0; k < num_bias_comp; ++ k )
-	    {
-		intg_p[ k ].gl_read
-		    ( j, bias_comp_inner_p[ k ] );
-		intg_v[ k ].gl_read
-		    ( j, bias_comp_inner_v[ k ] );
-	    }
-	}
-	for( int k = 0; k < num_bias_comp; ++ k )
-	{
-	    intg_p[ k ].read( y, pow( y, 2 )
-			      * intg_p[ k ].gl_result(  ) );
-	    intg_v[ k ].read( y, pow( y, 2 )
-			      * intg_v[ k ].gl_result(  ) );
-	}
-	y += dy;
-    }
-
-    for( int k = 0; k < num_bias_comp; ++ k )
-    {
-	bias_comp_outer_p[ k ]
-	    = 2 * pi * intg_p[ k ].result(  );
-	bias_comp_outer_v[ k ]
-	    = 2 * pi * intg_v[ k ].result(  );
-    }
-    return;
-}
-
-void pair_s::get_s12(  )
-{
-    double r( 0. );
-    std::cout << "Generate sigma12: ";
-    std::cout.flush(  );
-
-    std::vector<double> * p_p[ num_bias_comp ]
-	={ & b0p, & b11p, & b21p, & b12p };
-    std::vector<double> * p_v[ num_bias_comp ]
-	={ & b0v, & b11v, & b21v, & b12v };
-
-    pg.init( r_bin_num );
-    const double dr = ( r_max - r_min )
-	/ ( r_bin_num - 1. );
-
-    for( int i = 0; i < r_bin_num; ++ i )
-    {
-	pg.show( i );
-	r = dr * i + r_min;
-	s12( r );
-	r_buf.push_back( r );
-	for( int j = 0; j < num_bias_comp; ++ j )
-	{
-	    p_p[ j ]->push_back( bias_comp_outer_p[ j ] );
-	    p_v[ j ]->push_back( bias_comp_outer_v[ j ] );
-	}
-    }
-
-    std::cout << "Pairwise velocity dispersion obtained. "
-	      << std::endl;
-    return;
-}
-
-////////////////////////////////////////////////////////////
-// Output
-
-void pair_s::output(  )
-{
-    std::string temp_file_name;
-    temp_file_name = s12_file_name + "_p";
-    std::ofstream fout_p( temp_file_name.c_str(  ) );
-    temp_file_name = s12_file_name + "_v";
-    std::ofstream fout_v( temp_file_name.c_str(  ) );
-
-    std::vector<double> * p_p[ num_bias_comp ]
-	={ & b0p, & b11p, & b21p, & b12p };
-    std::vector<double> * p_v[ num_bias_comp ]
-	={ & b0v, & b11v, & b21v, & b12v };
-
-    for( unsigned i = 0; i < r_buf.size(  ); ++ i )
-    {
-	fout_p << r_buf[ i ] << ' ';
-	fout_v << r_buf[ i ] << ' ';
-	for( int j = 0; j < num_bias_comp; ++ j )
-	{
-	    fout_p << p_p[ j ]->at( i ) << ' ';
-	    fout_v << p_v[ j ]->at( i ) << ' ';
-	}
-	fout_p << '\n';
-	fout_v << '\n';
-    }
-
+    std::cout << "Pairwise sigma^2";
     return;
 }

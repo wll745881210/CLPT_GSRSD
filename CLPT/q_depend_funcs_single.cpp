@@ -7,12 +7,9 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-std::vector<double>   q_func_single::qvec;
-std::vector<double>   q_func_single::kvec;
-std::map<double, int> q_func_single::q_idx_buf;
-
-int    q_func_single::idx_current( 0. );
-double q_func_single::q_current  ( 0. );
+std::vector<double>        q_func_single::qvec;
+std::vector<double>        q_func_single::kvec;
+std::map<double, unsigned> q_func_single::q_idx_buf;
 
 ////////////////////////////////////////////////////////////
 // Constructor/destructor
@@ -89,9 +86,10 @@ double q_func_single::integrate_single( const double & q )
 
 void q_func_single::integrate(  )
 {
-    valvec.clear(  );
+    valvec.resize( qvec.size(  ) );
+#pragma omp parallel for schedule( dynamic, 10 )
     for( unsigned i = 0; i < qvec.size(  ); ++ i )
-	valvec.push_back( integrate_single( qvec[ i ] ) );
+	valvec[ i ] = integrate_single( qvec[ i ] );
 
     return;
 }
@@ -146,25 +144,21 @@ double & q_func_single::valvec_at( const int & i )
 ////////////////////////////////////////////////////////////
 // Interpolation
 
-void q_func_single::eval_all_idx( const double & q )
+unsigned q_func_single::eval_all_idx( const double & q )
 {
-    std::map<double, int>::iterator p
+    std::map<double, unsigned>::iterator p
 	= q_idx_buf.lower_bound( q );
     if( p != q_idx_buf.begin(  ) )
 	-- p;
-    idx_current = p->second;
-    q_current   = q;
-    return;
+    return p->second;
 }
 
-double q_func_single::get_val(  )
+double q_func_single::get_val
+( const double & q, const unsigned & i )
 {
     static const double nearly_0 = 1.e-3;
     
-    const int    & i = idx_current;
-    const double & q = q_current;
-    
-    if( i < 0 || i > int( qvec.size(  ) - 2 ) )
+    if( i < 0 || i + 2 > qvec.size(  ) )
 	return 0.;
     else if( ( qvec[ i + 1 ] - qvec[ i ] ) / qvec[ i ]
 	       < nearly_0 )

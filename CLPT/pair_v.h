@@ -8,8 +8,11 @@
 
 class pair_v : public corr_func
 {
-private:			// Overrider
-    void kernel( const double & r, const vec3 & y );
+public:				// Override the constructor
+    pair_v(  );
+private:			// Override
+    void kernel( const double & r, const vec3 & y,
+	         double * bias_comp );
     void post_proc(  );
 private:			// Function
     double v12_L( const double & r );
