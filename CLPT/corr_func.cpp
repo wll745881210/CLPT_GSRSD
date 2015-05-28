@@ -12,8 +12,8 @@
 
 const double corr_func::pi = 3.141592653589793;
 
-double    corr_func::max_y    = 100;
-int       corr_func::num_y    = 200;
+double    corr_func::y_max    = 100;
+int       corr_func::y_bin    = 200;
 q_func *  corr_func::qf       = NULL;
 
 ////////////////////////////////////////////////////////////
@@ -42,8 +42,9 @@ void corr_func::set_par( input & args )
 
     qf = q_func::get_instance(  );
 
-    args.find_key
-
+    args.find_key( "y_max",      y_max, 100 );
+    args.find_key( "y_bin_num",  y_bin, 200 );
+ 
     return;
 }
 
@@ -90,8 +91,8 @@ void corr_func::calc_corr( const double & r )
     for( int i = 0; i < num_bias_comp; ++ i )
 	intg[ i ].clear(  );
 
-    const double dy = max_y / num_y;
-    for( double y = 0.; y < max_y; y += dy )
+    const double dy = y_max / y_bin;
+    for( double y = 0.; y < y_max; y += dy )
     {
 	for( int k = 0; k < num_bias_comp; ++ k )
 	    intg[ k ].gl_clear(  );

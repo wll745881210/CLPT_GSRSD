@@ -10,13 +10,6 @@
 #include <vector>
 #include <string>
 
-struct corr_func_init
-{
-    double r_max, r_min;
-    int r_bin_num;
-    std::string file_name;
-};
-
 struct vec3
 {
     double x, y, z;
@@ -61,8 +54,8 @@ public:				// Function
     ////////// Mathematical const //////////
 private:
     static const double pi;
-    static const double max_y;
-    static const int    num_y;
+    static double y_max;
+    static int    y_bin;
 };
 
 #endif
