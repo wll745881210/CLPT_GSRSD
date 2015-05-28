@@ -10,6 +10,7 @@ public:
     integral(  );
     ~integral(  );
     void clear(  );
+    void clear( const unsigned & size );
 
     ////////// Data buffer //////////
 private:
@@ -25,9 +26,9 @@ public:
 
     ////////// Gauss-Legendre //////////
 public:
-    void   gl_clear(  );
-    double gl_xi( const int & i );
-    void   gl_read( const int & i, const double & kernel );
+    void   gl_clear (  );
+    double gl_xi    ( const int & i );
+    void   gl_read  ( const int & i, const double & kernel );
     double gl_result(  );
     static const int gl_num;
 private:
@@ -37,4 +38,3 @@ private:
 };
 
 #endif
-

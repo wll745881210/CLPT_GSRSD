@@ -9,7 +9,7 @@
 #include "input.h"
 
 void corr_driver( corr_func & corr,
-                  std::string specifier, input & args )
+		  std::string specifier, input & args )
 {
     corr.initialize(  );
     corr.get_corr(  );
@@ -34,7 +34,7 @@ int main( int argn, char * argv[  ] )
 
 	input args( par_file_name );
 	args.read(  );
-	
+
 	q_func * p_qf = q_func::get_instance(  );
 	p_qf->initialize( args );
 
@@ -51,8 +51,7 @@ int main( int argn, char * argv[  ] )
 	std::cerr << "\nError: " << err << std::endl;
 	return -1;
     }
-	
+
 
     return 0;
 }
-

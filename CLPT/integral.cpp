@@ -18,13 +18,20 @@ integral::integral(  )
 
 integral::~integral(  )
 {
-	
+
 }
 
 void integral::clear(  )
 {
     x_buf.clear(  );
     y_buf.clear(  );
+    return;
+}
+
+void integral::clear( const unsigned & size )
+{
+    x_buf.resize( size );
+    y_buf.resize( size );
     return;
 }
 
@@ -44,11 +51,10 @@ void integral::read( const double & x, const double & y )
 double integral::result(  )
 {
     double res( 0. );
-
+#pragma omp parallel for reduction( + : res )
     for( unsigned i = 1; i < x_buf.size(  ); ++ i )
-    	res += 0.5 * ( x_buf.at( i ) - x_buf.at( i - 1 ) )
-    	           * ( y_buf.at( i ) + y_buf.at( i - 1 ) );
-    
+	res += 0.5 * ( x_buf.at( i ) - x_buf.at( i - 1 ) )
+		   * ( y_buf.at( i ) + y_buf.at( i - 1 ) );
     return res;
 }
 
@@ -68,7 +74,7 @@ double integral::gl_xi( const int & i )
 
 void integral::gl_read( const int & i, const double & kernel )
 {
-    gl_intg_res += w[ i ] * kernel;	
+    gl_intg_res += w[ i ] * kernel;
     return;
 }
 
@@ -76,4 +82,3 @@ double integral::gl_result(  )
 {
     return gl_intg_res;
 }
-
