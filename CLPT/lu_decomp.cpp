@@ -12,7 +12,7 @@ lu_decomp::lu_decomp(  )
 
 lu_decomp::~lu_decomp(  )
 {
-	
+
 }
 
 void lu_decomp::set_size( int size )
@@ -30,7 +30,7 @@ int lu_decomp::idx( const int & i, const int & j )
 }
 
 double lu_decomp::lu_inverse( double A     [  ],
-                              double A_inv [  ] )
+			      double A_inv [  ] )
 {
     double det( 1. );
 
@@ -60,9 +60,9 @@ double lu_decomp::lu_inverse( double A     [  ],
 	    for( int j = 0; j < i; ++ j )
 		A_inv[idx( i, k )] -= A[idx( i, j )]
 		    * A_inv[idx( j, k )];
-	
+
 	for( int i = l - 1; i > -1; -- i )
-	{		
+	{
 	    for( int j = i + 1; j < l; ++ j )
 		A_inv[idx( i, k )] -= A[idx( i, j )]
 		    * A_inv[idx( j, k )];
@@ -72,6 +72,3 @@ double lu_decomp::lu_inverse( double A     [  ],
 
     return det;
 }
-
-
-

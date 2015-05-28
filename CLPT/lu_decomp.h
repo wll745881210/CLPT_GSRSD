@@ -3,22 +3,22 @@
 
 class lu_decomp
 {
-	////////// Con-/destructor & initializer //////////
+    ////////// Con-/destructor & initializer //////////
 public:
-	lu_decomp(  );
-	~lu_decomp(  );
+    lu_decomp(  );
+    ~lu_decomp(  );
 
-	void set_size( int size );
+    void set_size( int size );
 
-	////////// Index function //////////
+    ////////// Index function //////////
 private:
-	int l;
+    int l;
 public:
-	int idx( const int & i, const int & j );
+    int idx( const int & i, const int & j );
 
-	////////// LU process //////////
+    ////////// LU process //////////
 public:
-	double lu_inverse( double A[], double A_inv[] );
+    double lu_inverse( double A[], double A_inv[] );
 };
 
 #endif
