@@ -98,67 +98,87 @@ void pair_xi::kernel( const double & r, const vec3 & y )
 
     ////////// Sum them up! //////////
 
-    for( int i = 0; i < num_bias_comp; ++ i )
-	bias_comp_inner[ i ] = 0.;
+    for( unsigned i = 0; i < num_bias_comp; ++ i )
+	bias_comp[ i ] = 0.;
 	
-    double temp( 0. );
-    bias_comp_inner[ 0 ] += 1.;
+    double sum( 0. );
+    bias_comp[ 0 ] += 1.;
 
-    bias_comp_inner[ 3 ] += xi_R;
+    bias_comp[ 3 ] += xi_R;
 
-    bias_comp_inner[ 5 ] += 0.5 * pow( xi_R, 2 );
+    bias_comp[ 5 ] += 0.5 * pow( xi_R, 2 );
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	temp += U[ i ] * g[ i ];
-    bias_comp_inner[ 1 ] -= 2 * temp;
+	sum += U[ i ] * g[ i ];
+    bias_comp[ 1 ] -= 2 * sum;
 	
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
-	    temp += U[ i ] * U[ j ] * G[ i ][ j ];
-    bias_comp_inner[ 2 ] -= temp;
-    bias_comp_inner[ 3 ] -= temp;
+	    sum += U[ i ] * U[ j ] * G[ i ][ j ];
+    bias_comp[ 2 ] -= sum;
+    bias_comp[ 3 ] -= sum;
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	temp += U[ i ] * g[ i ];
-    bias_comp_inner[ 4 ] -= 2. * xi_R * temp;
+	sum += U[ i ] * g[ i ];
+    bias_comp[ 4 ] -= 2. * xi_R * sum;
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
 	    for( int k = 0; k < 3; ++ k )
-		temp += W[ i ][ j ][ k ]
+		sum += W[ i ][ j ][ k ]
 		    * Gamma[ i ][ j ][ k ];
-    bias_comp_inner[ 0 ] += temp / 6.;
+    bias_comp[ 0 ] += sum / 6.;
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
-	    temp += A_10[ i ][ j ] * G[ i ][ j ];
-    bias_comp_inner[ 1 ] -= temp;
+	    sum += A_10[ i ][ j ] * G[ i ][ j ];
+    bias_comp[ 1 ] -= sum;
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	temp += U_20[ i ] * g[ i ];
-    bias_comp_inner[ 2 ] -= temp;
+	sum += U_20[ i ] * g[ i ];
+    bias_comp[ 2 ] -= sum;
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	temp += U_11[ i ] * g[ i ];
-    bias_comp_inner[ 3 ] -= temp;
+	sum += U_11[ i ] * g[ i ];
+    bias_comp[ 3 ] -= sum;
 
-    temp = 0.;
+    sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	temp += y_vec[ i ] * g[ i ];
+	sum += y_vec[ i ] * g[ i ];
     static const double two_pi_cube = 248.05021344239853;
     // ( 2 \pi )^3
     const double gauss
-	= exp( -0.5 * temp )
+	= exp( -0.5 * sum )
 	/ sqrt( two_pi_cube * fabs( A_det ) );
-    for( int i = 0; i < num_bias_comp; ++ i )
-	bias_comp_inner[ i ] *= gauss;
+    for( unsigned i = 0; i < num_bias_comp; ++ i )
+	bias_comp[ i ] *= gauss;
 	
     return;
 }
+
+void pair_xi::post_proc(  )
+{
+    std::vector<double> * xi_L = new std::vector<double>;
+    q_func * qf = q_func::get_instance(  );
+    q_func_vals qval;
+    
+    for( unsigned i = 0; i < rvec.size(  ); ++ i )
+    {
+	corr_res[ 0 ]->at( i ) -= 1.;
+	qf->var_func( rvec[ i ], qval );
+	xi_L->push_back( qval.xi_L );
+    }
+
+    corr_res.insert( corr_res.begin(  ), xi_L );
+    // I am just inserting one entry, not too slow;
+    // deque makes other manipulations slower.
+    return;
+}
+

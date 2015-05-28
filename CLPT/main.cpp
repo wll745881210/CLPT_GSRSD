@@ -4,7 +4,7 @@
 #include "q_depend_funcs.h"
 #include "corr_func.h"
 #include "pair_xi.h"
-// #include "pair_v.h"
+#include "pair_v.h"
 // #include "pair_s.h"
 #include "input.h"
 
@@ -38,15 +38,17 @@ int main( int argn, char * argv[  ] )
 	pair_xi xi;
 	xi.initialize(  );
 	xi.get_corr(  );
-	
 	std::string xi_path;
 	args.find_key( "xi_file", xi_path, "xi"  );
 	xi.output( xi_path );
 
-	// pair_v v12;
-	// v12.set_par( v_arg );
-	// v12.get_v12(  );
-	// v12.output(  );
+	pair_v v12;
+	v12.initialize(  );
+	v12.get_corr(  );
+	std::string v12_path;
+	args.find_key( "v12_file", xi_path, "v12"  );
+	v12.output( v12_path );
+	
 
 	// pair_s s12;
 	// s12.set_par( s_arg );

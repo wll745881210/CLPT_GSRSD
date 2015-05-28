@@ -11,10 +11,13 @@
 // Static variables
 
 const double corr_func::pi = 3.141592653589793;
-
 double    corr_func::y_max    = 100;
 int       corr_func::y_bin    = 200;
 q_func *  corr_func::qf       = NULL;
+
+const unsigned corr_func::num_bias_comp = 6;
+
+std::vector<double> corr_func::rvec;
 
 ////////////////////////////////////////////////////////////
 // Constructor, destructor and initializer
@@ -26,7 +29,9 @@ corr_func::corr_func(  )
 
 corr_func::~corr_func(  )
 {
-	
+    for( unsigned i = 0; i < corr_res.size(  ); ++ i )
+	delete ( corr_res[ i ] );
+    return;
 }
 	
 void corr_func::set_par( input & args )
@@ -34,7 +39,7 @@ void corr_func::set_par( input & args )
     double r_min( 0. ), r_max( 0. );
     int r_bin( 0 );
     args.find_key( "r_max",     r_max, 130 );
-    args.find_key( "r_min",     r_max, 1   );
+    args.find_key( "r_min",     r_min, 1   );
     args.find_key( "r_bin_num", r_bin, 80  );
     const double dr = ( r_max - r_min ) / ( r_bin - 1 );
     for( int i = 0; i < r_bin; ++ i  )
@@ -50,7 +55,6 @@ void corr_func::set_par( input & args )
 
 void corr_func::initialize(  )
 {
-    static const unsigned num_bias_comp = 6;
     bias_comp = new double[ num_bias_comp ];
     for( unsigned i = 0; i < num_bias_comp; ++ i )
     {
@@ -62,9 +66,7 @@ void corr_func::initialize(  )
 }
 
 ////////////////////////////////////////////////////////////
-// Integration kernel itself is virtual
-
-
+// Integration kernel is purely virtual; its wrapper is not
 
 void corr_func::ker_wrap
 ( const double & r, const double & y, const double & beta )
@@ -85,50 +87,52 @@ int corr_func::delta_k( const int & i, const int & j )
 ////////////////////////////////////////////////////////////
 // Correlation function xi
 
-void corr_func::calc_corr( const double & r )
+void corr_func::calc_corr( const unsigned & i )
 {
+    const double & r = rvec[ i ];
+    
     integral intg[ num_bias_comp ];
-    for( int i = 0; i < num_bias_comp; ++ i )
-	intg[ i ].clear(  );
+    for( unsigned j = 0; j < num_bias_comp; ++ j )
+	intg[ j ].clear(  );
 
     const double dy = y_max / y_bin;
     for( double y = 0.; y < y_max; y += dy )
     {
-	for( int k = 0; k < num_bias_comp; ++ k )
-	    intg[ k ].gl_clear(  );
-	for( int j = 0; j < intg[ 0 ].gl_num; ++ j )
+	for( unsigned j = 0; j < num_bias_comp; ++ j )
+	    intg[ j ].gl_clear(  );
+	for( int l = 0; l < intg[ 0 ].gl_num; ++ l )
 	{
-	    const double beta = intg[ 0 ].gl_xi( j );
-	    M( r, y, beta );
-	    for( int k = 0; k < num_bias_comp; ++ k )
-		intg[ k ].gl_read
-		    ( j, bias_comp_inner[ k ] );
+	    const double beta = intg[ 0 ].gl_xi( l );
+	    ker_wrap( r, y, beta );
+	    for( unsigned j = 0; j < num_bias_comp; ++ j )
+		intg[ j ].gl_read( l, bias_comp[ j ] );
 	}
-	for( int k = 0; k < num_bias_comp; ++ k )
-	    intg[ k ].read
-		( y, pow( y, 2 ) * intg[ k ].gl_result() );
+	for( unsigned j = 0; j < num_bias_comp; ++ j )
+	{
+	    const double inner = intg[ j ].gl_result(  );
+	    intg[ j ].read( y, pow( y, 2 ) * inner );
+	}
     }
 
-    for( int k = 0; k < num_bias_comp; ++ k )
-	bias_comp_outer[ k ]
-	    = 2 * pi * intg[ k ].result(  );
-    bias_comp_outer[ 0 ] -= 1.;
-    
+    for( unsigned j = 0; j < num_bias_comp; ++ j )
+	corr_res[ j ]->at( i )
+	    = 2 * pi * intg[ j ].result(  );
+    return;
+}
+
+void corr_func::post_proc(  )
+{
     return;
 }
 
 void corr_func::get_corr(  )
 {
-    std::cout << "Generate xi: ";
-    std::cout.flush(  );
+    std::cout << "Generate xi: " << std::flush;
 
-    std::vector<double> * p[ num_bias_comp ]
-	={& b10b20, & b11b20, & b10b21,
-	  & b12b20, & b11b21, & b10b22};
-
-    for( int i = 0; i < r_bin_num; ++ i )
+    for( unsigned i = 0; i < rvec.size(  ); ++ i )
 	calc_corr( i );
 
+    post_proc(  );
     std::cout << "Correlation function obtained. "
 	      << std::endl;
     return;
@@ -140,7 +144,11 @@ void corr_func::get_corr(  )
 void corr_func::output( const std::string file_path )
 {
     save_load s( file_path );
-    for(  )
+    s.add_vec( rvec );
+    for( unsigned i = 0; i < corr_res.size(  ); ++ i )
+	s.add_vec( * corr_res[ i ] );
+    s.write(  );
+    
     return;
 }
 

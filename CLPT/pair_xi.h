@@ -5,8 +5,9 @@
 
 class pair_xi : public corr_func
 {
-private:
-    void kernel( const double r, const vec3 & y );
+private:			// Overrider
+    void kernel( const double & r, const vec3 & y );
+    void post_proc(  );
 };
 
 #endif

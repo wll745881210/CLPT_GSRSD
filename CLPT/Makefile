@@ -6,7 +6,7 @@ Option = -O3 -Wall -fopenmp -std=c++0x
 Objs = main.o integral.o q_depend_funcs_single.o \
 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
 	input.o save_load.o prog_bar.o \
-	corr_func.o pair_xi.o 
+	corr_func.o pair_xi.o pair_v.o
 
 Out_file = clpt.exe
 
@@ -22,8 +22,8 @@ corr_func.o : corr_func.cpp corr_func.h
 pair_xi.o : pair_xi.cpp pair_xi.h
 	$(CC) $(Option) -c -o pair_xi.o pair_xi.cpp
 
-# pair_v.o : pair_v.cpp pair_v.h
-# 	$(CC) $(Option) -c -o pair_v.o pair_v.cpp
+pair_v.o : pair_v.cpp pair_v.h
+	$(CC) $(Option) -c -o pair_v.o pair_v.cpp
 
 # pair_s.o : pair_s.cpp pair_s.h
 # 	$(CC) $(Option) -c -o pair_s.o pair_s.cpp

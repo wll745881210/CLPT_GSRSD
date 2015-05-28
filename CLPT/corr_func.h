@@ -26,33 +26,35 @@ public:
     void initialize(  );
 	
     ////////// Integration kernel //////////
-private:    // Data
+protected:    // Data
     static q_func * qf;
     lu_decomp lu;
-private:    // Functions
+protected:    // Functions
     virtual void kernel
     ( const double & r, const vec3 & y ) = 0;
-    void kernel( const double & r, const double & y,
-	         const double & beta );
+    void ker_wrap( const double & r, const double & y,
+	           const double & beta );
     int delta_k( const int & i, const int & j );
     // Kronecker delta
 	
     ////////// Correlation functions //////////
-private:    // Data
+protected:    // Data
+    static const unsigned num_bias_comp;
     double * bias_comp;
     static std::vector<double> rvec;
     std::vector<std::vector<double> * > corr_res;
 private:    // Functions
-    void calc_corr( const double & r );
+    void calc_corr( const unsigned & i );
+    virtual void post_proc(  );
 public:
     void get_corr(  );
 
     ////////// Output //////////
 public:				// Function
-    void output( const std::string file_path;  );
+    void output( const std::string file_path );
 	
     ////////// Mathematical const //////////
-private:
+protected:
     static const double pi;
     static double y_max;
     static int    y_bin;
