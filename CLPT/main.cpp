@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <omp.h>
 
 #include "q_depend_funcs.h"
 #include "corr_func.h"
@@ -37,6 +38,10 @@ int main( int argn, char * argv[  ] )
 
 	q_func * p_qf = q_func::get_instance(  );
 	p_qf->initialize( args );
+	
+	unsigned n_thread( 0 );
+	args.find_key( "n_thread", n_thread, 2 );
+	omp_set_num_threads( n_thread );
 
 	corr_func::set_par( args );
 	pair_xi xi;

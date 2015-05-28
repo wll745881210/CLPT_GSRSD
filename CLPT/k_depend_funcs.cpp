@@ -20,7 +20,7 @@ k_func * k_func::singleton = NULL;
 k_func::k_func(  )
 {
     std::vector<std::vector<double> * > rl
-	  { & R_buf_1, & R_buf_2, & Q_buf_1, & Q_buf_2,
+          { & R_buf_1, & R_buf_2, & Q_buf_1, & Q_buf_2,
 	    & Q_buf_3, & Q_buf_4, & Q_buf_5, & Q_buf_6,
 	    & Q_buf_7, & Q_buf_8 };
     this->res_list = rl;
@@ -56,11 +56,11 @@ double k_func::interp
 	= idx_map.lower_bound( k );
     if( p != idx_map.begin(  ) )
 	-- p;
-
+	
     const unsigned i = p->second;
     if( i > k_buf.size(  ) - 3 || i < 1 )
 	return 0.;
-
+	
     if( vec[ i ] > 0 && vec[ i+1 ] > 0)
     {
 	const double logres
@@ -90,7 +90,7 @@ void k_func::load_PL( std::string file_name )
     if( !fin )
 	throw "Unable to open PL file.";
 
-    double k( 1e-5 ), PL( 1e-5 );
+    double k( 1e-5 ), PL( 1e-5 );	
     std::pair<double, int> k_idx;
     k_idx.first  = 1e-5;
     k_idx.second = 0;
@@ -100,15 +100,15 @@ void k_func::load_PL( std::string file_name )
 	k_buf.push_back( k );
 	PL_buf.push_back( PL );
 	idx_map.insert( k_idx );
-
+	
 	fin >> k >> PL;
 	k_idx.first  = k;
 	k_idx.second = k_buf.size(  );
     }
-
+	
     k_min = k_buf[ 0 ];
     k_max = k_buf[ k_buf.size(  ) - 1 ];
-
+    
     std::cout << "Linear power spectrum loaded from: "
 	      << file_name << std::endl;
     return;
@@ -152,8 +152,8 @@ double k_func::Q_val( const int n, const double & k ) const
 
 void k_func::get_Q_func(  )
 {
-    dvec * p[ 9 ]
-	= { &Q_buf_1, &Q_buf_1, &Q_buf_2,
+    dvec * p[ 9 ] 
+	= { &Q_buf_1, &Q_buf_1, &Q_buf_2, 
 	    &Q_buf_3, &Q_buf_4, &Q_buf_5,
 	    &Q_buf_6, &Q_buf_7, &Q_buf_8 };
     for( int i = 0; i < 9; ++ i )
@@ -165,12 +165,12 @@ void k_func::get_Q_func(  )
     for( int n = 1; n < 9; ++ n )
     {
 	p[ n ]->resize( k_buf.size(  ) );
-#pragma omp parallel for schedule( dynamic )
+#pragma omp parallel for	
 	for( unsigned i = 0; i < k_buf.size(  ); ++ i )
 	{
 	    const double & k = k_buf[ i ];
 	    p[ n ]->at( i )  = Q_outer_integration( n, k );
-	}
+	}		
     }
 
     std::cout << "Done." << std::endl;
@@ -179,7 +179,7 @@ void k_func::get_Q_func(  )
 
 double k_func::Q_kernel
 ( int n, const double & r, const double & x )
-{
+{	
     if( fabs( r - 1 ) < nearly_0 )
 	switch( n )
 	{
@@ -190,7 +190,7 @@ double k_func::Q_kernel
 	case 3:
 	    return 0.25 * pow( x, 2 );
 	case 4:
-	    return ( fabs( x - 1. ) < nearly_0 ? 0.
+	    return ( fabs( x - 1. ) < nearly_0 ? 0. 
 		     : - 0.25 * ( x + 1. ) / ( x - 1. ) );
 	case 5:
 	    return 0.5 * ( x + 1. ) * x	;
@@ -213,7 +213,7 @@ double k_func::Q_kernel
 	case 3:
 	    return 0.25 * pow( x, 2 );
 	case 4:
-	    return ( fabs( x + 1 ) < nearly_0 ? 0.
+	    return ( fabs( x + 1 ) < nearly_0 ? 0. 
 		     : - 0.25 * ( x - 1. ) / ( x + 1. ) );
 	case 5:
 	    return 0.5 * ( x - 1. ) * x;
@@ -222,9 +222,9 @@ double k_func::Q_kernel
 	case 7:
 	    return 0.5 * pow( x, 2 );
 	case 8:
-	    return -0.5 * ( x - 1. );
+	    return -0.5 * ( x - 1. );		
 	default:
-	    throw "Q kernel error.";
+	    throw "Q kernel error.";	
 	}
     else
     {
@@ -249,7 +249,7 @@ double k_func::Q_kernel
 	case 7:
 	    return pow( x, 2 ) * ( 1 - r * x ) / y;
 	case 8:
-	    return pow( r, 2 ) * ( 1 - x*x ) / y;
+	    return pow( r, 2 ) * ( 1 - x*x ) / y;	
 	default:
 	    throw "Q kernel error.";
 	}
@@ -261,22 +261,24 @@ double k_func::Q_inner_integration
 ( int n, const double & r, const double & k )
 {
     integral intg;
+    intg.gl_clear(  );
     for( int i = 0; i < intg.gl_num; ++ i )
     {
 	const double x_i = intg.gl_xi( i );
 	const double y   = sqrt( 1. + pow( r, 2 )
-				 - 2. * r * x_i ) * k;
+	                         - 2. * r * x_i ) * k;
 	intg.gl_read( i, Q_kernel( n, r, x_i )
-			 * PL_val( y ) );
+	                 * PL_val( y ) );
     }
 
-    return intg.gl_result(  );
+    return intg.gl_result(  );	
 }
 
 double k_func::Q_outer_integration
 ( int n, const double & k )
 {
     integral intg;
+    intg.clear(  );
     for( unsigned i = 0; i < k_buf.size(  ); ++ i )
     {
 	const double r      = k_buf[ i ] / k;
@@ -284,7 +286,7 @@ double k_func::Q_outer_integration
 	    * Q_inner_integration( n, r, k );
 	intg.read( r, kernel );
     }
-
+	
     static const double temp_coef = 0.025330295910584444;
     // 0.25 / \pi^2;
     return pow( k, 3 ) * temp_coef * intg.result(  );
@@ -319,16 +321,16 @@ void k_func::get_R_func(  )
     for( int n = 1; n <= 2; ++ n )
     {
 	p[ n ]->resize( k_buf.size(  ) );
-#pragma omp parallel for schedule( dynamic, 10 )
+#pragma omp parallel for	
 	for( unsigned i = 0; i < k_buf.size(  ); ++ i )
 	{
 	    const double & k = k_buf[ i ];
-	    p[ n ]->at( i ) = R_outer_integration( n, k );
-	}
+	    p[ n ]->at( i )  = R_outer_integration( n, k );
+	}		
     }
 
     std::cout << "Done." << std::endl;
-
+    
     return;
 }
 
@@ -364,7 +366,7 @@ double k_func::R_inner_integration
 	// I was using Mathematica "CForm" to get the
 	// expressions...
 	case 1:
-	    return (4*r*(-3 + 11*pow(r,2) + 11*pow(r,4)
+	    return (4*r*(-3 + 11*pow(r,2) + 11*pow(r,4) 
 			 - 3*pow(r,6))
 		    - 3*pow(-1 + pow(r,2),4)
 		*log(pow(-1 + r,2))
@@ -390,6 +392,7 @@ double k_func::R_outer_integration
 ( int n, const double & k )
 {
     integral intg;
+    intg.clear(  );
     for( unsigned i = 0; i < k_buf.size(  ); ++ i )
     {
 	const double r = k_buf[ i ] / k;
@@ -424,6 +427,6 @@ void k_func::load_k_func( const std::string file_name )
     l.read_file(  );
     k_buf = l[ 0 ];
     for( unsigned i = 0; i < res_list.size(  ); ++ i )
-	( * res_list[ i ] ) = l[ i + 1 ];
+    	( * res_list[ i ] ) = l[ i + 1 ];
     return;
 }

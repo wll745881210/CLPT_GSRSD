@@ -78,6 +78,4 @@ private:
     static const double pi,       one_over_pi2;
 };
 
-
-
 #endif

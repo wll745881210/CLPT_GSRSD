@@ -4,6 +4,7 @@ Init
 r_max 		130
 r_min 		1
 r_bin_num 	80
+n_thread 	10
 xi_file 	../data/xi.txt
 v12_file 	../data/v12.txt
 s12_file 	../data/s12.txt
