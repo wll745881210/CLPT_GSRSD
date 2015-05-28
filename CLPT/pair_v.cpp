@@ -26,14 +26,13 @@ pair_v::~pair_v(  )
 	
 }
 
-void pair_v::set_par( const corr_func_init & v_arg,
-                      const q_func & qf )
+void pair_v::set_par( const corr_func_init & v_arg )
 {
     this->r_max		= v_arg.r_max;
     this->r_min		= v_arg.r_min;
     this->r_bin_num	= v_arg.r_bin_num;
     this->v12_file_name = v_arg.file_name;
-    this->qf		= ( q_func * )( & qf );
+    this->qf		= q_func::get_instance(  );
 
     std::cout << std::endl;
     return;
@@ -280,7 +279,7 @@ double pair_v::v12_L( const double & r )
 {
     integral intg;
     intg.clear(  );
-    k_func * kf = ( k_func * ) ( & qf->kfunc(  ));
+    k_func * kf = k_func::get_instance(  );
 	
     const std::vector<double> & kv = kf->kvec(  );
 

@@ -1,15 +1,12 @@
-CC = g++-4.9
+CC = g++-4.8
 Option = -O3 -Wall -fopenmp -std=c++0x 
 # c++0x or c++11 is for std::to_string on gcc only
 # If you are using Clang/llvm, you can remove it
 
-# Objs = main.o corr_func.o pair_v.o pair_s.o integral.o \
-# 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
-# 	input.o prog_bar.o
-
 Objs = main.o integral.o q_depend_funcs_single.o \
 	lu_decomp.o q_depend_funcs.o k_depend_funcs.o \
-	input.o save_load.o prog_bar.o
+	input.o save_load.o prog_bar.o \
+	corr_func.o pair_xi.o 
 
 Out_file = clpt.exe
 
@@ -19,8 +16,11 @@ main : $(Objs)
 main.o : main.cpp
 	$(CC) $(Option) -c -o main.o main.cpp
 
-# corr_func.o : corr_func.cpp corr_func.h
-# 	$(CC) $(Option) -c -o corr_func.o corr_func.cpp
+corr_func.o : corr_func.cpp corr_func.h
+	$(CC) $(Option) -c -o corr_func.o corr_func.cpp
+
+pair_xi.o : pair_xi.cpp pair_xi.h
+	$(CC) $(Option) -c -o pair_xi.o pair_xi.cpp
 
 # pair_v.o : pair_v.cpp pair_v.h
 # 	$(CC) $(Option) -c -o pair_v.o pair_v.cpp

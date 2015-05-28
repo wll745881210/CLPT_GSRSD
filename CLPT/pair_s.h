@@ -16,8 +16,7 @@ class pair_s
 public:
     pair_s(  );
     ~pair_s(  );
-    void set_par( const corr_func_init & s_arg,
-	          const q_func & q );
+    void set_par( const corr_func_init & s_arg );
 	
     ////////// Integration kernel //////////
 private:    // Data

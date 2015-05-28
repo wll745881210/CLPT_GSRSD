@@ -16,9 +16,8 @@ class pair_v
 public:
     pair_v(  );
     ~pair_v(  );
-    void set_par( const corr_func_init & v_arg,
-	const q_func & q );
-	
+    void set_par( const corr_func_init & v_arg );
+
     ////////// Integration kernel //////////
 private:    // Data
     q_func * qf;

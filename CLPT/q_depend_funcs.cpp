@@ -11,10 +11,10 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-const double q_func::nearly_0             ( 1.e-3 );
-const double q_func::nearly_inf           ( 2.e2  );
-const int    q_func::k_intg_points_multip ( 3     );
-q_func *     q_func::singleton            ( NULL  );
+const double q_func::nearly_0            ( 1.e-3 );
+const double q_func::nearly_inf          ( 2.e2  );
+const int    q_func::k_intg_points_multip( 3     );
+q_func *     q_func::singleton           ( NULL  );
 
 ////////////////////////////////////////////////////////////
 // Constructor, desctructor and initializer
@@ -81,9 +81,6 @@ void q_func::load_k( std::string pow_spec_name,
     p_kf->load_k_func( k_file_name );
     get_func_val(  );
     save_q_func( "../data/q_func.txt" );
-
-    throw "Q_func test run finished.";
-    
     return;
 }
 

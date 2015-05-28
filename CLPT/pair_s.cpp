@@ -18,22 +18,21 @@ const int	pair_s::num_y    = 200;
 
 pair_s::pair_s(  )
 {
-	
+
 }
 
 pair_s::~pair_s(  )
 {
-	
+
 }
 
-void pair_s::set_par( const corr_func_init & s_arg,
-                      const q_func & qf )
+void pair_s::set_par( const corr_func_init & s_arg )
 {
     this->r_max		= s_arg.r_max;
     this->r_min		= s_arg.r_min;
     this->r_bin_num	= s_arg.r_bin_num;
     this->s12_file_name = s_arg.file_name;
-    this->qf		= ( q_func * )( & qf );
+    this->qf		= q_func::get_instance(  );
 
     std::cout << std::endl;
     return;
@@ -48,17 +47,17 @@ void pair_s::M2( const double & r, const vec3 & y )
     static const double rh [ 3 ] = { 0, 0, 1 };
     static const double lh2[ 3 ] = { 0, 1, 0 };
     static const double lh1[ 3 ] = { 1, 0, 0 };
-	
+
     vec3 q = y;
     q.z   += r;
     double q_norm = sqrt( q.x*q.x + q.y*q.y + q.z*q.z );
     const double qh[ 3 ]	// "q hat", unit vector
 	= { q.x / q_norm, q.y / q_norm, q.z / q_norm };
     const double y_vec[ 3 ] = { y.x, y.y, y.z };
-    
+
     q_func_vals qfv;
     qf->var_func( q_norm, qfv );
-	
+
     const double xi_R = qfv.xi_L;
 
     ////////// Vectors and tensors //////////
@@ -81,7 +80,7 @@ void pair_s::M2( const double & r, const vec3 & y )
     double U[ 3 ];
     for( int i = 0; i < 3; ++ i )
 	U[ i ] = ( qfv.U_1 + qfv.U_3 ) * qh[ i ];
-	
+
     double g[ 3 ];
     for( int i = 0; i < 3; ++ i )
 	g[ i ] = 0.;
@@ -94,7 +93,7 @@ void pair_s::M2( const double & r, const vec3 & y )
 	for( int j = 0; j < 3; ++ j )
 	    G[ i ][ j ] = A_inv[ i ][ j ]
 		- g[ i ] * g[ j ];
-	
+
     double A_dot[ 3 ][ 3 ];
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
@@ -103,7 +102,7 @@ void pair_s::M2( const double & r, const vec3 & y )
 		    + 4. * qfv.X_13 )
 		+ qh[ i ] * qh[ j ]
 		* ( qfv.Y_11 + 2. * qfv.Y_22
-		    + 4. * qfv.Y_13 );	
+		    + 4. * qfv.Y_13 );
 
     double A_ddot[ 3 ][ 3 ];
     for( int i = 0; i < 3; ++ i )
@@ -125,7 +124,7 @@ void pair_s::M2( const double & r, const vec3 & y )
     double U_dot[ 3 ];
     for( int i = 0; i < 3; ++ i )
 	U_dot[ i ] = qh[ i ] * ( qfv.U_1 + 3. * qfv.U_3 );
-    
+
     double W_temp[ 3 ][ 3 ][ 3 ];
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
@@ -148,14 +147,14 @@ void pair_s::M2( const double & r, const vec3 & y )
 		    = 2. * W_temp[ i ][ j ][ k ]
 		    + 2. * W_temp[ i ][ k ][ j ]
 		    + W_temp[ k ][ j ][ i ];
-	
+
 
     ////////// Sum them up! //////////
-	
+
     // for( int i = 0; i < num_bias_comp; ++ i )
     // {
-    // 	bias_comp_inner_p[ i ] = 0.;
-    // 	bias_comp_inner_v[ i ] = 0.;
+    //	bias_comp_inner_p[ i ] = 0.;
+    //	bias_comp_inner_v[ i ] = 0.;
     // }
 
     double temp_p( 0. ), temp_v( 0. );
@@ -179,7 +178,7 @@ void pair_s::M2( const double & r, const vec3 & y )
 	    for( int i = 0; i < 3; ++ i )
 		for( int j = 0; j < 3; ++ j )
 		    temp[ n ][ m ]
-			-= A_dot[ i ][ n ] 
+			-= A_dot[ i ][ n ]
 			 * A_dot[ j ][ m ] * G[ i ][ j ];
     temp_p = 0.;
     temp_v = 0.;
@@ -278,12 +277,12 @@ void pair_s::M2( const double & r, const vec3 & y )
 	bias_comp_inner_p[ i ] *= gauss;
 	bias_comp_inner_v[ i ] *= gauss;
     }
-	
+
     return;
 }
 
 void pair_s::M2( const double & r, const double & y,
-                 const double & beta )
+		 const double & beta )
 {
     vec3 y_vec;
     y_vec.x = y * sqrt( 1 - beta * beta );
@@ -314,7 +313,7 @@ void pair_s::s12( const double & r )
     }
 
     const double dy = max_y / num_y;
-    while( y < max_y )	
+    while( y < max_y )
     {
 	for( int k = 0; k < num_bias_comp; ++ k )
 	{
@@ -336,9 +335,9 @@ void pair_s::s12( const double & r )
 	for( int k = 0; k < num_bias_comp; ++ k )
 	{
 	    intg_p[ k ].read( y, pow( y, 2 )
-		              * intg_p[ k ].gl_result(  ) );
+			      * intg_p[ k ].gl_result(  ) );
 	    intg_v[ k ].read( y, pow( y, 2 )
- 		              * intg_v[ k ].gl_result(  ) );
+			      * intg_v[ k ].gl_result(  ) );
 	}
 	y += dy;
     }
@@ -367,7 +366,7 @@ void pair_s::get_s12(  )
     pg.init( r_bin_num );
     const double dr = ( r_max - r_min )
 	/ ( r_bin_num - 1. );
-	
+
     for( int i = 0; i < r_bin_num; ++ i )
     {
 	pg.show( i );
@@ -396,12 +395,12 @@ void pair_s::output(  )
     std::ofstream fout_p( temp_file_name.c_str(  ) );
     temp_file_name = s12_file_name + "_v";
     std::ofstream fout_v( temp_file_name.c_str(  ) );
-	
+
     std::vector<double> * p_p[ num_bias_comp ]
 	={ & b0p, & b11p, & b21p, & b12p };
     std::vector<double> * p_v[ num_bias_comp ]
 	={ & b0v, & b11v, & b21v, & b12v };
-	
+
     for( unsigned i = 0; i < r_buf.size(  ); ++ i )
     {
 	fout_p << r_buf[ i ] << ' ';
@@ -409,13 +408,11 @@ void pair_s::output(  )
 	for( int j = 0; j < num_bias_comp; ++ j )
 	{
 	    fout_p << p_p[ j ]->at( i ) << ' ';
-	    fout_v << p_v[ j ]->at( i ) << ' ';			
+	    fout_v << p_v[ j ]->at( i ) << ' ';
 	}
 	fout_p << '\n';
 	fout_v << '\n';
     }
-	
+
     return;
 }
-
-

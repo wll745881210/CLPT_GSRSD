@@ -5,6 +5,7 @@
 #include "lu_decomp.h"
 #include "integral.h"
 #include "prog_bar.h"
+#include "input.h"
 
 #include <vector>
 #include <string>
@@ -28,46 +29,34 @@ class corr_func
 public:
     corr_func(  );
     ~corr_func(  );
-    void set_par( const corr_func_init & c_arg,
-                  const q_func & q );
+    static void set_par( input & args );
+    void initialize(  );
 	
     ////////// Integration kernel //////////
 private:    // Data
-    q_func * qf;
+    static q_func * qf;
     lu_decomp lu;
 private:    // Functions
-    void M( const double & r, const vec3   & y );
-    void M( const double & r, const double & y,
-            const double & beta );
+    virtual void kernel
+    ( const double & r, const vec3 & y ) = 0;
+    void kernel( const double & r, const double & y,
+	         const double & beta );
     int delta_k( const int & i, const int & j );
     // Kronecker delta
 	
-    ////////// Corr func xi //////////
+    ////////// Correlation functions //////////
 private:    // Data
-    double r_max, r_min;
-    int r_bin_num;
-    static const int num_bias_comp = 6;
-    double bias_comp_inner[ num_bias_comp ];
-    double bias_comp_outer[ num_bias_comp ];
-    std::vector<double> r_buf;
-    std::vector<double> xi_L_buf;
-    std::vector<double> b10b20, b11b20, b10b21;
-    std::vector<double> b12b20, b11b21, b10b22;
+    double * bias_comp;
+    static std::vector<double> rvec;
+    std::vector<std::vector<double> * > corr_res;
 private:    // Functions
-    void xi( const double & r );
-    double xi_L( const double & r );
+    void calc_corr( const double & r );
 public:
-    void get_xi(  );
+    void get_corr(  );
 
     ////////// Output //////////
-private:
-    std::string xi_file_name;
-public:
-    void output(  );
-	
-    ////////// Progress bar //////////
-private:
-    prog_bar pg;
+public:				// Function
+    void output( const std::string file_path;  );
 	
     ////////// Mathematical const //////////
 private:
