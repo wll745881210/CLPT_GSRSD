@@ -61,6 +61,6 @@ public:				// Function-like
     static unsigned eval_all_idx( const double & q );
     double get_val( const double & q, const unsigned & i );
 };
-
+    
 #endif
 

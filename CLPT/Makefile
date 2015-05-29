@@ -1,7 +1,5 @@
 CC = g++-4.8
-Option = -O3 -Wall -fopenmp -std=c++0x 
-# c++0x or c++11 is for std::to_string on gcc only
-# If you are using Clang/llvm, you can remove it
+Option = -O3 -Wall -std=c++11 -fopenmp
 
 Objs = main.o \
 	integral.o lu_decomp.o \

@@ -8,26 +8,26 @@ void pair_xi::kernel( const double & r, const vec3 & y,
 {
     vec3 q = y;
     q.z   += r;
-    double q_norm = sqrt( q.x*q.x + q.y*q.y + q.z*q.z );
-    const double qh[ 3 ]	// "q hat", unit vector
-	= { q.x / q_norm, q.y / q_norm, q.z / q_norm };
-    const double y_vec[ 3 ] = { y.x, y.y, y.z };
+    const vec3   qhat = q.vhat(  ); 	// unit vector
+    const double qh[] = { qhat[ 0 ], qhat[ 1 ], qhat[ 2 ] };
 
     q_func_vals qfv;
-    qf->var_func( q_norm, qfv );
-	
+    qf->var_func( q.norm(  ), qfv );
     const double xi_R = qfv.xi_L;
+    
     ////////// Vectors and tensors //////////
     double A_temp[ 9 ];
     double A_inv[ 3 ][ 3 ], A_inv_temp[ 9 ];
     double A_det( 0. );
+
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
-	    A_temp[lu.idx( i, j )]
+	    A_temp[lu.idx( i, j )] 
 		= delta_k( i, j )
 		* ( qfv.X_11 + qfv.X_22 + 2.*qfv.X_13 )
 		+ qh[ i ] * qh[ j ]
 		* ( qfv.Y_11 + qfv.Y_22 + 2.*qfv.Y_13 );
+    
     A_det = lu.lu_inverse( A_temp, A_inv_temp );
     for( int i = 0; i < 3; ++ i )
 	for( int j = 0; j < 3; ++ j )
@@ -76,7 +76,7 @@ void pair_xi::kernel( const double & r, const vec3 & y,
     {
 	g[ i ] = 0.;
 	for( int j = 0; j < 3; ++ j )
-	    g[ i ] += A_inv[ i ][ j ] * y_vec[ j ];
+	    g[ i ] += A_inv[ i ][ j ] * y[ j ];
     }
 
     double G[ 3 ][ 3 ];
@@ -150,7 +150,7 @@ void pair_xi::kernel( const double & r, const vec3 & y,
 
     sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	sum += y_vec[ i ] * g[ i ];
+	sum += y[ i ] * g[ i ];
     static const double two_pi_cube = 248.05021344239853;
     // ( 2 \pi )^3
     const double gauss = exp( -0.5 * sum )

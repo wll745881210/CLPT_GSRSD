@@ -7,12 +7,11 @@
 ////////////////////////////////////////////////////////////
 // Static variables and other initializers
 
-const double	k_func::nearly_0     = 1.e-3;
-const double	k_func::nearly_inf   = 1.e2;
-const double	k_func::pi	     = 3.14159265359;
-const double	k_func::one_over_pi2 = 0.050660592;
-
-k_func * k_func::singleton = NULL;
+const double	k_func::nearly_0    ( 1.e-3         );
+const double	k_func::nearly_inf  ( 1.e2          );
+const double	k_func::pi	    ( 3.14159265359 );
+const double	k_func::one_over_pi2( 0.050660592   );
+k_func *        k_func::singleton   ( nullptr       );
 
 ////////////////////////////////////////////////////////////
 // Constructor and desctructor
@@ -34,7 +33,7 @@ k_func::~k_func(  )
 
 k_func * k_func::get_instance(  )
 {
-    if( singleton == NULL )
+    if( singleton == nullptr )
 	singleton = new k_func;
 
     return singleton;
@@ -43,6 +42,7 @@ k_func * k_func::get_instance(  )
 void k_func::del_instance(  )
 {
     delete singleton;
+    singleton = nullptr;
     return;
 }
 

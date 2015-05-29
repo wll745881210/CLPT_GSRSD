@@ -42,17 +42,15 @@ public:
 
     ////////// Do all preparations //////////
 private:
-    void cal_all ( std::string pow_spec_name );
-    void load_k  ( std::string pow_spec_name,
-	           std::string k_file_name );
-    void load_all( std::string pow_spec_name,
-	           std::string k_file_name,
-	           std::string q_file_name );
-
-    ////////// Spherical Bessel functions //////////
-private:
-    double sph_bessel_j( int n, const double & x );
-    // n for order.
+    void calc_all( const std::string pow_spec_name,
+	           const std::string k_file_name,
+	           const std::string q_file_name );
+    void load_k  ( const std::string pow_spec_name,
+	           const std::string k_file_name,
+	           const std::string q_file_name );
+    void load_all( const std::string pow_spec_name,
+	           const std::string k_file_name,
+	           const std::string q_file_name );
 
     ////////// Various functions //////////
 private:    // Data

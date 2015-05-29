@@ -16,13 +16,11 @@ void pair_v::kernel( const double & r, const vec3 & y,
 
     vec3 q = y;
     q.z   += r;
-    double q_norm = sqrt( q.x*q.x + q.y*q.y + q.z*q.z );
-    const double qh[ 3 ]	// "q hat", unit vector
-	= { q.x / q_norm, q.y / q_norm, q.z / q_norm };
-    const double y_vec[ 3 ] = { y.x, y.y, y.z };
+    const vec3   qhat = q.vhat(  ); 	// unit vector
+    const double qh[] = { qhat[ 0 ], qhat[ 1 ], qhat[ 2 ] };
     
     q_func_vals qfv;
-    qf->var_func( q_norm, qfv );
+    qf->var_func( q.norm(  ), qfv );
 	
     const double xi_R = qfv.xi_L;
 
@@ -52,7 +50,7 @@ void pair_v::kernel( const double & r, const vec3 & y,
     {
 	g[ i ] = 0.;
 	for( int j = 0; j < 3; ++ j )
-	    g[ i ] += A_inv[ i ][ j ] * y_vec[ j ];
+	    g[ i ] += A_inv[ i ][ j ] * y[ j ];
     }
 
     double G[ 3 ][ 3 ];
@@ -177,7 +175,7 @@ void pair_v::kernel( const double & r, const vec3 & y,
 	
     sum = 0.;
     for( int i = 0; i < 3; ++ i )
-	sum += y_vec[ i ] * g[ i ];
+	sum += y[ i ] * g[ i ];
 
     static const double two_pi_cube = 248.05021344239853;
     // ( 2 \pi )^3

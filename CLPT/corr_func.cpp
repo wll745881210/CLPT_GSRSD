@@ -9,6 +9,48 @@
 #include <fstream>
 
 ////////////////////////////////////////////////////////////
+// For the vector
+
+double vec3::norm2(  )
+{
+    return pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 );
+}
+
+double vec3::norm(  )
+{
+    return sqrt( this->norm2(  ) );
+}
+
+vec3 vec3::vhat(  )
+{
+    vec3 res = ( * this );
+    const double norm_val = this->norm(  );
+    for( int i = 0; i < 3; ++ i )
+	res[ i ] /= norm_val;
+    return res;
+}
+
+double & vec3::operator[] ( const unsigned & i )
+{
+    if( i == 0 )
+	return this->x;
+    else if( i == 1 )
+	return this->y;
+    else
+	return this->z;
+}
+
+const double & vec3::operator[] ( const unsigned & i ) const
+{
+    if( i == 0 )
+    	return this->x;
+    else if( i == 1 )
+    	return this->y;
+    else
+    	return this->z;
+}
+
+////////////////////////////////////////////////////////////
 // Static variables
 
 const double corr_func::pi( 3.141592653589793 );
@@ -87,7 +129,7 @@ void corr_func::calc_corr( const unsigned & i )
 {
     const double & r = rvec[ i ];
     
-    integral intg[ num_bias_comp ];
+    integral * intg = new integral[ num_bias_comp ];
     double bias_comp[ num_bias_comp ];
     const double dy = y_max / y_bin;
     for( double y = 0.; y < y_max; y += dy )

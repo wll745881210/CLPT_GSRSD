@@ -11,10 +11,10 @@
 ////////////////////////////////////////////////////////////
 // Static variables
 
-const double q_func::nearly_0            ( 1.e-3 );
-const double q_func::nearly_inf          ( 2.e2  );
-const int    q_func::k_intg_points_multip( 3     );
-q_func *     q_func::singleton           ( NULL  );
+const double q_func::nearly_0            ( 1.e-3   );
+const double q_func::nearly_inf          ( 2.e2    );
+const int    q_func::k_intg_points_multip( 3       );
+q_func *     q_func::singleton           ( nullptr );
 
 ////////////////////////////////////////////////////////////
 // Constructor, desctructor and initializer
@@ -32,7 +32,7 @@ q_func::~q_func(  )
 
 q_func * q_func::get_instance(  )
 {
-    if( singleton == NULL )
+    if( singleton == nullptr )
 	singleton = new q_func;
     return singleton;
 }
@@ -40,23 +40,31 @@ q_func * q_func::get_instance(  )
 void q_func::del_instance(  )
 {
     delete singleton;
-    singleton = NULL;
+    singleton = nullptr;
     return;
 }
 
 void q_func::initialize( input & args )
 {
-    std::string k_path, q_path, ps_path;
-    args.find_key( "k_file",         k_path, "none" );
-    args.find_key( "q_file",         q_path, "none" );
-    args.find_key( "pow_spec_file", ps_path, "none" );
+    std::string k_path_in,  q_path_in,  ps_path;
+    std::string k_path_out, q_path_out;
+
+    args.find_key( "k_input",      k_path_in,  "none" );
+    args.find_key( "q_input",      q_path_in,  "none" );
+    args.find_key( "pow_spec_file",   ps_path, "none" );
+
+    const std::string base( "../data/" );
+    args.find_key( "k_output", k_path_out,
+	           base + "k_func.txt" );
+    args.find_key( "q_output", q_path_out,
+	           base + "q_func.txt" );
     
-    if( k_path == "none" )
-	cal_all( ps_path );
-    else if( q_path == "none" )
-	load_k( ps_path, k_path );
+    if( k_path_in == "none" )
+	calc_all( ps_path, k_path_out, q_path_out );
+    else if( q_path_in == "none" )
+	load_k  ( ps_path, k_path_in,  q_path_out );
     else
-	load_all( ps_path, k_path, q_path );
+	load_all( ps_path, k_path_in,  q_path_in  );
     return;
 }
 
@@ -64,37 +72,40 @@ void q_func::initialize( input & args )
 ////////////////////////////////////////////////////////////
 // To cal(culate) or not to cal, it is a problem.
 
-void q_func::cal_all( std::string pow_spec_name )
+void q_func::calc_all( const std::string pow_spec_path,
+                       const std::string k_path,
+                       const std::string q_path )
 {
     k_func * p_kf = k_func::get_instance(  );
-    p_kf->load_PL( pow_spec_name );
-    p_kf->get_Q_func(  );
-    p_kf->get_R_func(  );
-    p_kf->save_k_func( "../data/k_func.txt" );
-    get_func_val(  );
-    save_q_func( "../data/q_func.txt" );
+    p_kf->load_PL     ( pow_spec_path );
+    p_kf->get_Q_func  (               );
+    p_kf->get_R_func  (               );
+    p_kf->save_k_func ( k_path        );
+    this->get_func_val(               );
+    this->save_q_func ( q_path        );
     return;
 }
 
-void q_func::load_k( std::string pow_spec_name,
-                     std::string k_file_name )
+void q_func::load_k( const std::string pow_spec_path,
+                     const std::string k_path,
+                     const std::string q_path )
 {
     k_func * p_kf = k_func::get_instance(  );
-    p_kf->load_PL    ( pow_spec_name );
-    p_kf->load_k_func( k_file_name );
-    get_func_val(  );
-    save_q_func( "../data/q_func.txt" );
+    p_kf->load_PL     ( pow_spec_path );
+    p_kf->load_k_func ( k_path        );
+    this->get_func_val(               );
+    this->save_q_func ( q_path        );
     return;
 }
 
-void q_func::load_all( std::string pow_spec_name,
-                       std::string k_file_name,
-                       std::string q_file_name )
+void q_func::load_all( const std::string pow_spec_path,
+                       const std::string k_path,
+                       const std::string q_path )
 {
     k_func * p_kf = k_func::get_instance(  );
-    p_kf->load_PL    ( pow_spec_name );
-    p_kf->load_k_func( k_file_name   );
-    this->load_q_func( q_file_name   );
+    p_kf->load_PL    ( pow_spec_path );
+    p_kf->load_k_func( k_path        );
+    this->load_q_func( q_path        );
     return;
 }
 
@@ -105,12 +116,12 @@ void q_func::set_func(  )
 {
     class xi_L : public q_func_single
     {
-	double kernel( const double & k, const double & jx,
-	               const k_func & kf )
-	{
-	    return pow( k, 2 ) * kf.PL_val( k )
-		 * sph_bessel_j( 0, jx );
-	}
+    	double kernel( const double & k, const double & jx,
+    	               const k_func & kf )
+    	{
+    	    return pow( k, 2 ) * kf.PL_val( k )
+    		 * sph_bessel_j( 0, jx );
+    	}
     };
     q_func_vec.push_back( new xi_L );
 
@@ -345,7 +356,6 @@ void q_func::get_func_val(  )
     q_func_single::set_qvec( q_buf );
     q_func_single::set_kvec( k_buf );
 
-// #pragma omp parallel for
     for( unsigned i = 0; i < q_func_vec.size(  ); ++ i )
 	q_func_vec[ i ]->integrate(  );
     

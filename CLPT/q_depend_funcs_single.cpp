@@ -157,7 +157,7 @@ double q_func_single::get_val
 {
     static const double nearly_0 = 1.e-3;
     
-    if( i < 0 || i + 2 > qvec.size(  ) )
+    if( i + 2 > qvec.size(  ) )
 	return 0.;
     else if( ( qvec[ i + 1 ] - qvec[ i ] ) / qvec[ i ]
 	       < nearly_0 )

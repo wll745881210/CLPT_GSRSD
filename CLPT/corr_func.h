@@ -12,6 +12,11 @@
 struct vec3
 {
     double x, y, z;
+    double norm(  );
+    double norm2(  ); 
+    vec3   vhat(  );
+    double & operator[] ( const unsigned & i );
+    const double & operator[] ( const unsigned & i ) const;
 };
 
 
