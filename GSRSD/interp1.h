@@ -6,27 +6,27 @@
 
 class interp1
 {
-	////////// Initializer //////////
+    ////////// Initializer //////////
 public:
-	interp1(  );
-	~interp1(  );
-	void clear(  );
+    interp1(  );
+    ~interp1(  );
+    void clear(  );
 
-	////////// Read data //////////
+    ////////// Read data //////////
 public:
-	void read( const double & x, const double & y );
-	void read( const std::vector<double> & x,
-			   const std::vector<double> & y );
+    void read( const double & x, const double & y );
+    void read( const std::vector<double> & x,
+	const std::vector<double> & y );
 
-	////////// Interpolate //////////
+    ////////// Interpolate //////////
 private:						// Data
-	std::map<double, double> xy_buf;
+    std::map<double, double> xy_buf;
 public:
-	double operator() ( const double & arg );
+    double operator() ( const double & arg );
 
-	////////// Misc func/const //////////
+    ////////// Misc func/const //////////
 private:
-	static const double nearly0 = 1e-8;
+    static const double nearly0;
 };
 
 #endif

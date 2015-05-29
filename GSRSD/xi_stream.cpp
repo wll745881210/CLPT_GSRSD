@@ -8,6 +8,9 @@
 ////////////////////////////////////////////////////////////
 // Constructor, destructor and initializer
 
+const double xi_stream::pi( 3.141592654 );
+const double xi_stream::nearly0( 1.e-8 );
+
 xi_stream::xi_stream(  )
 {
 
@@ -245,31 +248,36 @@ double xi_stream::wedge_integration
 
 void xi_stream::gen_xi_s(  )
 {
-    std::cout << "Generating xi_s: ";
-    std::cout.flush(  );
+    std::cout << "Generating xi_s... \n" << std::flush;
 	
     xi_s_0_buf.clear(  );
     xi_s_2_buf.clear(  );
     xi_s_4_buf.clear(  );
     this->sigma_shift = sigma_p( 100. )- sigma_p_sim_100;
-	
-    std::vector<double> wedge( wedge_mu_buf.size(  ) - 1 );
-	
+
+    xi_wedge_buf.resize( s_buf.size(  ) );
+    xi_s_0_buf.resize( s_buf.size(  ) );
+    xi_s_2_buf.resize( s_buf.size(  ) );
+    xi_s_4_buf.resize( s_buf.size(  ) );
+#pragma omp parallel for schedule( dynamic, 4 )
     for( unsigned i = 0; i < s_buf.size(  ); ++ i )
     {
 	const double & s = s_buf[ i ];
-	xi_s_0_buf.push_back( outer_integration( 0, s ) );
-	xi_s_2_buf.push_back( outer_integration( 2, s ) );
-	xi_s_4_buf.push_back( outer_integration( 4, s ) );
-		
-	for( int j = 0; j < wedge_mu_buf.size(  ) - 1; ++ j )
+	xi_s_0_buf[ i ] = outer_integration( 0, s );
+	xi_s_2_buf[ i ] = outer_integration( 2, s );
+	xi_s_4_buf[ i ] = outer_integration( 4, s );
+	
+	std::vector<double> wedge
+	    ( wedge_mu_buf.size(  ) - 1 );
+	for( unsigned j = 0; j + 1 < wedge_mu_buf.size(  );
+	     ++ j )
 	{
 	    const double mu_min = wedge_mu_buf[ j ];
 	    const double mu_max = wedge_mu_buf[ j + 1 ];
 	    wedge[ j ]
 		= wedge_integration( mu_min, mu_max, s );
 	}
-	xi_wedge_buf.push_back( wedge );
+	xi_wedge_buf[ i ] = wedge;
     }
     return;
 }

@@ -67,8 +67,8 @@ public:
 
     ////////// Misc func/const //////////
 private:			// Data
-    static const double pi = 3.14159265358979323846;
-    static const double nearly0 = 1e-8;
+    static const double pi;
+    static const double nearly0;
 private:			// Function
     double legendre( const int & order, const double & x );
 };

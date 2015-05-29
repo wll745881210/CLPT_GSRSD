@@ -1,5 +1,5 @@
-CC = g++
-Option = -O3 -Wall
+CC = g++-4.8
+Option = -O3 -Wall -fopenmp -std=c++11
 
 Objs = main.o integral.o xi_stream.o interp1.o input.o
 
