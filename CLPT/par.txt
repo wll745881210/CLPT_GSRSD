@@ -9,5 +9,5 @@ xi_file 	../data/xi.txt
 v12_file 	../data/v12.txt
 s12_file 	../data/s12.txt
 pow_spec_file 	../data/PL_z0.55.dat
-# k_file 		../data/k_func.txt
+k_file 		../data/k_func.txt
 q_file 		../data/q_func.txt
