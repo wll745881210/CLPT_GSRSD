@@ -209,25 +209,27 @@ intact.
 
 Some explanations:
 
-| Key           | Value                                                            |
-|---------------+------------------------------------------------------------------|
-| fb11b20       | $\langle F' \rangle$                                             |
-| fb10b21       | $\langle F'' \rangle$                                            |
-| fb11b21       | $\langle F' \rangle \langle F'' \rangle$                         |
-| fb12b20       | $\langle F' \rangle^2$                                           |
-| fb10b22       | $\langle F'' \rangle^2$                                          |
-| sigma_p_100   | The value of $\sigma^2_\parallel$ at $100\ \mathrm{Mpc\ h}^{-1}$ |
-| s_max         | Maximum separation in the redshift-space                         |
-| s_min         | Minimum separation                                               |
-| s_bin         | Number of data points between s_min and s_max                    |
-| wedge_bin     | Number of data points for the "wedge" statistics                 |
-| y_spanning    | The integration range of y (see Beth and White 2011)             |
-| dy            | The integration step of y                                        |
-| f_v           | Structure growth rate, $(\mathrm{d} \log D / \mathrm{d} \log a)$ |
-| xi_file_name  | Path to the input file: real-space $\xi$                         |
-| v_file_name   | Path to the input file: real-space $v_{12}$                      |
-| s_file_name   | Path to the input file: real-space velocity dispersion           |
-| out_file_name | Path to the output file                                          |
+| Key           | Value                                                                        |
+|---------------+------------------------------------------------------------------------------|
+| fb11b20       | $\langle F' \rangle$                                                         |
+| fb10b21       | $\langle F'' \rangle$                                                        |
+| fb11b21       | $\langle F' \rangle \langle F'' \rangle$                                     |
+| fb12b20       | $\langle F' \rangle^2$                                                       |
+| fb10b22       | $\langle F'' \rangle^2$                                                      |
+| sigma_p_100   | The value of $\sigma^2_\parallel$ at $100\ \mathrm{Mpc\ h}^{-1}$             |
+| s_max         | Maximum separation in the redshift-space                                     |
+| s_min         | Minimum separation                                                           |
+| s_bin         | Number of data points between s_min and s_max                                |
+| wedge_bin     | Number of data points for the "wedge" statistics                             |
+| y_spanning    | The integration range of y (see Beth and White 2011)                         |
+| dy            | The integration step of y                                                    |
+| f_v           | Structure growth rate, $(\mathrm{d} \log D / \mathrm{d} \log a)$             |
+| xi_file_name  | Path to the input file: real-space $\xi$                                     |
+| v_file_name   | Path to the input file: real-space $v_{12}$                                  |
+| s_file_name   | Path to the input file: real-space velocity dispersion                       |
+| out_file_name | Path to the output file                                                      |
+| n_thread      | Number of threads that you will be using. If negative or missing, the number |
+|               | of threads will be determined by the env variable $OMP_NUM_THREADS           |
 
 The wedge statistics will be given by "<out_file_name>_wedge", 2-D
 plot by "<out_file_name>_2d", and some appendices will be given in
