@@ -16,7 +16,6 @@ dy		0.5
 f_v 		0.74429
 xi_file_name	../data/xi.txt
 v_file_name 	../data/v12.txt
-sp_file_name	../data/s12.txt_p
-sv_file_name	../data/s12.txt_v
+s_file_name	../data/s12.txt
 out_file_name 	../data/xi_s.txt
 

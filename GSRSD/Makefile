@@ -26,3 +26,6 @@ interp1.o : interp1.cpp interp1.h
 input.o : input.cpp input.h
 	$(CC) $(Option) -c -o input.o input.cpp
 
+clean:
+	rm *.o *~ *.exe
+
