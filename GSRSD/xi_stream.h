@@ -2,7 +2,6 @@
 #define XI_STREAM_H
 
 #include "integral.h"
-#include "prog_bar.h"
 #include "interp1.h"
 #include "input.h"
 
@@ -71,8 +70,6 @@ private:			// Data
     static const double pi = 3.14159265358979323846;
     static const double nearly0 = 1e-8;
 private:			// Function
-    // integral intg;
-    prog_bar pg;
     double legendre( const int & order, const double & x );
 };
 

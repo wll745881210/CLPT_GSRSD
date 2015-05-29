@@ -248,7 +248,6 @@ void xi_stream::gen_xi_s(  )
     std::cout << "Generating xi_s: ";
     std::cout.flush(  );
 	
-    pg.init( s_buf.size(  ) );
     xi_s_0_buf.clear(  );
     xi_s_2_buf.clear(  );
     xi_s_4_buf.clear(  );
@@ -258,7 +257,6 @@ void xi_stream::gen_xi_s(  )
 	
     for( unsigned i = 0; i < s_buf.size(  ); ++ i )
     {
-	pg.show( i );
 	const double & s = s_buf[ i ];
 	xi_s_0_buf.push_back( outer_integration( 0, s ) );
 	xi_s_2_buf.push_back( outer_integration( 2, s ) );
