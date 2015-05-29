@@ -52,8 +52,7 @@ void k_func::del_instance(  )
 double k_func::interp
 ( const double & k, const std::vector<double> & vec ) const
 {
-    std::map<double, int>::const_iterator p
-	= idx_map.lower_bound( k );
+    auto p = idx_map.lower_bound( k );
     if( p != idx_map.begin(  ) )
 	-- p;
 	

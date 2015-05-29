@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 class save_load
 {
@@ -23,7 +23,8 @@ private:			// Data
 private:			// Data
     bool is_using_header;
     bool is_vec_assigned;
-    std::map<std::string, std::vector<double> *> map_in;
+    std::unordered_map <std::string, std::vector<double> *>
+                       map_in;
     std::vector<std::vector<double> *>           buf_in;
 private:			// Function
     void read_one_line( std::ifstream & fin );

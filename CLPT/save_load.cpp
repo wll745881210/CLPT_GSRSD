@@ -121,9 +121,7 @@ const std::vector<double> & save_load::operator[]
 const std::vector<double> & save_load::operator[]
 ( const std::string name )
 {
-    std::map<std::string, std::vector<double> * >::iterator
-	p = map_in.find( name );
-    
+    auto p = map_in.find( name );
     if( p == map_in.end(  ) )
 	throw "Unable to find key " + name;
 

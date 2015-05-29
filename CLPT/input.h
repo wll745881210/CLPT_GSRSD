@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>    
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 class input
 {
@@ -22,7 +22,7 @@ public:
 
 private:
     std::ifstream fin;
-    std::map<std::string, std::string> item_map;
+    std::unordered_map<std::string, std::string> item_map;
     
     void get_items(  );
 };
@@ -31,8 +31,7 @@ template <typename T, typename t>
 void input::find_key( const std::string key_name,
                       T & val, t def_val )
 {
-    const std::map<std::string, std::string>::iterator p
-	= item_map.find( key_name );
+    auto p = item_map.find( key_name );
     if( p != item_map.end(  ) )
     {
 	std::stringstream ss;
@@ -42,9 +41,8 @@ void input::find_key( const std::string key_name,
     else
     {
 	std::cout << "Entry \"" << key_name
-		  << "\" not found; "
-		  << "Using default value: " << def_val
-		  << std::endl;
+		  << "\" not found; Using default value: "
+		  << def_val << std::endl;
 	val = def_val;
     }
     return;

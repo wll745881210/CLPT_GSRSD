@@ -146,8 +146,7 @@ double & q_func_single::valvec_at( const int & i )
 
 unsigned q_func_single::eval_all_idx( const double & q )
 {
-    std::map<double, unsigned>::iterator p
-	= q_idx_buf.lower_bound( q );
+    auto p = q_idx_buf.lower_bound( q );
     if( p != q_idx_buf.begin(  ) )
 	-- p;
     return p->second;
