@@ -44,8 +44,8 @@ The two packages are now parallelized with OpenMP.
 CLPT and GSRSD are both written in standard C++-11 (also works with
 C++-0x; gcc version > 4.4 will do this correctly)--and nothing
 else. If you are working under Linux and have g++ and GNUMake in your
-computer, you can just get into each folder and type "make"
-respectively for the comilation.
+computer, you can just get into each directory and type "make"
+respectively.
 
 Both packages contain OpenMP parallelization. If you are using
 Clang/LLVM, which does not officialy support OpenMP today, you may
