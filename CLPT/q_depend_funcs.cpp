@@ -88,8 +88,8 @@ void q_func::load_k( std::string pow_spec_name,
 }
 
 void q_func::load_all( std::string pow_spec_name,
-    std::string k_file_name,
-    std::string q_file_name )
+                       std::string k_file_name,
+                       std::string q_file_name )
 {
     k_func * p_kf = k_func::get_instance(  );
     p_kf->load_PL    ( pow_spec_name );
@@ -321,7 +321,7 @@ void q_func::get_func_val(  )
 
     //////////////////////////////////////////////////
     // Assigning q_buf and k_buf. Quite empirical.
-    std::vector<double_t> q_buf, k_buf;
+    std::vector<double> q_buf, k_buf;
 
     const double q_max  = 1. / kv[ 0 ];
     const double q_min  = 1. / kv[ kv.size(  ) - 1 ];

@@ -53,11 +53,8 @@ void save_load::parse_head_line( const std::string & src )
 	while( ! ss.eof(  ) )
 	{
 	    ss >> name;
-	    std::vector<double> * p_i
-		= new std::vector<double>;
-
-	    std::pair<std::string, std::vector<double> * >
-		pair_i( name, p_i );
+	    auto * p_i  = new std::vector<double>; // Ptr
+	    auto pair_i = std::make_pair( name, p_i );
 	    buf_in.push_back( p_i );
 	    map_in.insert( pair_i );
 	}
@@ -68,8 +65,7 @@ void save_load::parse_head_line( const std::string & src )
 	while( ! ss.eof(  ) )
 	{
 	    ss >> val;
-	    std::vector<double> * p_i
-		= new std::vector<double>;
+	    auto p_i = new std::vector<double>; // Pointer
 	    buf_in.push_back( p_i );
 	    p_i->push_back( val );
 	}
@@ -121,7 +117,7 @@ const std::vector<double> & save_load::operator[]
 const std::vector<double> & save_load::operator[]
 ( const std::string name )
 {
-    auto p = map_in.find( name );
+    auto p = map_in.find( name ); // Iterator...
     if( p == map_in.end(  ) )
 	throw "Unable to find key " + name;
 

@@ -111,8 +111,8 @@ void q_func_single::set_qvec
     q_idx_buf.clear(  );
     for( unsigned i = 0; i < q_src.size(  ); ++ i )
     {
-	const double & q = q_src[ i ];
-	const std::pair<double, int> idx_pair( q, i );
+	const double & q    = q_src[ i ];
+	const auto idx_pair = std::make_pair( q, i );
 	q_idx_buf.insert( idx_pair );
 	qvec.push_back( q );
     }
