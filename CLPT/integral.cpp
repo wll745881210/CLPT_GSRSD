@@ -13,6 +13,7 @@
 
 integral::integral(  )
 {
+    this->gl_intg_res = 0.;
     clear(  );
 }
 
