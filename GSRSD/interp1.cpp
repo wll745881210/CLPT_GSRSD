@@ -14,7 +14,7 @@ interp1::interp1(  )
 
 interp1::~interp1(  )
 {
-	
+
 }
 
 void interp1::clear(  )
@@ -75,5 +75,3 @@ double interp1::operator() ( const double & arg )
 	    * ( arg - x_0 ) / ( x_1 - x_0 );
     }
 }
-
-

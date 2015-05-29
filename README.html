@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="README: Convolution Lagrangian Perturbation Theory (CLPT) and Gaussian Streaming Redshift-Space Distortions (GSRSD)"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2014-04-09T13:54-0400"/>
+<meta name="generated" content="2015-05-29T03:12-0400"/>
 <meta name="author" content="Lile Wang"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -106,7 +106,97 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
 
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
 </head>
 <body>
 
@@ -122,42 +212,48 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 Introduction</a>
+<li><a href="#sec-1">1 Copyright and warranty info</a>
 <ul>
-<li><a href="#sec-1-1">1.1 Compilation and dependencies</a></li>
+<li><a href="#sec-1-1">1.1 The following people also contributed to this code:</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">2 CLPT</a>
+<li><a href="#sec-2">2 Introduction</a>
 <ul>
-<li><a href="#sec-2-1">2.1 Input</a>
-<ul>
-<li><a href="#sec-2-1-1">2.1.1 Parameter file</a></li>
-<li><a href="#sec-2-1-2">2.1.2 Linear power spectrum</a></li>
+<li><a href="#sec-2-1">2.1 Important changes</a></li>
+<li><a href="#sec-2-2">2.2 Compilation and dependencies</a></li>
 </ul>
 </li>
-<li><a href="#sec-2-2">2.2 Run!</a></li>
-<li><a href="#sec-2-3">2.3 Output</a>
-<ul>
-<li><a href="#sec-2-3-1">2.3.1 Real-space correlation function</a></li>
-<li><a href="#sec-2-3-2">2.3.2 Real-space pairwise infall velocity.</a></li>
-<li><a href="#sec-2-3-3">2.3.3 Real-space pairwise velocity dispersion</a></li>
-</ul></li>
-</ul>
-</li>
-<li><a href="#sec-3">3 GSRSD</a>
+<li><a href="#sec-3">3 CLPT</a>
 <ul>
 <li><a href="#sec-3-1">3.1 Input</a>
 <ul>
 <li><a href="#sec-3-1-1">3.1.1 Parameter file</a></li>
+<li><a href="#sec-3-1-2">3.1.2 Linear power spectrum</a></li>
 </ul>
 </li>
 <li><a href="#sec-3-2">3.2 Run!</a></li>
 <li><a href="#sec-3-3">3.3 Output</a>
 <ul>
-<li><a href="#sec-3-3-1">3.3.1 &lt;out_file_name&gt;</a></li>
-<li><a href="#sec-3-3-2">3.3.2 &lt;out_file_name&gt;_appendix</a></li>
-<li><a href="#sec-3-3-3">3.3.3 &lt;out_file_name&gt;_wedge</a></li>
-<li><a href="#sec-3-3-4">3.3.4 &lt;out_file_name&gt;_2d</a></li>
+<li><a href="#sec-3-3-1">3.3.1 Real-space correlation function</a></li>
+<li><a href="#sec-3-3-2">3.3.2 Real-space pairwise infall velocity.</a></li>
+<li><a href="#sec-3-3-3">3.3.3 Real-space pairwise velocity dispersion</a></li>
+</ul></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 GSRSD</a>
+<ul>
+<li><a href="#sec-4-1">4.1 Input</a>
+<ul>
+<li><a href="#sec-4-1-1">4.1.1 Parameter file</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-2">4.2 Run!</a></li>
+<li><a href="#sec-4-3">4.3 Output</a>
+<ul>
+<li><a href="#sec-4-3-1">4.3.1 &lt;out_file_name&gt;</a></li>
+<li><a href="#sec-4-3-2">4.3.2 &lt;out_file_name&gt;_appendix</a></li>
+<li><a href="#sec-4-3-3">4.3.3 &lt;out_file_name&gt;_wedge</a></li>
+<li><a href="#sec-4-3-4">4.3.4 &lt;out_file_name&gt;_2d</a></li>
 </ul>
 </li>
 </ul>
@@ -167,32 +263,101 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> Copyright and warranty info</h2>
 <div class="outline-text-2" id="text-1">
 
-
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.
+</p>
 <p>
-This package contains two separated programs: CLPT and GSRSD. Those
-two programs are coded separately, but GSRSD uses the output of CLPT
-directly.
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
 </p>
 
 </div>
 
 <div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Compilation and dependencies</h3>
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> The following people also contributed to this code:</h3>
 <div class="outline-text-3" id="text-1-1">
 
 
+<ul>
+<li>Alejandro Aviles
+
+</li>
+<li>Martin White
+</li>
+</ul>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Introduction</h2>
+<div class="outline-text-2" id="text-2">
+
+
 <p>
-CLPT and GSRSD are both written in standard C++ (with STL)&ndash;and
-nothing else. If you are working under Linux and have g++ and GNUMake
-in your computer, you can just get into each folder and type "make"
+This package contains two separated programs: CLPT and GSRSD. Those
+two programs are coded separately, but GSRSD uses the output of CLPT
+directly. For the overall reference, please refer to:
+</p>
+<p>
+<a href="http://adsabs.harvard.edu/abs/2014MNRAS.437..588W">http://adsabs.harvard.edu/abs/2014MNRAS.437..588W</a>
+</p>
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Important changes</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+<p>
+Compared to the previous version, the \(\sigma^2\) (velocity dispersion)
+output files, generated by the CLPT part, are merged into one file
+(and the GSRSD part has already been modified accordingly). See the
+corresponding section in this README for details.
+</p>
+<p>
+The two packages are now parallelized with OpenMP.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Compilation and dependencies</h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+<p>
+CLPT and GSRSD are both written in standard C++-11 (also works with
+C++-0x; gcc version &gt; 4.4 will do this correctly)&ndash;and nothing
+else. If you are working under Linux and have g++ and GNUMake in your
+computer, you can just get into each folder and type "make"
 respectively for the comilation.
 </p>
 <p>
+Both packages contain OpenMP parallelization. If you are using
+Clang/LLVM, which does not officialy support OpenMP today, you may
+want to remove the "<code>#include &lt;omp.h&gt;</code>" and "<code>omp_set_num_threads( n_threads );</code>" statements in both "<code>main.cpp</code>" files. Or, instead, you
+may want to try this:
+</p>
+<p>
+<a href="https://clang-omp.github.io">https://clang-omp.github.io</a>
+</p>
+<p>
 The makefiles are written by a human, so you should find it easy to
-modify them as needed.
+modify them as needed (e.g. if you have gcc 4.4, you may want to use
+the flag "-std=c++0x" instead of "-std=c++11" therein).
 </p>
 <p>
 I named the output binary files as ".exe" files&ndash;the only purpose for
@@ -203,9 +368,9 @@ this is for git to recogize them easily and clearly.
 
 </div>
 
-<div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> CLPT</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> CLPT</h2>
+<div class="outline-text-2" id="text-3">
 
 
 <p>
@@ -218,41 +383,20 @@ For CLPT, please refer to:
 <p>
 <a href="http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C">http://adsabs.harvard.edu/abs/2013MNRAS.429.1674C</a>
 </p>
-<p>
-Note: An error in X<sup>(12)</sup><sub>10</sub> is corrected in this version. It should be
-</p>
-<ol>
-<li>* ( kf.R<sub>val</sub>( 1, k ) - kf.R<sub>val</sub>( 2, k ) ) (correct)
-</li>
-</ol>
-
-
-<p>
-instead of 
-</p>
-<ol>
-<li>* ( kf.R<sub>val</sub>( 1, k ) + kf.R<sub>val</sub>( 2, k ) ) (wrong)
-</li>
-</ol>
-
-
-<p>
-in line 486 of CLPT/q<sub>depend</sub><sub>funcs</sub>.cpp .
-</p>
 
 </div>
 
-<div id="outline-container-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Input</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Input</h3>
+<div class="outline-text-3" id="text-3-1">
 
 
 
 </div>
 
-<div id="outline-container-2-1-1" class="outline-4">
-<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Parameter file</h4>
-<div class="outline-text-4" id="text-2-1-1">
+<div id="outline-container-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Parameter file</h4>
+<div class="outline-text-4" id="text-3-1-1">
 
 
 <p>
@@ -274,13 +418,18 @@ Some explanations:
 <tbody>
 <tr><td class="left">r_max</td><td class="left">Maximum value of real-space separation that is calculated</td></tr>
 <tr><td class="left">r_min</td><td class="left">Minimum value of real-space separation</td></tr>
-<tr><td class="left">r_bin_num</td><td class="left">Number of data points between r<sub>min</sub> and r<sub>max</sub></td></tr>
+<tr><td class="left">r_bin_num</td><td class="left">Number of data points between r_min and r_max</td></tr>
 <tr><td class="left">pow_spec_file</td><td class="left">Path to the input file: Linear power spectrum</td></tr>
-<tr><td class="left">xi_file</td><td class="left">Path to the output file: real-space &xi;(r)</td></tr>
+<tr><td class="left">xi_file</td><td class="left">Path to the output file: real-space \(\xi(r)\)</td></tr>
 <tr><td class="left">v12_file</td><td class="left">Path to the output file: real-space pairwise infall velocity</td></tr>
 <tr><td class="left">s12_file</td><td class="left">Path to the output file: real-space pairwise velocity dispersion</td></tr>
-<tr><td class="left">k_file</td><td class="left">If specified, functions of k are read from file; if "none", they will be calculated</td></tr>
-<tr><td class="left">q_file</td><td class="left">Similar to k<sub>file</sub>. Note: Functions of q depend on functions of k</td></tr>
+<tr><td class="left">k_input</td><td class="left">If specified, functions of k are read from file; if "none" or missing, they will</td></tr>
+<tr><td class="left"></td><td class="left">be calculated and stored into the file specified in key "k_output".</td></tr>
+<tr><td class="left">k_output</td><td class="left">The path for the \(k\)-function output file.</td></tr>
+<tr><td class="left">q_input</td><td class="left">Similar to "k_input". Note: Functions of q depend on functions of \(k\)</td></tr>
+<tr><td class="left">q_output</td><td class="left">Similar to "k_output".</td></tr>
+<tr><td class="left">n_thread</td><td class="left">Number of threads that you will be using. If negative or missing, the number</td></tr>
+<tr><td class="left"></td><td class="left">of threads will be determined by the env variable $OMP_NUM_THREADS</td></tr>
 </tbody>
 </table>
 
@@ -294,9 +443,9 @@ for the parallel component, and "_v" for the perpandicular component.
 
 </div>
 
-<div id="outline-container-2-1-2" class="outline-4">
-<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Linear power spectrum</h4>
-<div class="outline-text-4" id="text-2-1-2">
+<div id="outline-container-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> Linear power spectrum</h4>
+<div class="outline-text-4" id="text-3-1-2">
 
 
 <p>
@@ -313,8 +462,8 @@ Definition of the file:
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">Wave number (in h/Mpc)</td></tr>
-<tr><td class="right">2</td><td class="left">Power [in (Mpc/h)<sup>3]</sup></td></tr>
+<tr><td class="right">1</td><td class="left">Wave number (in \(\mathrm{h\ Mpc}^{-1}\))</td></tr>
+<tr><td class="right">2</td><td class="left">Power [in \((\mathrm{Mpc\ h})^{-3}]\)</td></tr>
 </tbody>
 </table>
 
@@ -324,9 +473,9 @@ Definition of the file:
 
 </div>
 
-<div id="outline-container-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Run!</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Run!</h3>
+<div class="outline-text-3" id="text-3-2">
 
 
 <p>
@@ -342,28 +491,31 @@ $ ./clpt.exe par.txt
 
 </div>
 
-<div id="outline-container-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Output</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Output</h3>
+<div class="outline-text-3" id="text-3-3">
 
 
 <p>
-In our CLPT model, we use &lt;F'&gt; and &lt;F"&gt; as first- and second-order
-Lagrangian bias parameters. For a specific statistics A, we calculate
-the value of A for biased tracers as:
+In our CLPT model, we use \(\langle F'\rangle\) and \(\langle F''\rangle\)
+as first- and second-order Lagrangian bias parameters. For a specific
+statistics A, we calculate the value of A for biased tracers as:
 </p>
-<p>
-A = A<sub>0</sub> + A<sub>10</sub> &lt;F'&gt; + A<sub>01</sub> &lt;F"&gt; + A<sub>20</sub> &lt;F'&gt;<sup>2</sup> + A<sub>11</sub> &lt;F'&gt;&lt;F"&gt; + A<sub>02</sub> &lt;F"&gt;<sup>2</sup>
-</p>
+
+
+\(A = A_0 + A_{10} \langle F' \rangle + A_{01} \langle F'' \rangle +
+A_{20} \langle F' \rangle^2 + A_{11} \langle F' \rangle\langle F''
+\rangle + A_{02} \langle F'' \rangle^2\)
+
 <p>
 In this section we will use this notation. 
 </p>
 
 </div>
 
-<div id="outline-container-2-3-1" class="outline-4">
-<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> Real-space correlation function</h4>
-<div class="outline-text-4" id="text-2-3-1">
+<div id="outline-container-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> Real-space correlation function</h4>
+<div class="outline-text-4" id="text-3-3-1">
 
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -373,14 +525,14 @@ In this section we will use this notation.
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">&xi;<sub>L</sub> (linear correlation function)</td></tr>
-<tr><td class="right">3</td><td class="left">&xi;<sub>0</sub></td></tr>
-<tr><td class="right">4</td><td class="left">&xi;<sub>10</sub></td></tr>
-<tr><td class="right">5</td><td class="left">&xi;<sub>01</sub></td></tr>
-<tr><td class="right">6</td><td class="left">&xi;<sub>20</sub></td></tr>
-<tr><td class="right">7</td><td class="left">&xi;<sub>11</sub></td></tr>
-<tr><td class="right">8</td><td class="left">&xi;<sub>02</sub></td></tr>
+<tr><td class="right">1</td><td class="left">\(r\) (in \(\mathrm{Mpc\ h}^{-1}\))</td></tr>
+<tr><td class="right">2</td><td class="left">\(\xi_L\) (linear correlation function)</td></tr>
+<tr><td class="right">3</td><td class="left">\(\xi_0\)</td></tr>
+<tr><td class="right">4</td><td class="left">\(\xi_{10}\)</td></tr>
+<tr><td class="right">5</td><td class="left">\(\xi_{01}\)</td></tr>
+<tr><td class="right">6</td><td class="left">\(\xi_{20}\)</td></tr>
+<tr><td class="right">7</td><td class="left">\(\xi_{11}\)</td></tr>
+<tr><td class="right">8</td><td class="left">\(\xi_{02}\)</td></tr>
 </tbody>
 </table>
 
@@ -389,15 +541,15 @@ In this section we will use this notation.
 
 </div>
 
-<div id="outline-container-2-3-2" class="outline-4">
-<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> Real-space pairwise infall velocity.</h4>
-<div class="outline-text-4" id="text-2-3-2">
+<div id="outline-container-3-3-2" class="outline-4">
+<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> Real-space pairwise infall velocity.</h4>
+<div class="outline-text-4" id="text-3-3-2">
 
 
 <p>
-Veolicties are given as [v/(a.H(a).f<sub>v</sub>)] (this gives the results a
-dimension of distance), where a is the scale factor, H(a) is the
-Hubble parameter and f<sub>v</sub> is the growth factor.
+Veolicties are given in units of \(v/(a H(a) f_v)\) (this gives the
+results a dimension of distance), where a is the scale factor, \(H(a)\) is
+the Hubble parameter and \(f_v\) is the growth factor.
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup><col class="right" /><col class="left" />
@@ -406,14 +558,14 @@ Hubble parameter and f<sub>v</sub> is the growth factor.
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">v<sub>12</sub>,<sub>L</sub> (linear pairwise velocity, in Mpc/h)</td></tr>
-<tr><td class="right">3</td><td class="left">v<sub>12</sub>,<sub>0</sub></td></tr>
-<tr><td class="right">4</td><td class="left">v<sub>12</sub>,<sub>10</sub></td></tr>
-<tr><td class="right">5</td><td class="left">v<sub>12</sub>,<sub>01</sub></td></tr>
-<tr><td class="right">6</td><td class="left">v<sub>12</sub>,<sub>20</sub></td></tr>
-<tr><td class="right">7</td><td class="left">v<sub>12</sub>,<sub>11</sub></td></tr>
-<tr><td class="right">8</td><td class="left">v<sub>12</sub>,<sub>02</sub></td></tr>
+<tr><td class="right">1</td><td class="left">\(r\) (in \(\mathrm{Mpc\ h}^{-1}\))</td></tr>
+<tr><td class="right">2</td><td class="left">\(v_{12,L}\) (linear pairwise velocity)</td></tr>
+<tr><td class="right">3</td><td class="left">\(v_{12,0}\)</td></tr>
+<tr><td class="right">4</td><td class="left">\(v_{12,10}\)</td></tr>
+<tr><td class="right">5</td><td class="left">\(v_{12,01}\)</td></tr>
+<tr><td class="right">6</td><td class="left">\(v_{12,20}\)</td></tr>
+<tr><td class="right">7</td><td class="left">\(v_{12,11}\)</td></tr>
+<tr><td class="right">8</td><td class="left">\(v_{12,02}\)</td></tr>
 </tbody>
 </table>
 
@@ -422,15 +574,11 @@ Hubble parameter and f<sub>v</sub> is the growth factor.
 
 </div>
 
-<div id="outline-container-2-3-3" class="outline-4">
-<h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> Real-space pairwise velocity dispersion</h4>
-<div class="outline-text-4" id="text-2-3-3">
+<div id="outline-container-3-3-3" class="outline-4">
+<h4 id="sec-3-3-3"><span class="section-number-4">3.3.3</span> Real-space pairwise velocity dispersion</h4>
+<div class="outline-text-4" id="text-3-3-3">
 
 
-<p>
-Suffix "_p" for the parallel component, and "_v" for the perpandicular
-component. Velocity dispersions are given as [sigma/(a.H(a).f<sub>v</sub>)<sup>2]</sup>
-</p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup><col class="right" /><col class="left" />
 </colgroup>
@@ -438,11 +586,15 @@ component. Velocity dispersions are given as [sigma/(a.H(a).f<sub>v</sub>)<sup>2
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">r (in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">&sigma;<sub>12</sub>,<sub>0</sub> (in Mpc<sup>2</sup>/h<sup>2</sup>)</td></tr>
-<tr><td class="right">3</td><td class="left">&sigma;<sub>12</sub>,<sub>10</sub></td></tr>
-<tr><td class="right">4</td><td class="left">&sigma;<sub>12</sub>,<sub>01</sub></td></tr>
-<tr><td class="right">5</td><td class="left">&sigma;<sub>12</sub>,<sub>20</sub></td></tr>
+<tr><td class="right">1</td><td class="left">\(r\) (in \(\mathrm{Mpc\ h}^{-1}\))</td></tr>
+<tr><td class="right">2</td><td class="left">\(\sigma^2_{\parallel, 12,0}\) (in \(\mathrm{Mpc}^2/\mathrm{h}^2\))</td></tr>
+<tr><td class="right">3</td><td class="left">\(\sigma^2_{\parallel, 12,10}\)</td></tr>
+<tr><td class="right">4</td><td class="left">\(\sigma^2_{\parallel, 12,01}\)</td></tr>
+<tr><td class="right">5</td><td class="left">\(\sigma^2_{\parallel, 12,20}\)</td></tr>
+<tr><td class="right">6</td><td class="left">\(\sigma^2_{\bot, 12,0}\) (in \(\mathrm{Mpc}^2/\mathrm{h}^2\))</td></tr>
+<tr><td class="right">7</td><td class="left">\(\sigma^2_{\bot, 12,10}\)</td></tr>
+<tr><td class="right">8</td><td class="left">\(\sigma^2_{\bot, 12,01}\)</td></tr>
+<tr><td class="right">9</td><td class="left">\(\sigma^2_{\bot, 12,20}\)</td></tr>
 </tbody>
 </table>
 
@@ -456,9 +608,9 @@ Other components vanish at the desired (one-loop) order.
 
 </div>
 
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> GSRSD</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> GSRSD</h2>
+<div class="outline-text-2" id="text-4">
 
 
 <p>
@@ -481,17 +633,17 @@ For the "wedge" statistcis, you may find it in, such as,
 
 </div>
 
-<div id="outline-container-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Input</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Input</h3>
+<div class="outline-text-3" id="text-4-1">
 
 
 
 </div>
 
-<div id="outline-container-3-1-1" class="outline-4">
-<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Parameter file</h4>
-<div class="outline-text-4" id="text-3-1-1">
+<div id="outline-container-4-1-1" class="outline-4">
+<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Parameter file</h4>
+<div class="outline-text-4" id="text-4-1-1">
 
 
 <p>
@@ -511,23 +663,22 @@ Some explanations:
 <tr><th scope="col" class="left">Key</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="left">fb11b20</td><td class="left">&lt;F'&gt;</td></tr>
-<tr><td class="left">fb10b21</td><td class="left">&lt;F"&gt;</td></tr>
-<tr><td class="left">fb11b21</td><td class="left">&lt;F'&gt;&lt;F"&gt;</td></tr>
-<tr><td class="left">fb12b20</td><td class="left">&lt;F'&gt;<sup>2</sup></td></tr>
-<tr><td class="left">fb10b22</td><td class="left">&lt;F"&gt;<sup>2</sup></td></tr>
-<tr><td class="left">sigma_p_100</td><td class="left">The value of &sigma;<sub>\parallel</sub> (in ) at 100 Mpc/h</td></tr>
+<tr><td class="left">fb11b20</td><td class="left">\(\langle F' \rangle\)</td></tr>
+<tr><td class="left">fb10b21</td><td class="left">\(\langle F'' \rangle\)</td></tr>
+<tr><td class="left">fb11b21</td><td class="left">\(\langle F' \rangle \langle F'' \rangle\)</td></tr>
+<tr><td class="left">fb12b20</td><td class="left">\(\langle F' \rangle^2\)</td></tr>
+<tr><td class="left">fb10b22</td><td class="left">\(\langle F'' \rangle^2\)</td></tr>
+<tr><td class="left">sigma_p_100</td><td class="left">The value of \(\sigma^2_\parallel\) at \(100\ \mathrm{Mpc\ h}^{-1}\)</td></tr>
 <tr><td class="left">s_max</td><td class="left">Maximum separation in the redshift-space</td></tr>
 <tr><td class="left">s_min</td><td class="left">Minimum separation</td></tr>
-<tr><td class="left">s_bin</td><td class="left">Number of data points between s<sub>min</sub> and s<sub>max</sub></td></tr>
+<tr><td class="left">s_bin</td><td class="left">Number of data points between s_min and s_max</td></tr>
 <tr><td class="left">wedge_bin</td><td class="left">Number of data points for the "wedge" statistics</td></tr>
 <tr><td class="left">y_spanning</td><td class="left">The integration range of y (see Beth and White 2011)</td></tr>
 <tr><td class="left">dy</td><td class="left">The integration step of y</td></tr>
-<tr><td class="left">f_v</td><td class="left">Structure growth rate [d log(D) / d log(a)]</td></tr>
-<tr><td class="left">xi_file_name</td><td class="left">Path to the input file: real-space &xi;</td></tr>
-<tr><td class="left">v_file_name</td><td class="left">Path to the input file: real-space v<sub>12</sub></td></tr>
-<tr><td class="left">sp_file_name</td><td class="left">Path to the input file: real-space velocity dispersion (parallel)</td></tr>
-<tr><td class="left">sv_file_name</td><td class="left">Path to the input file: real-space velocity dispersion (perpandicular)</td></tr>
+<tr><td class="left">f_v</td><td class="left">Structure growth rate, \((\mathrm{d} \log D / \mathrm{d} \log a)\)</td></tr>
+<tr><td class="left">xi_file_name</td><td class="left">Path to the input file: real-space \(\xi\)</td></tr>
+<tr><td class="left">v_file_name</td><td class="left">Path to the input file: real-space \(v_{12}\)</td></tr>
+<tr><td class="left">s_file_name</td><td class="left">Path to the input file: real-space velocity dispersion</td></tr>
 <tr><td class="left">out_file_name</td><td class="left">Path to the output file</td></tr>
 </tbody>
 </table>
@@ -546,9 +697,9 @@ plot by "&lt;out_file_name&gt;_2d", and some appendices will be given in
 
 </div>
 
-<div id="outline-container-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Run!</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Run!</h3>
+<div class="outline-text-3" id="text-4-2">
 
 
 <p>
@@ -561,17 +712,17 @@ $ ./xi_stream.exe par.txt
 
 </div>
 
-<div id="outline-container-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Output</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Output</h3>
+<div class="outline-text-3" id="text-4-3">
 
 
 
 </div>
 
-<div id="outline-container-3-3-1" class="outline-4">
-<h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> &lt;out_file_name&gt;</h4>
-<div class="outline-text-4" id="text-3-3-1">
+<div id="outline-container-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> &lt;out_file_name&gt;</h4>
+<div class="outline-text-4" id="text-4-3-1">
 
 
 <p>
@@ -584,10 +735,10 @@ All for biased tracers&hellip;
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">s (redshift-space separation, in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">&xi;<sup>s</sup><sub>0</sub> (monopole)</td></tr>
-<tr><td class="right">3</td><td class="left">&xi;<sup>s</sup><sub>2</sub> (quadrupole)</td></tr>
-<tr><td class="right">4</td><td class="left">&xi;<sup>s</sup><sub>4</sub> (hexadecapole)</td></tr>
+<tr><td class="right">1</td><td class="left">\(s\) (redshift-space separation, in \(\mathrm{Mpc\ h}^{-1}\))</td></tr>
+<tr><td class="right">2</td><td class="left">\(\xi^s_0\) (monopole)</td></tr>
+<tr><td class="right">3</td><td class="left">\(\xi^s_2\) (quadrupole)</td></tr>
+<tr><td class="right">4</td><td class="left">\(\xi^s_4\) (hexadecapole)</td></tr>
 </tbody>
 </table>
 
@@ -596,9 +747,9 @@ All for biased tracers&hellip;
 
 </div>
 
-<div id="outline-container-3-3-2" class="outline-4">
-<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> &lt;out_file_name&gt;_appendix</h4>
-<div class="outline-text-4" id="text-3-3-2">
+<div id="outline-container-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> &lt;out_file_name&gt;_appendix</h4>
+<div class="outline-text-4" id="text-4-3-2">
 
 
 <p>
@@ -611,13 +762,13 @@ All for biased tracers&hellip;
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">r (real-space separation, in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">&xi;<sub>L</sub>(r) (linear real-space correlation)</td></tr>
-<tr><td class="right">3</td><td class="left">&xi;(r) (real-space correlation)</td></tr>
-<tr><td class="right">4</td><td class="left">v<sub>L</sub>(r) (linear real-space pairwise infall velocity, in a.H(a).f<sub>v</sub> )</td></tr>
-<tr><td class="right">5</td><td class="left">v(r) (real-space pairwise infall velocity )</td></tr>
-<tr><td class="right">6</td><td class="left">&sigma;<sub>p</sub>(s) (real-space velocity dispersion: parallel component, in (a.H(a).f<sub>v</sub>)<sup>2</sup> )</td></tr>
-<tr><td class="right">7</td><td class="left">&sigma;<sub>v</sub>(s) (real-space velocity dispersion: perpandicular component)</td></tr>
+<tr><td class="right">1</td><td class="left">\(r\) (real-space separation, in \(\mathrm{Mpc\ h}^{-1}\))</td></tr>
+<tr><td class="right">2</td><td class="left">\(\xi_L(r)\) (linear real-space correlation)</td></tr>
+<tr><td class="right">3</td><td class="left">\(\xi(r)\) (real-space correlation)</td></tr>
+<tr><td class="right">4</td><td class="left">\(v_L(r)\) (linear real-space pairwise infall velocity, in \(a H(a) f_v\) )</td></tr>
+<tr><td class="right">5</td><td class="left">\(v(r)\) (real-space pairwise infall velocity )</td></tr>
+<tr><td class="right">6</td><td class="left">\(\sigma^2_p(s)\) (real-space velocity dispersion: parallel component, in \((a H(a) f_v)^2 )\)</td></tr>
+<tr><td class="right">7</td><td class="left">\(\sigma^2_v(s)\) (real-space velocity dispersion: perpandicular component)</td></tr>
 </tbody>
 </table>
 
@@ -626,9 +777,9 @@ All for biased tracers&hellip;
 
 </div>
 
-<div id="outline-container-3-3-3" class="outline-4">
-<h4 id="sec-3-3-3"><span class="section-number-4">3.3.3</span> &lt;out_file_name&gt;_wedge</h4>
-<div class="outline-text-4" id="text-3-3-3">
+<div id="outline-container-4-3-3" class="outline-4">
+<h4 id="sec-4-3-3"><span class="section-number-4">4.3.3</span> &lt;out_file_name&gt;_wedge</h4>
+<div class="outline-text-4" id="text-4-3-3">
 
 
 <p>
@@ -641,7 +792,7 @@ All for biased tracers&hellip;
 <tr><th scope="col" class="left">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="left">1</td><td class="left">s (redshift-space separation in Mpc/h)</td></tr>
+<tr><td class="left">1</td><td class="left">\(s\) (redshift-space separation in \(\mathrm{Mpc\ h}^{-1}\))</td></tr>
 <tr><td class="left">Following</td><td class="left">"Wedges"</td></tr>
 </tbody>
 </table>
@@ -651,15 +802,14 @@ All for biased tracers&hellip;
 
 </div>
 
-<div id="outline-container-3-3-4" class="outline-4">
-<h4 id="sec-3-3-4"><span class="section-number-4">3.3.4</span> &lt;out_file_name&gt;_2d</h4>
-<div class="outline-text-4" id="text-3-3-4">
+<div id="outline-container-4-3-4" class="outline-4">
+<h4 id="sec-4-3-4"><span class="section-number-4">4.3.4</span> &lt;out_file_name&gt;_2d</h4>
+<div class="outline-text-4" id="text-4-3-4">
 
 
 <p>
 All for biased tracers&hellip;
 </p>
-
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup><col class="right" /><col class="left" />
 </colgroup>
@@ -667,9 +817,9 @@ All for biased tracers&hellip;
 <tr><th scope="col" class="right">Column</th><th scope="col" class="left">Value</th></tr>
 </thead>
 <tbody>
-<tr><td class="right">1</td><td class="left">s (redshift-space separation in Mpc/h)</td></tr>
-<tr><td class="right">2</td><td class="left">&mu;</td></tr>
-<tr><td class="right">3</td><td class="left">&xi;<sup>s</sup>(s,&mu;)</td></tr>
+<tr><td class="right">1</td><td class="left">\(s\) (redshift-space separation in \mathrm{Mpc\ h}^{-1})</td></tr>
+<tr><td class="right">2</td><td class="left">\(\mu\) (the cosine of the angle between LOS and separation)</td></tr>
+<tr><td class="right">3</td><td class="left">\(\xi^s(s,\mu)\)</td></tr>
 </tbody>
 </table>
 
@@ -696,7 +846,7 @@ All for biased tracers&hellip;
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2014-04-09T13:54-0400</p>
+<p class="date">Date: 2015-05-29T03:12-0400</p>
 <p class="author">Author: Lile Wang</p>
 <p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>

@@ -36,9 +36,10 @@ int main( int argn, char * argv[  ] )
 	input args( par_file_name );
 	args.read(  );
 
-	unsigned n_thread( 0 );
-	args.find_key( "n_thread", n_thread, 2 );
-	omp_set_num_threads( n_thread );
+	int n_thread( 0 );
+	args.find_key( "n_thread", n_thread, -1 );
+	if( n_thread > 0 )
+	    omp_set_num_threads( n_thread );
 	
 	q_func * p_qf = q_func::get_instance(  );
 	p_qf->initialize( args );

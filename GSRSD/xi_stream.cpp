@@ -16,9 +16,9 @@ xi_stream::xi_stream(  )
 
 }
 
-xi_stream::~xi_stream(  )    
+xi_stream::~xi_stream(  )
 {
-	
+
 }
 
 void xi_stream::set_par( input & arg )
@@ -28,12 +28,12 @@ void xi_stream::set_par( input & arg )
     arg.find_key( "fb11b21", fb11b21, 0. );
     arg.find_key( "fb12b20", fb12b20, 0. );
     arg.find_key( "fb10b22", fb10b22, 0. );
-    
+
     arg.find_key( "y_spanning", y_spanning, 200 );
     arg.find_key( "dy",         dy,         0.5 );
 
     arg.find_key( "f_v", f_v, 0.74429 );
-    
+
     arg.find_key( "sigma_p_100", sigma_p_sim_100, 27 );
 
     std::string xi_path, v_path, s_path;
@@ -41,7 +41,7 @@ void xi_stream::set_par( input & arg )
     arg.find_key( "v_file_name" ,  v_path,   "v12.txt"  );
     arg.find_key( "s_file_name",   s_path,   "s12.txt"  );
     arg.find_key( "out_file_name", out_path, "xi_s.txt" );
-	
+
     this->read_xi   ( xi_path );
     this->read_v    ( v_path  );
     this->read_sigma( sigma_p, s_path, 0 );
@@ -85,8 +85,8 @@ void xi_stream::read_to_buf
     double current_val( 0. );
     while( !fin.eof(  ) )
     {
-        fin >> current_val;
-        read_buf.push_back( current_val );
+	fin >> current_val;
+	read_buf.push_back( current_val );
     }
     this->col_num = col_num;
     this->row_num = read_buf.size(  ) / col_num;
@@ -105,16 +105,16 @@ void xi_stream::read_xi( const std::string & file_name )
     read_to_buf( file_name, 8 );
     for( int i = 0; i < row_num; ++ i )
     {
-        const double r = read_buf_at( i, 0 );
-        const double val = read_buf_at( i, 2 )
-            + fb11b20 * read_buf_at( i, 3 )
-            + fb10b21 * read_buf_at( i, 4 )
-            + fb12b20 * read_buf_at( i, 5 )
-            + fb11b21 * read_buf_at( i, 6 )
-            + fb10b22 * read_buf_at( i, 7 );
-        xi.read( r, val );
-        xi_L.read( r, read_buf_at( i, 1 ) );
-    }	
+	const double r = read_buf_at( i, 0 );
+	const double val = read_buf_at( i, 2 )
+	    + fb11b20 * read_buf_at( i, 3 )
+	    + fb10b21 * read_buf_at( i, 4 )
+	    + fb12b20 * read_buf_at( i, 5 )
+	    + fb11b21 * read_buf_at( i, 6 )
+	    + fb10b22 * read_buf_at( i, 7 );
+	xi.read( r, val );
+	xi_L.read( r, read_buf_at( i, 1 ) );
+    }
     std::cout << file_name << " is read."<< std::endl;
     return;
 }
@@ -126,16 +126,16 @@ void xi_stream::read_v( const std::string & file_name )
     read_to_buf( file_name, 7 );
     for( int i = 0; i < row_num; ++ i )
     {
-        const double r = read_buf_at( i, 0 );
-        const double val = read_buf_at( i, 2 )
-            + fb11b20 * read_buf_at( i, 3 )
-            + fb10b21 * read_buf_at( i, 4 )
-            + fb12b20 * read_buf_at( i, 5 )
-            + fb11b21 * read_buf_at( i, 6 )
-            + fb10b22 * read_buf_at( i, 7 );
-        v.read( r, val * f_v / ( 1. + xi( r ) ) );
-        v_L.read( r, read_buf_at( i, 1 ) * f_v
-                  * ( 1. + fb11b20 ) );
+	const double r = read_buf_at( i, 0 );
+	const double val = read_buf_at( i, 2 )
+	    + fb11b20 * read_buf_at( i, 3 )
+	    + fb10b21 * read_buf_at( i, 4 )
+	    + fb12b20 * read_buf_at( i, 5 )
+	    + fb11b21 * read_buf_at( i, 6 )
+	    + fb10b22 * read_buf_at( i, 7 );
+	v.read( r, val * f_v / ( 1. + xi( r ) ) );
+	v_L.read( r, read_buf_at( i, 1 ) * f_v
+		  * ( 1. + fb11b20 ) );
     }
     std::cout << file_name << " is read."<< std::endl;
     return;
@@ -149,13 +149,13 @@ void xi_stream::read_sigma
     read_to_buf( file_name, 9 );
     for( int i = 0; i < row_num; ++ i )
     {
-        const double r = read_buf_at( i, 0 );
-        const double val = read_buf_at( i, 1 + shift )
-            + fb11b20 * read_buf_at( i, 2 + shift )
-            + fb10b21 * read_buf_at( i, 3 + shift )
-            + fb12b20 * read_buf_at( i, 4 + shift );
-        interp.read( r, val * f_v*f_v / ( 1. + xi( r ) ) );
-    }	
+	const double r = read_buf_at( i, 0 );
+	const double val = read_buf_at( i, 1 + shift )
+	    + fb11b20 * read_buf_at( i, 2 + shift )
+	    + fb10b21 * read_buf_at( i, 3 + shift )
+	    + fb12b20 * read_buf_at( i, 4 + shift );
+	interp.read( r, val * f_v*f_v / ( 1. + xi( r ) ) );
+    }
     std::cout << file_name << " is read."<< std::endl;
     return;
 }
@@ -173,7 +173,7 @@ void xi_stream::set_s_mu_buf
 	s_buf.push_back( i * ds + s_min );
     const double dmu_wedge = 1. / double( wedge_bin_num );
     for( int i = 0; i < wedge_bin_num + 1; ++ i )
-	wedge_mu_buf.push_back( i * dmu_wedge );	
+	wedge_mu_buf.push_back( i * dmu_wedge );
     return;
 }
 
@@ -185,10 +185,10 @@ double xi_stream::inner_integrand( const double & r_sigma,
     const double mu = y / r;
     if( r < 3 )
 	return 0.;
-	
+
     const double sigma2 = sigma_p( r ) * pow( mu, 2 )
 	+ sigma_v( r ) * ( 1. - pow( mu, 2 ) ) * 0.5
-        - sigma_shift;
+	- sigma_shift;
     if( sigma2 < 0. )
 	return 0.;
     const double exp_idx = -0.5 / sigma2
@@ -241,7 +241,7 @@ double xi_stream::wedge_integration
 	const double mu_s = p_mu + intg.gl_xi( i ) * m_mu;
 	const double temp_integrand
 	    = inner_integration( s, mu_s );
-	intg.gl_read( i, temp_integrand );		
+	intg.gl_read( i, temp_integrand );
     }
     return intg.gl_result(  ) * 0.5;
 }
@@ -249,7 +249,7 @@ double xi_stream::wedge_integration
 void xi_stream::gen_xi_s(  )
 {
     std::cout << "Generating xi_s... \n" << std::flush;
-	
+
     xi_s_0_buf.clear(  );
     xi_s_2_buf.clear(  );
     xi_s_4_buf.clear(  );
@@ -266,7 +266,7 @@ void xi_stream::gen_xi_s(  )
 	xi_s_0_buf[ i ] = outer_integration( 0, s );
 	xi_s_2_buf[ i ] = outer_integration( 2, s );
 	xi_s_4_buf[ i ] = outer_integration( 4, s );
-	
+
 	std::vector<double> wedge
 	    ( wedge_mu_buf.size(  ) - 1 );
 	for( unsigned j = 0; j + 1 < wedge_mu_buf.size(  );
@@ -298,13 +298,13 @@ void xi_stream::output(  )
     integral intg;
     for( unsigned i = 0; i < s_buf.size(  ); ++ i )
     {
-        const double s = s_buf[ i ];
-        fout << s << ' ' << xi_s_0_buf[ i ] << ' '
-             << xi_s_2_buf[ i ] << ' ' << xi_s_4_buf[ i ]
-             << '\n';
-        fout_app << s << ' ' << xi_L( s ) << ' ' << xi( s )
-                 << ' ' << v_L( s ) << ' ' << v( s ) << ' '
-                 << sigma_p( s ) << ' ' << sigma_v( s )
+	const double s = s_buf[ i ];
+	fout << s << ' ' << xi_s_0_buf[ i ] << ' '
+	     << xi_s_2_buf[ i ] << ' ' << xi_s_4_buf[ i ]
+	     << '\n';
+	fout_app << s << ' ' << xi_L( s ) << ' ' << xi( s )
+		 << ' ' << v_L( s ) << ' ' << v( s ) << ' '
+		 << sigma_p( s ) << ' ' << sigma_v( s )
 		 << '\n';
 
 	fout_wedge << s << ' ';
@@ -324,7 +324,7 @@ void xi_stream::output(  )
 
     std::cout << "Output saved to file: \n"
 	      << out_path << '\n'
-              << file_name_append << '\n'
+	      << file_name_append << '\n'
 	      << file_name_wedge << '\n'
 	      << file_name_2d << std::endl;
     return;
@@ -334,7 +334,7 @@ void xi_stream::output(  )
 // Misc functions
 
 double xi_stream::legendre( const int & order,
-                            const double & x )
+			    const double & x )
 {
     switch( order )
     {
@@ -350,4 +350,3 @@ double xi_stream::legendre( const int & order,
     }
     return 0.;
 }
-

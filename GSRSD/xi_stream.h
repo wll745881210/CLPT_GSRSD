@@ -29,7 +29,7 @@ private:			// Data
     int col_num, row_num;
 private:			// Function
     void read_to_buf( const std::string & file_name,
-                      int col_num );
+		      int col_num );
     inline double read_buf_at( int col, int row );
     void read_xi( const std::string & file_name );
     void read_v(  const std::string & file_name );
@@ -55,10 +55,10 @@ private:			// Function
     double outer_integration( int order, const double & s );
     double wedge_integration( const double & mu_min,
 			      const double & mu_max,
-			      const double & s );	
+			      const double & s );
 public:
     void gen_xi_s(  );
-	
+
     ////////// Output //////////
 private:
     std::string out_path;
@@ -74,4 +74,3 @@ private:			// Function
 };
 
 #endif
-

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <omp.h>
 
 #include "xi_stream.h"
 #include "input.h"
@@ -10,6 +11,12 @@ void driver( const std::string & par_file_name )
     
     input arg( par_file_name );
     arg.read(  );
+
+    int n_thread( 0 );
+    arg.find_key( "n_thread", n_thread, -1 );
+    if( n_thread > 0 )
+	omp_set_num_threads( n_thread );
+    
     xi_s.clear(  );
     xi_s.set_par( arg );
     xi_s.gen_xi_s(  );
