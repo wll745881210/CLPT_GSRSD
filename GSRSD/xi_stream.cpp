@@ -214,7 +214,7 @@ double xi_stream::outer_integration
 ( int order, const double & s )
 {
     integral intg;
-    // intg.gl_clear(  );
+    intg.gl_clear(  );
     for( int i = 0; i < intg.gl_num; ++ i )
     {
 	const double mu_s = intg.gl_xi( i );
@@ -232,7 +232,7 @@ double xi_stream::wedge_integration
     const double p_mu = ( mu_max + mu_min ) * 0.5;
 
     integral intg;
-    // intg.gl_clear(  );
+    intg.gl_clear(  );
     for( int i = 0; i < intg.gl_num; ++ i )
     {
 	const double mu_s = p_mu + intg.gl_xi( i ) * m_mu;
