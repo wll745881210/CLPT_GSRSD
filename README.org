@@ -59,7 +59,7 @@ The makefiles are written by a human, so you should find it easy to
 modify them as needed (e.g. if you have gcc 4.4, you may want to use
 the flag "-std=c++0x" instead of "-std=c++11" therein).
 
-I named the output binary files as ".exe" files--the only purpose for
+I named the output binary files as ".exe" files--the only purpose of
 this is for git to recogize them easily and clearly.
 
 * CLPT
