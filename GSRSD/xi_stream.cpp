@@ -32,8 +32,8 @@ void xi_stream::set_par( const xi_stream_init & arg )
     this->sigma_p_sim_100 = arg.sigma_p_sim_100;
     this->read_xi( arg.xi_file_name );
     this->read_v( arg.v_file_name );
-    this->read_sigma( sigma_p, arg.sp_file_name );
-    this->read_sigma( sigma_v, arg.sv_file_name );
+    this->read_sigma( sigma_p, arg.sp_file_name, 0 );
+    this->read_sigma( sigma_v, arg.sv_file_name, 4 );
 
     set_s_mu_buf( arg.s_min, arg.s_max, arg.s_bin_num,
 		  arg.wedge_bin_num );
@@ -204,7 +204,7 @@ double xi_stream::outer_integration( int order,
     {
 	const double mu_s = intg.gl_xi( i );
 	const double temp_xi = inner_integration( s, mu_s );
-	intg.gl_read( temp_xi* legendre( order, mu_s ) );
+	intg.gl_read( i, temp_xi* legendre( order, mu_s ) );
     }
     return intg.gl_result(  ) * ( 2. * order + 1. ) * 0.5;
 }
@@ -222,7 +222,7 @@ double xi_stream::wedge_integration
 	const double mu_s = p_mu + intg.gl_xi( i ) * m_mu;
 	const double temp_integrand
 	    = inner_integration( s, mu_s );
-	intg.gl_read( temp_integrand );		
+	intg.gl_read( i, temp_integrand );		
     }
     return intg.gl_result(  ) * 0.5;
 }
